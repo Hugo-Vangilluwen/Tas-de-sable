@@ -1,0 +1,93 @@
+\documentclass[french,11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{babel}
+
+\usepackage{dsfont} % for \mathds{1}
+
+\usepackage{geometry}
+\geometry{
+	a4paper,
+	top=2cm,
+	bottom=2cm,
+	right=3cm,
+	left=3cm
+}
+
+\title{Brouillon lac}
+\author{Hugo Vangilluwen}
+\begin{document}
+	\maketitle
+	
+	\begin{abstract}
+		Le but de ce TIPE est de comprendre comment jet d'eau, mouvement rectiligne uniforme, induit sur un plan d'eau un mouvement répétitif, ondulatoire.
+	\end{abstract}
+	
+	\vspace{1cm}
+	
+	\section{Définitions générales}
+	
+	Posons le lac ou plan d'eau dont appartiennent toutes les gouttes d'eau :
+	\begin{equation}
+		Lac = [0;1]^2
+	\end{equation}
+	En réalité, le lac pourrait être un ensemble quelconque.
+	
+	À chaque goutte d'eau, on associe une hauteur qui est l'écart par rapport à la position d'équilibre. Posons l'ensemble des hauteurs possible :
+	\begin{equation}
+		Hauteur = \mathcal{F} \left( Lac , \mathbb{R} \right)
+	\end{equation}
+	
+	Chaque goutte d'eau ou plutôt chaque volume mésoscopique de surface du lac s'écoule sur les gouttes d'eau avoisinante. Notons l'influence $I$, c'est-à-dire la 'forme' des gouttes influencées. L'écoulement est une fonction suivante :
+	\begin{equation}
+		\acute{E} : \mathbb{R} \rightarrow \mathcal{F} \left( I , \mathbb{R} \right)
+	\end{equation}
+	telle que :
+	\begin{equation}
+		\tag{Conservation de la matière}
+		\int_I \acute{E}(x, \mu) d\mu = \acute{E}(x, 0_I)
+	\end{equation}
+	$I$ pourrait être remplacé par $[0;\alpha]^2$ avec $\alpha \in [0;1]$.
+	
+	Définissons l'écoulement centré par
+	\begin{equation}
+		\acute{e} \ \left| \begin{matrix}
+			Lac \times Hauteur &\rightarrow& Hauteur \\
+			(g,h) &\mapsto& \left| \begin{matrix}
+				Lac &\rightarrow& \mathbb{R} \\
+				g' &\mapsto& \left\{ \begin{matrix}
+					\acute{E}(h(g))(g') &\text{si}& g' \in g + I \\
+					0_{\mathbb{R}} &\text{sinon}
+				\end{matrix} \right.
+			\end{matrix} \right.
+		\end{matrix} \right.
+	\end{equation}
+	
+	Maintenant, définissons une étape d'écoulement pour tout volume $v$ :
+%	\begin{equation}
+%		\begin{matrix}
+%			Hauteur &\rightarrow& Hauteur \\
+%			h &\mapsto& \left| \begin{matrix}
+%				Lac &\rightarrow& \mathbb{R} \\
+%				v &\mapsto& \displaystyle h(v) + \int_{Lac} \acute{e}(\nu, h)(v) \mathrm{d}\nu
+%			\end{matrix} \right.
+%		\end{matrix}
+%	\end{equation}
+	\begin{equation}
+		\frac{dh}{dt}(v) = \int_{Lac} \acute{e}(\nu, h)(v) \mathrm{d}\nu
+	\end{equation}
+	
+	\section{Simulation informatique}
+	Pour la simulation, il est nécessaire de discrétiser les ensembles ci-dessus.
+	\begin{equation*}
+		\begin{aligned}
+			Lac &= [\![ 0 ; n ]\!] \\
+			I &= [\![ -m ; m ]\!] \quad \text{avec} \quad m \leqslant n \\
+		\end{aligned}
+	\end{equation*}
+	Les intégrales deviennent des sommes. On utilise la méthode d'Euler pour pouvoir calculer une solution de l'équation fonctionnelle. \\
+	Les valeurs pour les hauteurs sont limitées entre $-1$ et $1$.
+\end{document}

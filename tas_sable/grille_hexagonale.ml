@@ -116,15 +116,33 @@ module Grille_hexagonale: GRILLE = struct
         done
 
     let afficher (g: t): unit =
-        let a = 30 in
+        (* Effectue l'opération f x avec x vu comme un flottant *)
+        let float_calcul (f: float -> float) (x: int) =
+            x |> float_of_int |> f |> int_of_float
+        in
+        (* Trace polygone de centre c et de sommets s
+         * Compense les défauts de Graphics.fill_poly
+         *)
+        let tracer_poly (c: int * int) (s: (int * int) array): unit =
+            let n = Array.length s in
+            for i = 0 to (n - 2) do
+                Graphics.draw_poly [|c; s.(i); s.(i+1)|]
+            done;
+            for i = 0 to (n - 1) do
+                let (cx, cy) = s.(i) in
+                Graphics.fill_circle cx cy 5
+            done
+        in
+
+        let a = 50 in
         (* cos 60 = 0.5 et sin 60 = 0.866 *)
-        let b = a |> float_of_int |> ( *. ) 0.866 |> int_of_float in
-        let c = a |> float_of_int |> ( *. ) 0.5 |> int_of_float in
+        let b = float_calcul (( *.) 0.866) a in
+        let c = float_calcul (( *.) 0.5) a in
         print_int b; print_newline ();
         print_int c; print_newline ();
 
-        " " ^ (g.largeur * a |> string_of_int)
-        ^ "x" ^ (g.hauteur * a |> string_of_int)
+        " " ^ (g.largeur * 2 * a |> string_of_int)
+        ^ "x" ^ (g.hauteur * 2 * b |> string_of_int)
         |> Graphics.open_graph;
 
         itérer
@@ -140,15 +158,22 @@ module Grille_hexagonale: GRILLE = struct
                     ^ (string_of_int x) ^ "," ^ (string_of_int y)
                     ^ ") dépasse " ^ (string_of_int max_valeur) )
                 ) |>  Graphics.set_color;
-                let xx = a * x and yy = a * y in
-                Graphics.draw_poly [|
+                let xx = float_calcul ((float_of_int a) |>( *.)) (2*x-y) in
+                let yy = 2 * b * y in
+(*                 tracer_poly *)
+(*                     (xx + a, yy + b) *)
+                Graphics.fill_poly
+                    [|
                     (xx, yy + b);
                     (xx + c, yy + b + b);
                     (xx + a + c, yy + b + b);
                     (xx + a + a, yy + b);
                     (xx + a + c, yy);
                     (xx + c, yy);
-                |])
+                    |]
+                (*Graphics.draw_poly [|(xx + a, yy + b); (xx + c, yy + b + b); (xx + a + c, yy + b + b)|];
+                Graphics.draw_poly [|(xx + a, yy + b); (xx, yy + b); (xx + c, yy + b + b)|]*)
+            )
             g;
 
         let _ = Graphics.wait_next_event[Key_pressed] in

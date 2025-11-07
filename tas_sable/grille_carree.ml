@@ -7,7 +7,7 @@ module Grille_carre: GRILLE = struct
         hauteur: int;
     }
 
-    let max_valeur = 3
+    let max_valeur = 5
 
     let créer (c: coord): t =
         let (x, y) = c in {
@@ -46,9 +46,12 @@ module Grille_carre: GRILLE = struct
     let copier (g: t): t =
         {
             grille = Array.map Array.copy g.grille;
-            hauteur = g.hauteur;
-            largeur = g.largeur
+            largeur = g.largeur;
+            hauteur = g.hauteur
         }
+
+    let dimensions (g: t): coord =
+        (g.largeur, g.hauteur)
 
     let superposer (g1: t) (g2: t): t =
         assert (g1.largeur = g2.largeur && g1.hauteur = g2.hauteur);
@@ -84,28 +87,30 @@ module Grille_carre: GRILLE = struct
             print_newline ()
         done
 
-    let afficher (g: t): unit =
-        let a = 20 in
+    let a: int = 40
+
+    let ouvrir_fenêtre (g: t): unit =
         " " ^ (g.largeur * a |> string_of_int)
         ^ "x" ^ (g.hauteur * a |> string_of_int)
-        |> Graphics.open_graph;
+        |> Graphics.open_graph
 
+    let afficher (g: t): unit =
         itérer
             (fun (x,y)  ->
                 (match valeur g (x, y) with
-                | 0 -> Graphics.rgb 255 255 255
+                (*| 0 -> Graphics.rgb 255 255 255
                 | 1 -> Graphics.rgb 140 140 140
                 | 2 -> Graphics.rgb 70 70 70
                 | 3 -> Graphics.rgb 0 0 0
                 | _ -> failwith ( "La valeur de "
                     ^ (string_of_int x) ^ "," ^ (string_of_int y)
-                    ^ " dépasse " ^ (string_of_int max_valeur) )
+                    ^ " depasse " ^ (string_of_int max_valeur) ) (* é *)
+                *)
+                | n -> let u = 255 - 255 * n / max_valeur in
+                Graphics.rgb u u u
                 ) |>  Graphics.set_color;
                 Graphics.fill_rect (a*x) (a*y) a a)
-            g;
-
-        let _ = Graphics.wait_next_event[Key_pressed] in
-        Graphics.close_graph ()
+            g
 end
 
 (* Tas de sable carré *)

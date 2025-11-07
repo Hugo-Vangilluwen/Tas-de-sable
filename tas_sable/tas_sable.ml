@@ -16,13 +16,18 @@ module type GRILLE = sig
     (* Renvoie les voisins *)
     val voisins : t -> coord -> coord list
     (* Copie une grille *)
-    val copier  : t -> t
+    val copier : t -> t
+    (* Retourne les dimensions de la grille *)
+    val dimensions : t -> coord
     (* Superpose deux tas de sable *)
     val superposer : t -> t -> t
     (* Itère la fonction f parmis les cases de g *)
     val itérer : (coord -> unit) -> t -> unit
     (* Imprime la grille dans la console *)
     val imprimer : t -> unit
+    (* Ouvre une fenêtre Graphics de la bonne taille
+    *)
+    val ouvrir_fenêtre : t -> unit
     (* Affiche la grille dans une fenêtre graphique
      * Les valeurs de la grille doivent être entre 0 et max_voisin - 1
      *)
@@ -68,4 +73,55 @@ module Tas_sable =
 
             let (+) (tas1: t) (tas2: t) =
                 superposer tas1 tas2 |> avalanche
+
+            (* Affiche l'animation
+             * en ajoutant la source à chaque étape
+             * en passant d'une étape à une autre avec attendre
+            *)
+            let animer
+                (tas: t)
+                (n :int)
+                (source: t)
+                (attendre: unit -> unit)
+                : t =
+                ouvrir_fenêtre tas;
+
+                let tas_animé = ref tas in
+
+                for i = 1 to n do
+                    tas_animé := !tas_animé + source;
+                    Graphics.clear_graph ();
+                    afficher !tas_animé;
+                    attendre ()
+                done;
+
+                let _ = Graphics.wait_next_event[Key_pressed] in ();
+
+                Graphics.close_graph ();
+                !tas_animé
+
+            let un_grain_clavier (tas: t) (c: coord) (n: int): t =
+                let source = tas |> dimensions |> créer in
+                modifier source 1 c;
+                let attendre () =
+                    let _ = Graphics.wait_next_event[Key_pressed] in ()
+                in
+                animer
+                    tas
+                    n
+                    source
+                    attendre
+
+            let un_grain_temps (tas: t) (c: coord) (n: int): t =
+                let source = tas |> dimensions |> créer in
+                modifier source 1 c;
+                let attendre () =
+                    Unix.sleepf 0.1
+                in
+                animer
+                    tas
+                    n
+                    source
+                    attendre
+
         end

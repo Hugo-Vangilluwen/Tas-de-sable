@@ -17,8 +17,7 @@ $(CIBLE): $(SOURCES)
 
 .PHONY: clean execute
 clean:
-# 	rm -f *.cmx *.cmi *.o $(CIBLE)
-	rm -f $(CIBLE)
+	rm -f *.cmx *.cmi *.o $(CIBLE)
 
 
 execute: $(CIBLE)

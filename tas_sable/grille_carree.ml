@@ -7,10 +7,10 @@ module Grille_carre: GRILLE = struct
         hauteur: int;
     }
 
-    let max_valeur = 5
+    let max_valeur = 3
 
-    let créer (c: coord): t =
-        let (x, y) = c in {
+    let créer (dim: coord): t =
+        let (x, y) = dim in {
             grille = Array.make_matrix x y 0;
             largeur = x;
             hauteur = y
@@ -20,7 +20,7 @@ module Grille_carre: GRILLE = struct
         let (x, y) = c in
         g.grille.(x).(y)
 
-    let modifier (g: t) (n: int) (c: coord): unit =
+    let déposer (g: t) (n: int) (c: coord): unit =
         let (x, y) = c in
         g.grille.(x).(y) <- g.grille.(x).(y) + n
 
@@ -87,7 +87,7 @@ module Grille_carre: GRILLE = struct
             print_newline ()
         done
 
-    let a: int = 40
+    let a: int = 10
 
     let ouvrir_fenêtre (g: t): unit =
         " " ^ (g.largeur * a |> string_of_int)

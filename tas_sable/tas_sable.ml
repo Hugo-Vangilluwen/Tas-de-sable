@@ -38,6 +38,12 @@ end
 module Tas_sable =
     functor (G: GRILLE) ->
         struct
+            (* Crée un tas de sable de dimension n x m *)
+            let créer = G.créer
+
+            (* Imprime le tas dans la console *)
+            let imprimer = G.imprimer
+
             (* Calcule un glissement de tas
              * Vaut None si aucune glissement n'a lieu
              *)
@@ -72,11 +78,6 @@ module Tas_sable =
 
             let (+) (tas1: G.t) (tas2: G.t) =
                 G.superposer tas1 tas2 |> avalanche
-
-
-            (* Imprime le tas dans la console *)
-            let imprimer (tas: G.t): unit =
-                G.imprimer tas
 
             (* Affiche le tas de sable dans une fenêtre graphique *)
             let afficher (tas: G.t): unit =

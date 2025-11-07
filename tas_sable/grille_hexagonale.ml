@@ -11,15 +11,16 @@ module Grille_hexagonale: GRILLE = struct
 
     let créer (c: coord): t =
         let (x, y) = c in {
-            grille = Array.make_matrix (x+y) y 0;
-            largeur = x+y;
+            grille = Array.make_matrix x y 0;
+            largeur = x;
             hauteur = y
         }
 
     (* Teste si la coordonnée est correcte dans g *)
     let correcte_coord (g: t) (c: coord): bool =
         let (x, y) = c in
-        (0 <= y) && (y < g.hauteur) && (0 <= x - y) && (x - y < g.largeur - g.hauteur)
+        (*(0 <= y) && (y < g.hauteur) && (0 <= x - y) && (x - y < g.largeur - g.hauteur)*)
+        0 <= x && x < g.largeur && 0 <= y && y < g.hauteur
 
     let tester_coord (g: t) (c: coord): unit =
         if correcte_coord g c then ()
@@ -29,22 +30,22 @@ module Grille_hexagonale: GRILLE = struct
             ^") n'est pas correcte")
 
     let valeur (g: t) (c: coord): int =
-        tester_coord g c;
+(*         tester_coord g c; *)
         let (x, y) = c in
         g.grille.(x).(y)
 
     let déposer (g: t) (n: int) (c: coord): unit =
-        tester_coord g c;
+(*         tester_coord g c; *)
         let (x, y) = c in
         g.grille.(x).(y) <- g.grille.(x).(y) + n
 
     let voisins (g: t) (c: coord): coord list =
-        tester_coord g c;
+(*         tester_coord g c; *)
         let (x, y) = c in
 
         List.filter
             (correcte_coord g)
-            [ (x-1, y); (x+1, y); (x, y-1); (x-1, y-1); (x, y+1); (x+1,y+1) ]
+            [ (x-1, y); (x+1, y); (x, y-1); (x+1, y-1); (x, y+1); (x-1,y+1) ]
 
     let copier (g: t): t =
         {
@@ -54,7 +55,7 @@ module Grille_hexagonale: GRILLE = struct
         }
 
     let dimensions (g: t): coord =
-        (g.largeur - g.hauteur, g.hauteur)
+        (g.largeur, g.hauteur)
 
     let superposer (g1: t) (g2: t): t =
         assert (g1.largeur = g2.largeur && g1.hauteur = g2.hauteur);
@@ -71,9 +72,7 @@ module Grille_hexagonale: GRILLE = struct
     let itérer (f: coord -> unit) (g: t): unit =
         for x = 0 to g.largeur - 1 do
             for y = 0 to g.hauteur - 1 do
-                if (x, y) |> correcte_coord g then
-                    f (x, y)
-                else ()
+                f (x, y)
             done
         done
 
@@ -106,7 +105,7 @@ module Grille_hexagonale: GRILLE = struct
     let c : int = float_calcul (( *.) 0.5) a (* demi-longeur d'un coté *)
 
     let ouvrir_fenêtre (g: t): unit =
-        " " ^ ((g.largeur * 2 - g.hauteur - 1) * b |> string_of_int)
+        " " ^ ((2 * g.largeur + g.hauteur - 1) * b |> string_of_int)
         ^ "x" ^ (g.hauteur * (a + c) + (a - c) |> string_of_int)
         |> Graphics.open_graph
 
@@ -124,7 +123,7 @@ module Grille_hexagonale: GRILLE = struct
                     ^ (string_of_int x) ^ "," ^ (string_of_int y)
                     ^ ") dépasse " ^ (string_of_int max_valeur) )
                 ) |>  Graphics.set_color;
-                let xx = b * (2 * x - y) in
+                let xx = b * (2 * x + y) in
                 let yy = (a + c) * y in
                 Graphics.fill_poly
                     [|

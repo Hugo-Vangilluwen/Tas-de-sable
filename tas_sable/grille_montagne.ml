@@ -1,13 +1,13 @@
 open Tas_sable
 
-module Grille_carre: GRILLE = struct
+module Grille_montagne: GRILLE = struct
     type t = {
         grille: int array array;
         largeur: int;
         hauteur: int;
     }
 
-    let max_valeur (_: coord): int = 3
+    let max_valeur ((x, y): coord): int = x + y + 3
 
     let créer (dim: coord): t =
         let (x, y) = dim in {
@@ -35,15 +35,19 @@ module Grille_carre: GRILLE = struct
         if 0 < x then
             v := (x-1, y) :: !v
         else ();
-        if x < g.largeur - 1 then
-            v := (x+1, y) :: !v
-        else ();
+        if x < g.largeur - 1 then begin
+            for _ = 0 to x do
+                v := (x+1, y) :: !v
+            done
+        end else ();
         if 0 < y then
             v := (x, y-1) :: !v
         else ();
-        if y < g.hauteur - 1 then
-            v := (x, y+1) :: !v
-        else ();
+        if y < g.hauteur - 1 then begin
+            for _ = 0 to y do
+                v := (x, y+1) :: !v
+            done
+        end else ();
 
         !v
 
@@ -91,7 +95,7 @@ module Grille_carre: GRILLE = struct
             print_newline ()
         done
 
-    let a: int = 10
+    let a: int = 20
 
     let ouvrir_fenêtre (g: t): unit =
         " " ^ (g.largeur * a |> string_of_int)
@@ -119,4 +123,4 @@ module Grille_carre: GRILLE = struct
 end
 
 (* Tas de sable carré *)
-module Tsc = Tas_sable(Grille_carre)
+module Tsm = Tas_sable(Grille_montagne)

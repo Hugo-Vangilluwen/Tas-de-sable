@@ -96,8 +96,8 @@ module Grille_hexagonale: GRILLE = struct
         done
 
     let imprimer (g: t): unit =
-        for x = 0 to g.largeur - 1 do
-            for y = 0 to g.hauteur - 1 do
+        for y = g.hauteur - 1 downto 0 do
+            for x = 0 to g.largeur - 1 do
                 if (x, y) |> correcte_coord g then
                     (x, y) |> (valeur g) |>
                     (fun n -> match n with
@@ -128,7 +128,7 @@ module Grille_hexagonale: GRILLE = struct
         ^ "x" ^ (g.hauteur * (a + c) + (a - c) |> string_of_int)
         |> Graphics.open_graph
 
-    let afficher (g: t): unit =
+    let afficher_grille (g: t) (_: t option): unit =
         itérer
             (fun (x,y)  ->
                 (match valeur g (x, y) with

@@ -44,48 +44,41 @@ module type GRILLE = sig
 
     (* Affiche la grille dans une fenêtre graphique
      * Les valeurs de la grille doivent être entre 0 et max_voisin - 1
+     * Si une seconde grille est donnée, seuls les cases de valeurs différentes
+     * sont redessinées
      *)
-    val afficher : t -> unit
+    val afficher_grille : t -> t option -> unit
 end
+
 
 (* Modélise un tas de sable abélien *)
 module Tas_sable =
 functor (G: GRILLE) -> struct
-    (* Crée un tas de sable de dimension n x m *)
-    let créer = G.créer
-
-    (* Imprime le tas dans la console *)
-    let imprimer = G.imprimer
-
-    (* Teste si la coordonnée est correcte dans le tas *)
-    let correcte_coord = G.correcte_coord
+    include G
 
     (* Lève une erreur si c n'est pas correcte dans tas *)
-    let tester_coord (tas: G.t) (c: coord): unit =
+    let tester_coord (tas: t) (c: coord): unit =
         if correcte_coord tas c then ()
         else let (x, y) = c in
             failwith ("La coordonnée ("
             ^ (string_of_int x) ^ "," ^ (string_of_int y)
             ^") n'est pas correcte")
 
-    (* Renvoie les voisins de c *)
-    let voisins = G.voisins
-
     (* Calcule un glissement de tas
      * Vaut None si aucune glissement n'a lieu
      *)
-    let glissement (tas: G.t): G.t option =
+    let glissement (tas: t): t option =
         let glissé = ref false in
-        let tas_glissé = G.copier tas in
+        let tas_glissé = copier tas in
 
-        G.itérer
+        itérer
             (fun (c: coord): unit ->
-                if G.max_valeur c < G.valeur tas c then begin
+                if max_valeur c < valeur tas c then begin
                     glissé := true;
-                    G.déposer tas_glissé (- G.max_valeur c - 1) c;
+                    déposer tas_glissé (- max_valeur c - 1) c;
                     List.iter
-                        (G.déposer tas_glissé 1)
-                        (G.voisins tas c)
+                        (déposer tas_glissé 1)
+                        (voisins tas c)
                 end else ()
             )
             tas;
@@ -96,18 +89,18 @@ functor (G: GRILLE) -> struct
             None
 
     (* Calcule tous les glissements jusqu'à que le tas de sable soit stable *)
-    let rec avalanche (tas: G.t): G.t =
+    let rec avalanche (tas: t): t =
         match glissement tas with
         | None -> tas
         | Some(tas_glissé) -> avalanche tas_glissé
 
-    let (+) (tas1: G.t) (tas2: G.t) =
-        G.superposer tas1 tas2 |> avalanche
+    let (+) (tas1: t) (tas2: t) =
+        superposer tas1 tas2 |> avalanche
 
     (* Affiche le tas de sable dans une fenêtre graphique *)
-    let afficher (tas: G.t): unit =
-        G.ouvrir_fenêtre tas;
-        G.afficher tas;
+    let afficher (tas: t): unit =
+        ouvrir_fenêtre tas;
+        afficher_grille tas None;
 
         let _ = Graphics.wait_next_event[Key_pressed] in ();
         Graphics.close_graph ()
@@ -116,20 +109,16 @@ functor (G: GRILLE) -> struct
      * chaque étape en passant d'une étape à une autre avec attendre
      * Renvoie le tas final
      *)
-    let animer
-        (tas: G.t)
-        (n :int)
-        (source: G.t)
-        (attendre: unit -> unit)
-        : G.t =
-        G.ouvrir_fenêtre tas;
+    let animer (tas: t) (n :int) (source: t) (attendre: unit -> unit): t =
+        ouvrir_fenêtre tas;
+        afficher_grille tas None;
 
         let tas_animé = ref tas in
 
         for i = 1 to n do
-            tas_animé := !tas_animé + source;
-            Graphics.clear_graph ();
-            G.afficher !tas_animé;
+            let tas_tmp = !tas_animé + source in
+            afficher_grille tas_tmp (Some(!tas_animé));
+            tas_animé := tas_tmp;
             attendre ()
         done;
 
@@ -141,9 +130,9 @@ functor (G: GRILLE) -> struct
     (* Dépose un à un les grain de sable dans tas dans la case c
         * change d'étape à chaque appuis de touche sur le clavier
         *)
-    let un_grain_clavier (tas: G.t) (c: coord) (n: int): G.t =
-        let source = tas |> G.dimensions |> G.créer in
-        G.déposer source 1 c;
+    let un_grain_clavier (tas: t) (c: coord) (n: int): t =
+        let source = tas |> dimensions |> créer in
+        déposer source 1 c;
         let attendre () =
             let _ = Graphics.wait_next_event[Key_pressed] in ()
         in
@@ -152,9 +141,9 @@ functor (G: GRILLE) -> struct
     (* Dépose un à un les grain de sable dans tas dans la case c
         * attend dt secondes entre chaque étape
         *)
-    let un_grain_temps (tas: G.t) (c: coord) (n: int) (dt: float): G.t =
-        let source = tas |> G.dimensions |> G.créer in
-        G.déposer source 1 c;
+    let un_grain_temps (tas: t) (c: coord) (n: int) (dt: float): t =
+        let source = tas |> dimensions |> créer in
+        déposer source 1 c;
         let attendre () =
             Unix.sleepf dt
         in
@@ -164,16 +153,16 @@ functor (G: GRILLE) -> struct
         * des tas de sables récurrents de dimensions dim
         * en utilisant la formule : (2c_max - (2c_max)°)°
         *)
-    let identité (dim: coord): G.t =
-        let double_max = G.créer dim in
-        G.itérer
-            (fun c -> G.déposer double_max (2 * G.max_valeur c) c)
+    let identité (dim: coord): t =
+        let double_max = créer dim in
+        itérer
+            (fun c -> déposer double_max (2 * max_valeur c) c)
             double_max;
 
         let stat_db_max = avalanche double_max in
 
-        G.itérer
-            (fun c -> G.déposer stat_db_max (-2 * (G.valeur stat_db_max c)) c)
+        itérer
+            (fun c -> déposer stat_db_max (-2 * (valeur stat_db_max c)) c)
             stat_db_max;
 
         double_max + stat_db_max

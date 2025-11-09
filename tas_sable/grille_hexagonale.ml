@@ -7,7 +7,7 @@ module Grille_hexagonale: GRILLE = struct
         hauteur: int;
     }
 
-    let max_valeur = 5
+    let max_valeur (_: coord): int = 5
 
     let créer (c: coord): t =
         let (x, y) = c in {
@@ -16,35 +16,54 @@ module Grille_hexagonale: GRILLE = struct
             hauteur = y
         }
 
-    (* Teste si la coordonnée est correcte dans g *)
     let correcte_coord (g: t) (c: coord): bool =
         let (x, y) = c in
-        (*(0 <= y) && (y < g.hauteur) && (0 <= x - y) && (x - y < g.largeur - g.hauteur)*)
         0 <= x && x < g.largeur && 0 <= y && y < g.hauteur
 
-    let tester_coord (g: t) (c: coord): unit =
-        if correcte_coord g c then ()
-        else let (x, y) = c in
-            failwith ("La coordonnée ("
-            ^ (string_of_int x) ^ "," ^ (string_of_int y)
-            ^") n'est pas correcte")
-
     let valeur (g: t) (c: coord): int =
-(*         tester_coord g c; *)
         let (x, y) = c in
         g.grille.(x).(y)
 
     let déposer (g: t) (n: int) (c: coord): unit =
-(*         tester_coord g c; *)
         let (x, y) = c in
         g.grille.(x).(y) <- g.grille.(x).(y) + n
 
     let voisins (g: t) (c: coord): coord list =
-(*         tester_coord g c; *)
         let (x, y) = c in
+        let v = ref [] in
 
+        if 0 < x then begin
+            v := (x-1, y) :: !v;
+            if y < g.hauteur - 1 then
+                v := (x-1, y+1) :: !v
+            else ()
+        end else ();
+        if x < g.largeur - 1 then begin
+            v := (x+1, y) :: !v;
+            if 0 < y then
+                v := (x+1, y-1) :: !v
+            else ()
+        end else ();
+        if 0 < y then
+            v := (x, y-1) :: !v
+        else ();
+        if y < g.hauteur - 1 then
+            v := (x, y+1) :: !v
+        else ();
+
+        !v
+
+        (*
         List.filter
             (correcte_coord g)
+            [ (x-1, y); (x+1, y); (x, y-1); (x+1, y-1); (x, y+1); (x-1,y+1) ]
+        *)
+
+    let voisins_potentiels (g: t) (c: coord): coord list =
+        let (x, y) = c in
+
+        (*List.filter
+            (correcte_coord g)*)
             [ (x-1, y); (x+1, y); (x, y-1); (x+1, y-1); (x, y+1); (x-1,y+1) ]
 
     let copier (g: t): t =
@@ -121,7 +140,7 @@ module Grille_hexagonale: GRILLE = struct
                 | 5 -> Graphics.rgb 0 0 0
                 | _ -> failwith ( "La valeur de ("
                     ^ (string_of_int x) ^ "," ^ (string_of_int y)
-                    ^ ") dépasse " ^ (string_of_int max_valeur) )
+                    ^ ") dépasse " ^ ((x, y) |> max_valeur |> string_of_int) )
                 ) |>  Graphics.set_color;
                 let xx = b * (2 * x + y) in
                 let yy = (a + c) * y in

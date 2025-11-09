@@ -8,4 +8,6 @@ let main: unit =
     Tsh.imprimer test
     let test = Tsh.un_grain_temps test (0, 0) 10 in
     Tsh.imprimer test;*)
-    Tsh.afficher (Tsh.identité (40, 40))
+    let t = Sys.time() in
+    Tsh.afficher (Tsh.identité (40, 40));
+    Printf.printf "Execution time: %fs\n" (Sys.time() -. t);

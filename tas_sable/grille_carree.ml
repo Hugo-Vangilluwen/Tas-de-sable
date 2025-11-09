@@ -7,7 +7,7 @@ module Grille_carre: GRILLE = struct
         hauteur: int;
     }
 
-    let max_valeur = 3
+    let max_valeur (_: coord): int = 3
 
     let créer (dim: coord): t =
         let (x, y) = dim in {
@@ -23,6 +23,10 @@ module Grille_carre: GRILLE = struct
     let déposer (g: t) (n: int) (c: coord): unit =
         let (x, y) = c in
         g.grille.(x).(y) <- g.grille.(x).(y) + n
+
+    let correcte_coord (g: t) (c: coord): bool =
+        let (x, y) = c in
+        0 <= x && x < g.largeur && 0 <= y && y < g.hauteur
 
     let voisins (g: t) (c: coord): coord list =
         let (x, y) = c in
@@ -106,7 +110,7 @@ module Grille_carre: GRILLE = struct
                     ^ (string_of_int x) ^ "," ^ (string_of_int y)
                     ^ " depasse " ^ (string_of_int max_valeur) ) (* é *)
                 *)
-                | n -> let u = 255 - 255 * n / max_valeur in
+                | n -> let u = 255 - 255 * n / max_valeur (x, y) in
                 Graphics.rgb u u u
                 ) |>  Graphics.set_color;
                 Graphics.fill_rect (a*x) (a*y) a a)

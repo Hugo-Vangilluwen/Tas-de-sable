@@ -4,18 +4,27 @@ open Grille_hexagonale
 open Grille_montagne
 
 let main: unit =
-    (*let test = Tsh.créer (7, 7) in
-    let test = Tsh.un_grain_temps test (0, 0) 200 in
-    Tsh.imprimer test
-    let test = Tsh.un_grain_temps test (0, 0) 10 in
-    Tsh.imprimer test;*)
-    let t = Sys.time() in
-    let id = Tsm.identité (20, 20) in
-    Printf.printf "Execution time: %fs\n" (Sys.time() -. t);
+    (*
+    let test = Tsc.créer (7, 7) in
+    let test = Tsc.un_grain_clavier test (0, 0) 200 in
+    Tsc.imprimer test
+    *)
+
+    let n = 100 in
+    let debut = Sys.time() in
+    let id = Tsh.identité (n, n) in
+    let fin = Sys.time() in
+    Printf.printf "Taille: %d\n" n;
+    Printf.printf "Execution time: %fs" (fin -. debut);
+    print_newline ();
 (*     Tsm.imprimer id; *)
-    Tsm.afficher id;
+    Tsh.afficher id
+
+    (*
     let source = Tsm.créer (20, 20) in
     Tsm.déposer source 1 (0, 0);
     let m = Tsm.(+) id source in
-    let _ = Tsm.un_grain_temps id (5, 5) 50000 0.0001 in
+    let _ = Tsm.un_grain_temps id (5, 5) 5000 0.01 in
     ()
+    *)
+(*     (50, 50) |> Tsc.identité |> Tsc .afficher *)

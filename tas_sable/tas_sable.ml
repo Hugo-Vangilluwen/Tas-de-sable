@@ -6,9 +6,6 @@ module type GRILLE = sig
     (* Type représentant une grille *)
     type t
 
-    (* Nombre maximum de voisin *)
-    val max_valeur : coord -> int
-
     (* Crée une grille de dimension n x m *)
     val créer : coord -> t
 
@@ -24,6 +21,11 @@ module type GRILLE = sig
     (* Renvoie les voisins de c *)
     val voisins : t -> coord -> coord list
 
+    (* Nombre maximum de voisin moins un
+     * c'est-à-dire la valeur maximal de la case
+     *)
+    val max_valeur : coord -> int
+
     (* Copie une grille *)
     val copier : t -> t
 
@@ -35,6 +37,8 @@ module type GRILLE = sig
 
     (* Itère la fonction f parmis les cases de g *)
     val itérer : (coord -> unit) -> t -> unit
+
+(*     val existe : (coord -> bool) -> t -> bool *)
 
     (* Imprime la grille dans la console *)
     val imprimer : t -> unit
@@ -65,37 +69,39 @@ functor (G: GRILLE) -> struct
             ^") n'est pas correcte")
 
     (* Calcule un glissement de tas
-     * Vaut None si aucune glissement n'a lieu
+     * Vaut vrai si aucune glissement a lieu et faux sinon
      *)
-    let glissement (tas: t): t option =
+    let glissement (tas: t): bool =
         let glissé = ref false in
-        let tas_glissé = copier tas in
 
         itérer
             (fun (c: coord): unit ->
                 if max_valeur c < valeur tas c then begin
                     glissé := true;
-                    déposer tas_glissé (- max_valeur c - 1) c;
+                    déposer tas (- max_valeur c - 1) c;
                     List.iter
-                        (déposer tas_glissé 1)
+                        (déposer tas 1)
                         (voisins tas c)
                 end else ()
             )
             tas;
 
         if !glissé then
-            Some(tas_glissé)
+            true
         else
-            None
+            false
 
     (* Calcule tous les glissements jusqu'à que le tas de sable soit stable *)
-    let rec avalanche (tas: t): t =
-        match glissement tas with
-        | None -> tas
-        | Some(tas_glissé) -> avalanche tas_glissé
+    let rec avalanche (tas: t): unit =
+        if glissement tas then
+            avalanche tas
+        else ()
 
+    (* Somme tas1 et tas2 *)
     let (+) (tas1: t) (tas2: t) =
-        superposer tas1 tas2 |> avalanche
+        let somme = superposer tas1 tas2 in
+        avalanche somme;
+        somme
 
     (* Affiche le tas de sable dans une fenêtre graphique *)
     let afficher (tas: t): unit =
@@ -159,8 +165,10 @@ functor (G: GRILLE) -> struct
             (fun c -> déposer double_max (2 * max_valeur c) c)
             double_max;
 
-        let stat_db_max = avalanche double_max in
+        let stat_db_max = copier double_max in
+        avalanche stat_db_max;
 
+        (* Multiplie par -1 *)
         itérer
             (fun c -> déposer stat_db_max (-2 * (valeur stat_db_max c)) c)
             stat_db_max;

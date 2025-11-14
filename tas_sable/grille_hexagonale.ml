@@ -61,10 +61,7 @@ module Grille_hexagonale: GRILLE = struct
 
     let voisins_potentiels (g: t) (c: coord): coord list =
         let (x, y) = c in
-
-        (*List.filter
-            (correcte_coord g)*)
-            [ (x-1, y); (x+1, y); (x, y-1); (x+1, y-1); (x, y+1); (x-1,y+1) ]
+        [ (x-1, y); (x+1, y); (x, y-1); (x+1, y-1); (x, y+1); (x-1,y+1) ]
 
     let copier (g: t): t =
         {
@@ -118,7 +115,7 @@ module Grille_hexagonale: GRILLE = struct
     let float_calcul (f: float -> float) (x: int) =
         x |> float_of_int |> f |> int_of_float
 
-    let a : int = 10
+    let a : int = 5
     (* cos 30 = 0,866 et sin 30 = 0,5 *)
     let b : int = float_calcul (( *.) 0.866) a (* largeur de l'hexagone *)
     let c : int = float_calcul (( *.) 0.5) a (* demi-longeur d'un coté *)

@@ -16,20 +16,16 @@ module Grille_carre: GRILLE = struct
             hauteur = y
         }
 
-    let valeur (g: t) (c: coord): int =
-        let (x, y) = c in
+    let valeur (g: t) ((x, y): coord): int =
         g.grille.(x).(y)
 
-    let déposer (g: t) (n: int) (c: coord): unit =
-        let (x, y) = c in
+    let déposer (g: t) (n: int) ((x, y): coord): unit =
         g.grille.(x).(y) <- g.grille.(x).(y) + n
 
-    let correcte_coord (g: t) (c: coord): bool =
-        let (x, y) = c in
+    let correcte_coord (g: t) ((x, y): coord): bool =
         0 <= x && x < g.largeur && 0 <= y && y < g.hauteur
 
-    let voisins (g: t) (c: coord): coord list =
-        let (x, y) = c in
+    let voisins (g: t) ((x, y): coord): coord list =
         let v = ref [] in
 
         if 0 < x then
@@ -76,6 +72,22 @@ module Grille_carre: GRILLE = struct
             done
         done
 
+    (*
+    exception Existence
+    let existe (f: coord -> bool) (g: t): bool =
+        let existe_aux (): unit =
+            for x = 0 to g.largeur - 1 do
+                for y = 0 to g.hauteur - 1 do
+                    if f (x, y) then
+                        raise Existence
+                    else ();
+                done
+            done
+        in
+        try (let _ = existe_aux () in false) with
+        | Existence -> true
+    *)
+
     let imprimer (g: t): unit =
         for y = g.hauteur - 1 downto 0 do
             for x = 0 to g.largeur - 1 do
@@ -91,7 +103,7 @@ module Grille_carre: GRILLE = struct
             print_newline ()
         done
 
-    let a: int = 10
+    let a: int = 5
 
     let ouvrir_fenêtre (g: t): unit =
         " " ^ (g.largeur * a |> string_of_int)

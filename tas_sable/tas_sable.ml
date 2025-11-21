@@ -108,7 +108,7 @@ functor (G: GRILLE) -> struct
         ouvrir_fenêtre tas;
         afficher_grille tas None;
 
-        let _ = Graphics.wait_next_event[Key_pressed] in ();
+        let _ = Graphics.wait_next_event[Button_down] in ();
         Graphics.close_graph ()
 
     (* Affiche l'animation de n étape à partir de tas en ajoutant la source à

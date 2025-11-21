@@ -1,0 +1,68 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath, amsfonts, amssymb, amsthm, mathrsfs}
+\usepackage[french]{babel}
+\usepackage[utf8]{inputenc} % Caractères spéciaux
+\usepackage[T1]{fontenc} % Encodage 8-bit
+
+\theoremstyle{definition}
+\newtheorem{definition}{Définition}
+
+\title{TIPE Tas de sable}
+\author{Hugo V}
+
+\begin{document}
+\maketitle
+
+\begin{definition}
+Soit $E$ un ensemble et $*: E \times E \rightarrow E$ un loi interne.
+$(E, *)$ est un semi-groupe si $*$ est associative.
+$(E, *)$ est un monoïde si de plus, il existe un élément neutre.
+\end{definition}
+
+\begin{definition}[Graphe de tas de sable]
+Un graphe de tas de sable $G$ est un triplet $(S, A, p)$ où $(S, A)$ est un graphe orienté et $p \in S$ un puits.
+On notera $\widetilde{S} = S \setminus \{p\}$ et les voisins sortant de
+$s \in S$, $V^+(s) = \left\{u \in S \;|\; (s, u) \in A\right\}$.
+\end{definition}
+
+\begin{definition}[Monoïde des configurations]
+Une configuration sur $G$ est une fonction
+$c: \widetilde{S} \rightarrow \mathbb{N}$.
+Elle indique à chaque sommet le nombre de grains de sable qu'il contient.
+
+Les configurations munies de la loi $+$ définie par$(c + c')(s) = c(s) + c'(s)$
+forment un monoïde.
+
+Pour $s\in \widetilde{S}$, on notera $s$ la configuration valant $1$ en $s$
+et $0$ partout ailleurs.
+\end{definition}
+
+\begin{definition}[Écroulement]
+Pour une configuration $c$ et $s \in \widetilde{S}$, l'écroulement de $c$ en $s$
+est $c' = c - \left|V^+(s)\right| s + \sum_{u \in V^+(s), u \neq p} u$.
+On ne peut réaliser un écroulement uniquement si
+$c(s) \geqslant \left|V^+(s)\right|$.
+\end{definition}
+
+\begin{definition}[Stabilité]
+Une configuration $c$ est dite stable si
+$\forall s \in S, c(s) \leqslant \left|V^+(s)\right|$.
+\end{definition}
+
+\begin{definition}
+On montre que le résultat d'une suite d'écroulement est indépendant de l'ordre
+dans lequel sont effectués les écroulements et qu'il existe toujours une suite
+d'écroulements permettant d'obtenir une configuration stable.
+
+Appelons avalanche $c^\circ$ le résultat d'une telle suite.
+\end{definition}
+
+\begin{definition}[Monoïdes des tas de sable]
+Soit $G = (S, A, p)$ un graphe de tas de sable.
+Un tas de sable sur ce graphe est un configuration stable.
+Les tas de sable munis de la loi $+$ forment un monoïde.
+
+Notons $???$ ce monoïde.
+\end{definition}
+
+\end{document}

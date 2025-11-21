@@ -12,13 +12,13 @@ let main: unit =
 
     let n = 100 in
     let debut = Sys.time() in
-    let id = Tsh.identité (n, n) in
+    let id = Tsc.identité (n, n) in
     let fin = Sys.time() in
     Printf.printf "Taille: %d\n" n;
     Printf.printf "Execution time: %fs" (fin -. debut);
     print_newline ();
 (*     Tsm.imprimer id; *)
-    Tsh.afficher id
+    Tsc.afficher id
 
     (*
     let source = Tsm.créer (20, 20) in

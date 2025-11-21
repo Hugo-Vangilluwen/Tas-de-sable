@@ -6,6 +6,11 @@ module type GRILLE = sig
     (* Type représentant une grille *)
     type t
 
+    (* Nombre maximum de voisin moins un
+     * c'est-à-dire la valeur maximal de la case
+     *)
+    val max_valeur : t -> coord -> int
+
     (* Crée une grille de dimension n x m *)
     val créer : coord -> t
 
@@ -20,11 +25,6 @@ module type GRILLE = sig
 
     (* Renvoie les voisins de c *)
     val voisins : t -> coord -> coord list
-
-    (* Nombre maximum de voisin moins un
-     * c'est-à-dire la valeur maximal de la case
-     *)
-    val max_valeur : coord -> int
 
     (* Copie une grille *)
     val copier : t -> t
@@ -56,16 +56,19 @@ end
 
 
 (* Modélise un tas de sable abélien *)
-module Tas_sable =
-functor (G: GRILLE) -> struct
+module Tas_sable (G: GRILLE) = struct
     include G
+
+    (* Renvoie un string représentant c *)
+    let coord_en_string (c: coord): string =
+        let (x, y) = c in
+        (string_of_int x) ^ "," ^ (string_of_int y)
 
     (* Lève une erreur si c n'est pas correcte dans tas *)
     let tester_coord (tas: t) (c: coord): unit =
         if correcte_coord tas c then ()
-        else let (x, y) = c in
-            failwith ("La coordonnée ("
-            ^ (string_of_int x) ^ "," ^ (string_of_int y)
+        else failwith ("La coordonnée ("
+            ^ (coord_en_string c)
             ^") n'est pas correcte")
 
     (* Calcule un glissement de tas
@@ -76,9 +79,9 @@ functor (G: GRILLE) -> struct
 
         itérer
             (fun (c: coord): unit ->
-                if max_valeur c < valeur tas c then begin
+                if max_valeur tas c < valeur tas c then begin
                     glissé := true;
-                    déposer tas (- max_valeur c - 1) c;
+                    déposer tas (- max_valeur tas c - 1) c;
                     List.iter
                         (déposer tas 1)
                         (voisins tas c)
@@ -134,8 +137,8 @@ functor (G: GRILLE) -> struct
         !tas_animé
 
     (* Dépose un à un les grain de sable dans tas dans la case c
-        * change d'étape à chaque appuis de touche sur le clavier
-        *)
+     * change d'étape à chaque appuis de touche sur le clavier
+     *)
     let un_grain_clavier (tas: t) (c: coord) (n: int): t =
         let source = tas |> dimensions |> créer in
         déposer source 1 c;
@@ -145,8 +148,8 @@ functor (G: GRILLE) -> struct
         animer tas n source attendre
 
     (* Dépose un à un les grain de sable dans tas dans la case c
-        * attend dt secondes entre chaque étape
-        *)
+     * attend dt secondes entre chaque étape
+     *)
     let un_grain_temps (tas: t) (c: coord) (n: int) (dt: float): t =
         let source = tas |> dimensions |> créer in
         déposer source 1 c;
@@ -156,13 +159,13 @@ functor (G: GRILLE) -> struct
         animer tas n source attendre
 
     (* Calcule l'identité du groupe
-        * des tas de sables récurrents de dimensions dim
-        * en utilisant la formule : (2c_max - (2c_max)°)°
-        *)
+     * des tas de sables récurrents de dimensions dim
+     * en utilisant la formule : (2c_max - (2c_max)°)°
+     *)
     let identité (dim: coord): t =
         let double_max = créer dim in
         itérer
-            (fun c -> déposer double_max (2 * max_valeur c) c)
+            (fun c -> déposer double_max (2 * max_valeur double_max c) c)
             double_max;
 
         let stat_db_max = copier double_max in

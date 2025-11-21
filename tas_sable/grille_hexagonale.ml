@@ -1,3 +1,6 @@
+(* Modélise un grille hexagonale
+ *)
+
 open Tas_sable
 
 module Grille_hexagonale: GRILLE = struct
@@ -7,7 +10,7 @@ module Grille_hexagonale: GRILLE = struct
         hauteur: int;
     }
 
-    let max_valeur (_: coord): int = 5
+    let max_valeur (_: t) (_: coord): int = 5
 
     let créer (c: coord): t =
         let (x, y) = c in {
@@ -137,7 +140,8 @@ module Grille_hexagonale: GRILLE = struct
                 | 5 -> Graphics.rgb 0 0 0
                 | _ -> failwith ( "La valeur de ("
                     ^ (string_of_int x) ^ "," ^ (string_of_int y)
-                    ^ ") dépasse " ^ ((x, y) |> max_valeur |> string_of_int) )
+                    ^ ") dépasse " ^
+                    ((x, y) |> (max_valeur g) |> string_of_int) )
                 ) |>  Graphics.set_color;
                 let xx = b * (2 * x + y) in
                 let yy = (a + c) * y in

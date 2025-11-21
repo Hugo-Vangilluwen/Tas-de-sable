@@ -1,7 +1,14 @@
 open Tas_sable
 open Grille_carree
 open Grille_hexagonale
-open Grille_montagne
+(* open Grille_montagne *)
+open Grille_puit
+
+module A: Puit = struct
+    let p = (15, 15)
+end
+
+module Tsp = Tas_sable(Ajouter_puit (A) (Grille_carree))
 
 let main: unit =
     (*
@@ -10,15 +17,15 @@ let main: unit =
     Tsc.imprimer test
     *)
 
-    let n = 100 in
+    let n = 30 in
     let debut = Sys.time() in
-    let id = Tsc.identité (n, n) in
+    let id = Tsp.identité (n, n) in
     let fin = Sys.time() in
     Printf.printf "Taille: %d\n" n;
     Printf.printf "Execution time: %fs" (fin -. debut);
     print_newline ();
 (*     Tsm.imprimer id; *)
-    Tsc.afficher id
+    Tsp.afficher id
 
     (*
     let source = Tsm.créer (20, 20) in

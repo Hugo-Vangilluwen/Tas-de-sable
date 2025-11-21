@@ -123,4 +123,5 @@ module Grille_montagne: GRILLE = struct
 end
 
 (* Tas de sable carré *)
+(* test *)
 module Tsm = Tas_sable(Grille_montagne)

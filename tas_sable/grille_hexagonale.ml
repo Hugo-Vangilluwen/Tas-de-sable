@@ -118,7 +118,7 @@ module Grille_hexagonale: GRILLE = struct
     let float_calcul (f: float -> float) (x: int) =
         x |> float_of_int |> f |> int_of_float
 
-    let a : int = 5
+    let a : int = 10
     (* cos 30 = 0,866 et sin 30 = 0,5 *)
     let b : int = float_calcul (( *.) 0.866) a (* largeur de l'hexagone *)
     let c : int = float_calcul (( *.) 0.5) a (* demi-longeur d'un coté *)

@@ -3,30 +3,40 @@
 open Tas_sable
 
 module type Puit = sig
-    val p : coord
+    val p : coord list
 end
 
 module Ajouter_puit (P: Puit) (G: GRILLE): GRILLE = struct
     type t = G.t
 
     let max_valeur (g: t) (c: coord) =
-        G.max_valeur g c - (if List.mem c (G.voisins g P.p) then 1 else 0)
+(*         G.max_valeur g c - (if List.mem c (G.voisins g P.p) then 1 else 0) *)
+        let v = G.voisins g c in
+        G.max_valeur g c -
+        (List.fold_left
+            (fun acc puit -> if List.mem puit v then acc + 1 else acc)
+            0
+            P.p )
 
     let créer (dim: coord): t =
         let g = G.créer dim in
-        assert (G.correcte_coord g P.p);
+        List.iter (fun puit -> assert (G.correcte_coord g puit)) P.p;
         g
 
     let valeur = G.valeur
 
+    (* Teste si la coordonnée n'est pas un puit *)
+    let est_pas_puit (c: coord): bool =
+        List.for_all ((<>) c) P.p
+
     let déposer (g: t) (n: int) (c: coord): unit =
-        if c <> P.p then G.déposer g n c
+        if est_pas_puit c then G.déposer g n c
 
     let correcte_coord (g: t) (c: coord): bool =
-        c <> P.p && G.correcte_coord g c
+        est_pas_puit c && G.correcte_coord g c
 
     let voisins (g: t) (c: coord): coord list =
-        List.filter ((<>) P.p) (G.voisins g c)
+        List.filter est_pas_puit (G.voisins g c)
 
     let copier = G.copier
 
@@ -35,7 +45,7 @@ module Ajouter_puit (P: Puit) (G: GRILLE): GRILLE = struct
     let superposer = G.superposer
 
     let itérer (f: coord -> unit) (g: t): unit =
-        G.itérer (fun c -> if c <> P.p then f c) g
+        G.itérer (fun c -> if est_pas_puit c then f c) g
 
     let imprimer = G.imprimer
 

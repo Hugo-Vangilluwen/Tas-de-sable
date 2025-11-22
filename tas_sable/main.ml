@@ -5,10 +5,10 @@ open Grille_hexagonale
 open Grille_puit
 
 module A: Puit = struct
-    let p = (15, 15)
+    let p = [(20, 20); (21, 20); (21, 21); (20, 21)]
 end
 
-module Tsp = Tas_sable(Ajouter_puit (A) (Grille_carree))
+module Tsp = Tas_sable(Ajouter_puit (A) (Grille_hexagonale))
 
 let main: unit =
     (*
@@ -17,7 +17,7 @@ let main: unit =
     Tsc.imprimer test
     *)
 
-    let n = 30 in
+    let n = 40 in
     let debut = Sys.time() in
     let id = Tsp.identité (n, n) in
     let fin = Sys.time() in

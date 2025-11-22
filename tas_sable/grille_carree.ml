@@ -106,7 +106,7 @@ module Grille_carree: GRILLE = struct
             print_newline ()
         done
 
-    let a: int = 20
+    let a: int = 10
 
     let ouvrir_fenêtre (g: t): unit =
         " " ^ (g.largeur * a |> string_of_int)

@@ -1,7 +1,7 @@
 CIBLE := tas_sable
 BUILD_DIR := ./build
 
-SOURCES := tas_sable.ml grille_carree.ml grille_hexagonale.ml grille_puit.ml main.ml
+SOURCES := tas_sable.ml grille_carree.ml grille_hexagonale.ml grille_puit.ml grille_ligne.ml main.ml
 # grille_montagne.ml
 OBJETS := $(SOURCES:%.ml=%.cmx)
 

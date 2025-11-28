@@ -138,6 +138,7 @@ module Tas_sable (G: GRILLE) = struct
 
     (* Dépose un à un les grain de sable dans tas dans la case c
      * change d'étape à chaque appuis de touche sur le clavier
+     * Effectue au total n étapes
      *)
     let un_grain_clavier (tas: t) (c: coord) (n: int): t =
         let source = tas |> dimensions |> créer in
@@ -149,6 +150,7 @@ module Tas_sable (G: GRILLE) = struct
 
     (* Dépose un à un les grain de sable dans tas dans la case c
      * attend dt secondes entre chaque étape
+     * Effectue au total n étapes
      *)
     let un_grain_temps (tas: t) (c: coord) (n: int) (dt: float): t =
         let source = tas |> dimensions |> créer in

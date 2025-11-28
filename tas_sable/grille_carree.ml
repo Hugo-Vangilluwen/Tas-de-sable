@@ -106,7 +106,7 @@ module Grille_carree: GRILLE = struct
             print_newline ()
         done
 
-    let a: int = 10
+    let a: int = 20
 
     let ouvrir_fenêtre (g: t): unit =
         " " ^ (g.largeur * a |> string_of_int)
@@ -116,7 +116,7 @@ module Grille_carree: GRILLE = struct
     let afficher_grille (g: t) (g_opt: t option): unit =
         let egal_grilles : coord -> bool = match g_opt with
         | None -> fun _ -> false
-        | Some(gg) -> fun c -> (valeur g c) == (valeur gg c)
+        | Some(gg) -> fun c -> (valeur g c) = (valeur gg c)
         in
 
         itérer

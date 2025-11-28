@@ -10,7 +10,6 @@ module Ajouter_puit (P: Puit) (G: GRILLE): GRILLE = struct
     type t = G.t
 
     let max_valeur (g: t) (c: coord) =
-(*         G.max_valeur g c - (if List.mem c (G.voisins g P.p) then 1 else 0) *)
         let v = G.voisins g c in
         G.max_valeur g c -
         (List.fold_left

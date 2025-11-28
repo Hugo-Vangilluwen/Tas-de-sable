@@ -3,12 +3,18 @@ open Grille_carree
 open Grille_hexagonale
 (* open Grille_montagne *)
 open Grille_puit
+open Grille_ligne
 
 module A: Puit = struct
-    let p = [(20, 20); (21, 20); (21, 21); (20, 21)]
+    let p = [(10, 10); (11, 10); (11, 11); (10, 11)]
 end
 
-module Tsp = Tas_sable(Ajouter_puit (A) (Grille_hexagonale))
+module B: Puit = struct
+    let p = [(5, 5)]
+end
+
+module Tsp = Tas_sable(Ajouter_puit (A) (Grille_carree))
+
 
 let main: unit =
     (*
@@ -17,15 +23,34 @@ let main: unit =
     Tsc.imprimer test
     *)
 
-    let n = 40 in
+    let n = 20 in
+    (*
+    let debut = Sys.time() in
+    let id = Tsc.identité (n, n) in
+    let fin = Sys.time() in
+    Printf.printf "Taille: %d\n" n;
+    Printf.printf "Execution time: %fs" (fin -. debut);
+    print_newline ();
+    Tsc.afficher id;
+
+
     let debut = Sys.time() in
     let id = Tsp.identité (n, n) in
     let fin = Sys.time() in
     Printf.printf "Taille: %d\n" n;
     Printf.printf "Execution time: %fs" (fin -. debut);
     print_newline ();
-(*     Tsm.imprimer id; *)
     Tsp.afficher id
+    *)
+
+    let debut = Sys.time() in
+    let id = Tsl.identité (n, 0) in
+    let fin = Sys.time() in
+    Printf.printf "Taille: %d\n" n;
+    Printf.printf "Execution time: %fs" (fin -. debut);
+    print_newline ();
+    Tsl.imprimer id;
+    Tsl.afficher id
 
     (*
     let source = Tsm.créer (20, 20) in

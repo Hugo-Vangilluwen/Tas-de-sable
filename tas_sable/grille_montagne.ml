@@ -9,7 +9,7 @@ module Grille_montagne: GRILLE = struct
 
     let max_valeur ((x, y): coord): int = x + y + 3
 
-    let créer (dim: coord): t =
+    let creer (dim: coord): t =
         let (x, y) = dim in {
             grille = Array.make_matrix x y 0;
             largeur = x;
@@ -20,7 +20,7 @@ module Grille_montagne: GRILLE = struct
         let (x, y) = c in
         g.grille.(x).(y)
 
-    let déposer (g: t) (n: int) (c: coord): unit =
+    let deposer (g: t) (n: int) (c: coord): unit =
         let (x, y) = c in
         g.grille.(x).(y) <- g.grille.(x).(y) + n
 
@@ -63,7 +63,7 @@ module Grille_montagne: GRILLE = struct
 
     let superposer (g1: t) (g2: t): t =
         assert (g1.largeur = g2.largeur && g1.hauteur = g2.hauteur);
-        let g = créer (g1.largeur, g1.hauteur) in
+        let g = creer (g1.largeur, g1.hauteur) in
 
         for x = 0 to g1.largeur - 1 do
             for y = 0 to g1.hauteur - 1 do
@@ -73,7 +73,7 @@ module Grille_montagne: GRILLE = struct
 
         g
 
-    let itérer (f: coord -> unit) (g: t): unit =
+    let iterer (f: coord -> unit) (g: t): unit =
         for x = 0 to g.largeur - 1 do
             for y = 0 to g.hauteur - 1 do
                 f (x, y)
@@ -97,7 +97,7 @@ module Grille_montagne: GRILLE = struct
 
     let a: int = 20
 
-    let ouvrir_fenêtre (g: t): unit =
+    let ouvrir_fenetre (g: t): unit =
         " " ^ (g.largeur * a |> string_of_int)
         ^ "x" ^ (g.hauteur * a |> string_of_int)
         |> Graphics.open_graph
@@ -108,7 +108,7 @@ module Grille_montagne: GRILLE = struct
         | Some(gg) -> fun c -> (valeur g c) == (valeur gg c)
         in
 
-        itérer
+        iterer
             (fun (x,y)  ->
                 if egal_grilles (x, y) then ()
                 else begin
@@ -122,6 +122,6 @@ module Grille_montagne: GRILLE = struct
             g
 end
 
-(* Tas de sable carré *)
+(* Tas de sable carre *)
 (* test *)
 module Tsm = Tas_sable(Grille_montagne)

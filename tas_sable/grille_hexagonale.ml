@@ -1,4 +1,4 @@
-(* Modélise un grille hexagonale
+(* Modelise un grille hexagonale
  *)
 
 open Tas_sable
@@ -12,7 +12,7 @@ module Grille_hexagonale: GRILLE = struct
 
     let max_valeur (_: t) (_: coord): int = 5
 
-    let créer (c: coord): t =
+    let creer (c: coord): t =
         let (x, y) = c in {
             grille = Array.make_matrix x y 0;
             largeur = x;
@@ -27,7 +27,7 @@ module Grille_hexagonale: GRILLE = struct
         let (x, y) = c in
         g.grille.(x).(y)
 
-    let déposer (g: t) (n: int) (c: coord): unit =
+    let deposer (g: t) (n: int) (c: coord): unit =
         let (x, y) = c in
         g.grille.(x).(y) <- g.grille.(x).(y) + n
 
@@ -78,7 +78,7 @@ module Grille_hexagonale: GRILLE = struct
 
     let superposer (g1: t) (g2: t): t =
         assert (g1.largeur = g2.largeur && g1.hauteur = g2.hauteur);
-        let g =  g1 |> dimensions |> créer in
+        let g =  g1 |> dimensions |> creer in
 
         for x = 0 to g.largeur - 1 do
             for y = 0 to g.hauteur - 1 do
@@ -88,7 +88,7 @@ module Grille_hexagonale: GRILLE = struct
 
         g
 
-    let itérer (f: coord -> unit) (g: t): unit =
+    let iterer (f: coord -> unit) (g: t): unit =
         for x = 0 to g.largeur - 1 do
             for y = 0 to g.hauteur - 1 do
                 f (x, y)
@@ -114,22 +114,22 @@ module Grille_hexagonale: GRILLE = struct
             print_newline ()
         done
 
-    (* Effectue l'opération f x avec x vu comme un flottant *)
+    (* Effectue l'operation f x avec x vu comme un flottant *)
     let float_calcul (f: float -> float) (x: int) =
         x |> float_of_int |> f |> int_of_float
 
     let a : int = 10
     (* cos 30 = 0,866 et sin 30 = 0,5 *)
     let b : int = float_calcul (( *.) 0.866) a (* largeur de l'hexagone *)
-    let c : int = float_calcul (( *.) 0.5) a (* demi-longeur d'un coté *)
+    let c : int = float_calcul (( *.) 0.5) a (* demi-longeur d'un cote *)
 
-    let ouvrir_fenêtre (g: t): unit =
+    let ouvrir_fenetre (g: t): unit =
         " " ^ ((2 * g.largeur + g.hauteur - 1) * b |> string_of_int)
         ^ "x" ^ (g.hauteur * (a + c) + (a - c) |> string_of_int)
         |> Graphics.open_graph
 
     let afficher_grille (g: t) (_: t option): unit =
-        itérer
+        iterer
             (fun (x,y)  ->
                 (match valeur g (x, y) with
                 | 0 -> Graphics.rgb 255 255 255
@@ -140,7 +140,7 @@ module Grille_hexagonale: GRILLE = struct
                 | 5 -> Graphics.rgb 0 0 0
                 | _ -> failwith ( "La valeur de ("
                     ^ (string_of_int x) ^ "," ^ (string_of_int y)
-                    ^ ") dépasse " ^
+                    ^ ") depasse " ^
                     ((x, y) |> (max_valeur g) |> string_of_int) )
                 ) |>  Graphics.set_color;
                 let xx = b * (2 * x + y) in
@@ -158,5 +158,5 @@ module Grille_hexagonale: GRILLE = struct
             g
 end
 
-(* Tas de sable carré *)
+(* Tas de sable carre *)
 module Tsh = Tas_sable(Grille_hexagonale)

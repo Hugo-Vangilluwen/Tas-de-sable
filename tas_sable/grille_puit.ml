@@ -18,19 +18,19 @@ module Ajouter_puit (P: Puit) (G: GRILLE): GRILLE = struct
             0
             P.p )
 
-    let créer (dim: coord): t =
-        let g = G.créer dim in
+    let creer (dim: coord): t =
+        let g = G.creer dim in
         List.iter (fun puit -> assert (G.correcte_coord g puit)) P.p;
         g
 
     let valeur = G.valeur
 
-    (* Teste si la coordonnée n'est pas un puit *)
+    (* Teste si la coordonnee n'est pas un puit *)
     let est_pas_puit (c: coord): bool =
         List.for_all ((<>) c) P.p
 
-    let déposer (g: t) (n: int) (c: coord): unit =
-        if est_pas_puit c then G.déposer g n c
+    let deposer (g: t) (n: int) (c: coord): unit =
+        if est_pas_puit c then G.deposer g n c
 
     let correcte_coord (g: t) (c: coord): bool =
         est_pas_puit c && G.correcte_coord g c
@@ -44,12 +44,12 @@ module Ajouter_puit (P: Puit) (G: GRILLE): GRILLE = struct
 
     let superposer = G.superposer
 
-    let itérer (f: coord -> unit) (g: t): unit =
-        G.itérer (fun c -> if est_pas_puit c then f c) g
+    let iterer (f: coord -> unit) (g: t): unit =
+        G.iterer (fun c -> if est_pas_puit c then f c) g
 
     let imprimer = G.imprimer
 
-    let ouvrir_fenêtre = G.ouvrir_fenêtre
+    let ouvrir_fenetre = G.ouvrir_fenetre
 
     let afficher_grille = G.afficher_grille
 end

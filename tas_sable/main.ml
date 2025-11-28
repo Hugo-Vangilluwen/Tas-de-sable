@@ -12,14 +12,14 @@ module Tsp = Tas_sable(Ajouter_puit (A) (Grille_hexagonale))
 
 let main: unit =
     (*
-    let test = Tsc.créer (7, 7) in
+    let test = Tsc.creer (7, 7) in
     let test = Tsc.un_grain_clavier test (0, 0) 200 in
     Tsc.imprimer test
     *)
 
     let n = 40 in
     let debut = Sys.time() in
-    let id = Tsp.identité (n, n) in
+    let id = Tsp.identite (n, n) in
     let fin = Sys.time() in
     Printf.printf "Taille: %d\n" n;
     Printf.printf "Execution time: %fs" (fin -. debut);
@@ -28,10 +28,10 @@ let main: unit =
     Tsp.afficher id
 
     (*
-    let source = Tsm.créer (20, 20) in
-    Tsm.déposer source 1 (0, 0);
+    let source = Tsm.creer (20, 20) in
+    Tsm.deposer source 1 (0, 0);
     let m = Tsm.(+) id source in
     let _ = Tsm.un_grain_temps id (5, 5) 5000 0.01 in
     ()
     *)
-(*     (50, 50) |> Tsc.identité |> Tsc .afficher *)
+(*     (50, 50) |> Tsc.identite |> Tsc .afficher *)

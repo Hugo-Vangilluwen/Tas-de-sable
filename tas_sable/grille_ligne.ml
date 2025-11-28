@@ -11,7 +11,7 @@ module Grille_ligne: GRILLE = struct
 
     let max_valeur (_: t) (_: coord): int = 1
 
-    let créer ((x, y): coord): t =
+    let creer ((x, y): coord): t =
         assert (y = 0);
         {
             ligne = Array.make x 0;
@@ -21,7 +21,7 @@ module Grille_ligne: GRILLE = struct
     let valeur (g: t) ((x, y): coord): int =
         g.ligne.(x)
 
-    let déposer (g: t) (n: int) ((x, y): coord): unit =
+    let deposer (g: t) (n: int) ((x, y): coord): unit =
         assert (y = 0);
         g.ligne.(x) <- g.ligne.(x) + n
 
@@ -52,7 +52,7 @@ module Grille_ligne: GRILLE = struct
 
     let superposer (g1: t) (g2: t): t =
         assert (g1.longueur = g2.longueur);
-        let g = créer (g1.longueur, 0) in
+        let g = creer (g1.longueur, 0) in
 
         for x = 0 to g1.longueur - 1 do
             g.ligne.(x) <- g1.ligne.(x) + g2.ligne.(x)
@@ -60,7 +60,7 @@ module Grille_ligne: GRILLE = struct
 
         g
 
-    let itérer (f: coord -> unit) (g: t): unit =
+    let iterer (f: coord -> unit) (g: t): unit =
         for x = 0 to g.longueur - 1 do
             f (x, 0)
         done
@@ -78,7 +78,7 @@ module Grille_ligne: GRILLE = struct
 
     let a: int = 50
 
-    let ouvrir_fenêtre (g: t): unit =
+    let ouvrir_fenetre (g: t): unit =
         " " ^(g.longueur * a |> string_of_int)
         ^ "x" ^ (a |> string_of_int)
         |> Graphics.open_graph
@@ -89,7 +89,7 @@ module Grille_ligne: GRILLE = struct
         | Some(gg) -> fun c -> (valeur g c) = (valeur gg c)
         in
 
-        itérer
+        iterer
             (fun (x, y) ->
                 assert (y = 0);
                 if egal_grilles (x, 0) then ()

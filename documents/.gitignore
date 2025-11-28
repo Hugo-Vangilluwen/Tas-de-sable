@@ -1,0 +1,10 @@
+# Relatif au OCaml
+*.cmi
+*.cmx
+*.o
+tas_sable/tas_sable
+
+# Relatif au LaTeX
+*.aux
+*.log
+*.synctex.tex

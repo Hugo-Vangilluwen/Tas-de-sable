@@ -19,20 +19,54 @@ pour $(A, B) \in \mathcal{P}(E)^2$ :
 Soit $I \subset E$. On dit que $I$ est
 un idéal à droite si $I * E \subset I$
 et un idéal à gauche si $E * I \subset I$.
+En particulier, $I * I \subset I$
+donc tout idéal à gauche ou à droite est un sous-semi-groupe.
 Si $(E, *)$ est commutatif, on dit simplement idéal puisque $I*E = E*I$.
 \end{definition}
 
 \begin{proposition}
-Soit $(E, *)$ un semi-groupe fini.
+Soit $(E, *)$ un semi-groupe fini non-vide.
 Il existe un élément de $E$ idempotent.
 \end{proposition}
 
 \begin{proof}
-À faire
+$E$ étant non-vide, il existe $x \in E$.
+Considérons la suite $\left(x^{(2^n)}\right)_{n \in \mathbb{N}}$ à valeurs dans $E$.
+D'après le principe des tiroirs, il existe $n \in \mathbb{N}$ et $p \in \mathbb{N}^*$ tels que
+$x^{2^n} = x^{2^{n+p}}$.
+Posons $y = x^{2^n}$ de sorte que $y^{2^p} = y$.
+Posons $e = y^{2^p - 1}$.
+Si $p = 1$ alors $e = y$ et $y^2 = y$.
+Sinon, on obtient $e^2 = y^{2^p + 2^p - 2} = y * y^{2^p - 2} = y^{2^p - 1} = e$
+(on a bien $2^p - 2 > 0$).
+Donc $e$ est idempotent.
 \end{proof}
 
 \begin{theoreme}
-Soit $(E, *)$ un semi-groupe commutatif.
-Si $I$ l'idéal minimal de $E$ (l'intersection de tous les idéaux)
+Soit $(E, *)$ un semi-groupe commutatif fini.
+Si $I$ l'idéal minimal de $E$ (l'intersection de tous les idéaux) est non vide
 alors $(I, *)$ est un groupe commutatif.
 \end{theoreme}
+
+\begin{proof}
+
+L'intersection d'idéals est bien un idéal.
+$(I, *)$ est un sous-semi-groupe.
+Soit $x \in E$.
+$(x) = \{x\}.E = E.\{x\}$ est un idéal (celui engendré par $x$).
+Notons $X$ le produit de tous les éléments de $E$.
+Comme $E$ est fini, $X$ est bien défini.
+$\forall x \in E, X \in (x)$ donc $X \in I$.
+Ainsi $(I, *)$ est un semi-groupe fini non vide.
+
+D'après la proposition précédente, $(I, *)$ admet un élément $e$ idempotent.
+Soit $x \in I$.
+On a $(x) = x * E = \subset I * E \subset I$.
+Or $(x)$ est un idéal donc $I \subset (x)$.
+D'où $(x) = (e) = I$.
+Donc il existe $y, z \in I$ tels que $x = ey$ et $e = xz$.
+On a alors $ex = eey = ey = x$ et $x(ze) = (xz)e = ee = e$.
+Comme $I$ est commutatif, $e$ est un élément neutre et $ze$ est l'inverse de $x$.
+
+Ainsi $(I, *)$ est un groupe commutatif.
+\end{proof}

@@ -3,7 +3,9 @@
 
 open Tas_sable
 
-module Grille_ligne: GRILLE = struct
+module Grille_ligne: GRILLE with type param = unit = struct
+    type param = unit
+
     type t = {
         ligne: int array;
         longueur: int;
@@ -11,7 +13,7 @@ module Grille_ligne: GRILLE = struct
 
     let max_valeur (_: t) (_: coord): int = 1
 
-    let creer ((x, y): coord): t =
+    let creer () ((x, y): coord): t =
         assert (y = 0);
         {
             ligne = Array.make x 0;
@@ -52,7 +54,7 @@ module Grille_ligne: GRILLE = struct
 
     let superposer (g1: t) (g2: t): t =
         assert (g1.longueur = g2.longueur);
-        let g = creer (g1.longueur, 0) in
+        let g = creer () (g1.longueur, 0) in
 
         for x = 0 to g1.longueur - 1 do
             g.ligne.(x) <- g1.ligne.(x) + g2.ligne.(x)

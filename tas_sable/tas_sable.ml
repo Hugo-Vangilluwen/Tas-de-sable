@@ -3,6 +3,9 @@ type coord = int * int
 
 (* Signature d'une structure de grille *)
 module type GRILLE = sig
+    (* Paramètre interne *)
+    type param
+
     (* Type representant une grille *)
     type t
 
@@ -12,7 +15,7 @@ module type GRILLE = sig
     val max_valeur : t -> coord -> int
 
     (* Cree une grille de dimension n x m *)
-    val creer : coord -> t
+    val creer : param -> coord -> t
 
     (* Renvoie la valeur de la case de coordonnees c *)
     val valeur : t -> coord -> int
@@ -140,8 +143,8 @@ module Tas_sable (G: GRILLE) = struct
      * change d'étape à chaque appuis de touche sur le clavier
      * Effectue au total n étapes
      *)
-    let un_grain_clavier (tas: t) (c: coord) (n: int): t =
-        let source = tas |> dimensions |> creer in
+    let un_grain_clavier (p: param) (tas: t) (c: coord) (n: int): t =
+        let source = tas |> dimensions |> (creer p) in
         deposer source 1 c;
         let attendre () =
             let _ = Graphics.wait_next_event[Key_pressed] in ()
@@ -152,8 +155,8 @@ module Tas_sable (G: GRILLE) = struct
      * attend dt secondes entre chaque étape
      * Effectue au total n étapes
      *)
-    let un_grain_temps (tas: t) (c: coord) (n: int) (dt: float): t =
-        let source = tas |> dimensions |> creer in
+    let un_grain_temps (p: param) (tas: t) (c: coord) (n: int) (dt: float): t =
+        let source = tas |> dimensions |> (creer p) in
         deposer source 1 c;
         let attendre () =
             Unix.sleepf dt
@@ -164,8 +167,8 @@ module Tas_sable (G: GRILLE) = struct
      * des tas de sables recurrents de dimensions dim
      * en utilisant la formule : (2c_max - (2c_max)°)°
      *)
-    let identite (dim: coord): t =
-        let double_max = creer dim in
+    let identite (p: param) (dim: coord): t =
+        let double_max = creer p dim in
         iterer
             (fun c -> deposer double_max (2 * max_valeur double_max c) c)
             double_max;

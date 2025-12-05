@@ -5,15 +5,7 @@ open Grille_hexagonale
 open Grille_puit
 open Grille_ligne
 
-module A: Puit = struct
-    let p = [(10, 10); (11, 10); (11, 11); (10, 11)]
-end
-
-module B: Puit = struct
-    let p = [(5, 5)]
-end
-
-module Tsp = Tas_sable(Ajouter_puit (A) (Grille_carree))
+module Tsp = Tas_sable(Ajouter_puit (Grille_carree))
 
 
 let main: unit =
@@ -24,33 +16,30 @@ let main: unit =
     *)
 
     let n = 19 in
-    (*
+
     let debut = Sys.time() in
-    let id = Tsc.identité (n, n) in
+    let id = Tsc.identite () (n, n) in
     let fin = Sys.time() in
     Printf.printf "Taille: %d\n" n;
     Printf.printf "Execution time: %fs" (fin -. debut);
     print_newline ();
     Tsc.afficher id;
 
-
     let debut = Sys.time() in
-    let id = Tsp.identite (n, n) in
+    let id = Tsp.identite ([(5, 5)], ()) (n, n) in
     let fin = Sys.time() in
     Printf.printf "Taille: %d\n" n;
     Printf.printf "Execution time: %fs" (fin -. debut);
     print_newline ();
-    Tsp.afficher id
-    *)
+    Tsp.afficher id;
 
     let debut = Sys.time() in
-    let id = Tsl.identite (n, 0) in
+    let id = Tsh.identite () (n, n) in
     let fin = Sys.time() in
     Printf.printf "Taille: %d\n" n;
     Printf.printf "Execution time: %fs" (fin -. debut);
     print_newline ();
-    Tsl.imprimer id;
-    Tsl.afficher id
+    Tsh.afficher id
 
     (*
     let source = Tsm.creer (20, 20) in

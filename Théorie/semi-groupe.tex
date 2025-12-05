@@ -1,0 +1,38 @@
+% !TeX root = théorie.tex
+
+\section{Semi-groupe}
+
+\begin{definition}
+Soit $E$ un ensemble et $*: E \times E \rightarrow E$ un loi interne.
+$(E, *)$ est un semi-groupe si $*$ est associative.
+$(E, *)$ est un monoïde si de plus, il existe un élément neutre.
+% unifère
+\end{definition}
+
+\begin{definition}[Idéal]
+Soit $(E, *)$ un semi-groupe.
+L'opération $*$ peut être étendue aux parties de $E$ ainsi,
+pour $(A, B) \in \mathcal{P}(E)^2$ :
+\begin{equation}
+    A * B = \left\{ a * b \;|\; (a, b) \in A \times B \right\}
+\end{equation}
+Soit $I \subset E$. On dit que $I$ est
+un idéal à droite si $I * E \subset I$
+et un idéal à gauche si $E * I \subset I$.
+Si $(E, *)$ est commutatif, on dit simplement idéal puisque $I*E = E*I$.
+\end{definition}
+
+\begin{proposition}
+Soit $(E, *)$ un semi-groupe fini.
+Il existe un élément de $E$ idempotent.
+\end{proposition}
+
+\begin{proof}
+À faire
+\end{proof}
+
+\begin{theoreme}
+Soit $(E, *)$ un semi-groupe commutatif.
+Si $I$ l'idéal minimal de $E$ (l'intersection de tous les idéaux)
+alors $(I, *)$ est un groupe commutatif.
+\end{theoreme}

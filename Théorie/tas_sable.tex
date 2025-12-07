@@ -3,33 +3,50 @@
 \section{Tas de sable}
 
 \begin{definition}[Graphe de tas de sable]
-Un graphe de tas de sable $G$ est un triplet $(S, A, p)$ où $(S, A)$ est un graphe orienté et $p \in S$ un puits.
+Un graphe de tas de sable $G$ est un triplet $(S, A, \pi, p)$ où $(S, A)$ est
+un graphe orienté pondéré par $\pi$ et $p \in S$ un puits.
 On notera $\widetilde{S} = S \setminus \{p\}$ et les voisins sortant de
-$s \in S$, $V^+(s) = \left\{u \in S \;|\; (s, u) \in A\right\}$.
+$s \in S$ :
+$$V^+(s) = \sum_{(s, u) \in A} \pi(u)$$
 \end{definition}
 
-\begin{definition}[Monoïde des configurations]
+Dans le reste de cette partie, on fixe
+$G = (S, A, \pi, p)$ un graphe de tas de sable.
+
+\begin{definition}[Groupe des configurations]
 Une configuration sur $G$ est une fonction
-$c: \widetilde{S} \rightarrow \mathbb{N}$.
+$c: \widetilde{S} \rightarrow \mathbb{Z}$.
 Elle indique à chaque sommet le nombre de grains de sable qu'il contient.
-
-Les configurations munies de la loi $+$ définie par$(c + c')(s) = c(s) + c'(s)$
-forment un monoïde.
-
+On notera $0$ la configuration où aucun sommet ne contient de grain de sable.
 Pour $s\in \widetilde{S}$, on notera $s$ la configuration valant $1$ en $s$
 et $0$ partout ailleurs.
+
+Les configurations $\widetilde{S}^{\mathbb{Z}}$  munies de la loi $+$ définie
+par $(c + c')(s) = c(s) + c'(s)$ forment un groupe abélien.
+Il est engendré par les configurations $s$ pour $s \in \widetilde{S}$.
+\end{definition}
+
+\begin{definition}[Monoïde des tas de sable]
+Un tas de sable est une fonction $c : \widetilde{S} \rightarrow \mathbb{N}$
+i.e. une configuration positive.
+Muni de $+$, ils forment un monoïde de neutre $0$.
+Posons :
+$$
+c_{max} = \sum_{u \in \widetilde{S}} \left(\left|V^+(s)\right| - 1\right) u
+$$
 \end{definition}
 
 \begin{definition}[Écroulement]
 Pour une configuration $c$ et $s \in \widetilde{S}$, l'écroulement de $c$ en $s$
-est $c' = c - \left|V^+(s)\right| s + \sum_{u \in V^+(s), u \neq p} u$.
+est :
+$$c' = c - \left|V^+(s)\right| s + \sum_{u \in V^+(s), u \neq p} \pi(u) u$$
 On ne peut réaliser un écroulement uniquement si
 $c(s) \geqslant \left|V^+(s)\right|$.
 \end{definition}
 
 \begin{definition}[Stabilité]
 Une configuration $c$ est dite stable si
-$\forall s \in S, c(s) \leqslant \left|V^+(s)\right|$.
+$\forall s \in S, 0 \leqslant c(s) \leqslant \left|V^+(s)\right|$.
 \end{definition}
 
 \begin{definition}
@@ -37,13 +54,42 @@ On montre que le résultat d'une suite d'écroulement est indépendant de l'ordr
 dans lequel sont effectués les écroulements et qu'il existe toujours une suite
 d'écroulements permettant d'obtenir une configuration stable.
 
-Appelons avalanche $c^\circ$ le résultat d'une telle suite.
+Notons avalanche $c^\circ$ le résultat d'une telle suite.
 \end{definition}
 
-\begin{definition}[Monoïdes des tas de sable]
-Soit $G = (S, A, p)$ un graphe de tas de sable.
-Un tas de sable sur ce graphe est un configuration stable.
-Les tas de sable munis de la loi $+$ forment un monoïde.
+\begin{definition}[Monoïdes des tas de sable stables]
+Notons $\circledast$ l'opération définie sur les configurations
+par $c \circledast c' = (c + c')^\circ$.
+Les tas de sable stables munis de la loi $\circledast$ forment un monoïde.
 
-Notons $???$ ce monoïde.
+Notons $Stab(G)$ ce monoïde.
 \end{definition}
+
+\begin{definition}[Groupe des tas de sable récurrents]
+$(Stab(G), \circledast)$ est un semi-groupe commutatif fini.
+D'après le théorème 1, en notant $S(G)$ son idéal minimal,
+$(S(G), \circledast)$ est un groupe abélien.
+Ses éléments sont appelés \textit{les tas de sable récurrents}.
+\end{definition}
+
+\begin{proposition}
+Soit $c \in Stab(G)$.
+On a l'équivalence entre :
+\begin{enumerate}[label=\roman*)]
+    \item  $c \in S(G)$
+    \item  $c$ est la valeur d'adhérence d'une suite arithmétique dans $(Stab(G), \circledast)$
+    \item $c$ est un tas de sable et
+    $\forall a \in \widetilde{S}^{\mathbb{Z}},
+    \exists b \in \widetilde{S}^{\mathbb{N}} : c = a \circledast b$
+    \item $\exists b \in \widetilde{S}^{\mathbb{N}} : c = c_{max} \circledast b$
+    \item La probabilité que $c$ apparaisse une infinité de fois en considérant
+    l'expérience aléatoire où à partir de $0$, on dépose à chaque étape,
+    un grain de sable aléatoirement uniformément sur un sommet de
+    $\widetilde{S}$ puis on stabilise
+    est 1.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+À faire
+\end{proof}

@@ -46,6 +46,9 @@ module type GRILLE = sig
     (* Imprime la grille dans la console *)
     val imprimer : t -> unit
 
+    (* Définit la dimension des cases dans l'affichage  *)
+    val mettre_dim_cases : int -> unit
+
     (* Ouvre une fenetre Graphics de la bonne taille *)
     val ouvrir_fenetre : t -> unit
 

@@ -120,14 +120,23 @@ module Grille_hexagonale: GRILLE with type param = unit = struct
     let float_calcul (f: float -> float) (x: int) =
         x |> float_of_int |> f |> int_of_float
 
-    let a : int = 10
+    (* Dimension d'une case dans l'affichage *)
+    let a : int ref = ref 10 (* Taille par défaut *)
     (* cos 30 = 0,866 et sin 30 = 0,5 *)
-    let b : int = float_calcul (( *.) 0.866) a (* largeur de l'hexagone *)
-    let c : int = float_calcul (( *.) 0.5) a (* demi-longeur d'un cote *)
+    (* largeur de l'hexagone *)
+    let b : int ref = ref (float_calcul (( *.) 0.866) !a)
+    (* demi-longeur d'un cote *)
+    let c : int ref = ref (float_calcul (( *.) 0.5) !a)
+
+    let mettre_dim_cases (aa: int): unit =
+        a := aa;
+        b := float_calcul (( *.) 0.866) aa;
+        c := float_calcul (( *.) 0.5) aa
+
 
     let ouvrir_fenetre (g: t): unit =
-        " " ^ ((2 * g.largeur + g.hauteur - 1) * b |> string_of_int)
-        ^ "x" ^ (g.hauteur * (a + c) + (a - c) |> string_of_int)
+        " " ^ ((2 * g.largeur + g.hauteur - 1) * !b |> string_of_int)
+        ^ "x" ^ (g.hauteur * (!a + !c) + (!a - !c) |> string_of_int)
         |> Graphics.open_graph
 
     let afficher_grille (g: t) (_: t option): unit =
@@ -145,16 +154,16 @@ module Grille_hexagonale: GRILLE with type param = unit = struct
                     ^ ") depasse " ^
                     ((x, y) |> (max_valeur g) |> string_of_int) )
                 ) |>  Graphics.set_color;
-                let xx = b * (2 * x + y) in
-                let yy = (a + c) * y in
+                let xx = !b * (2 * x + y) in
+                let yy = (!a + !c) * y in
                 Graphics.fill_poly
                     [|
-                    (xx + b, yy);
-                    (xx + b + b, yy + a - c);
-                    (xx + b + b, yy + a + c);
-                    (xx + b, yy + a + a);
-                    (xx, yy + a + c);
-                    (xx, yy + a - c);
+                    (xx + !b, yy);
+                    (xx + 2 * !b, yy + !a - !c);
+                    (xx + 2 * !b, yy + !a + !c);
+                    (xx + !b, yy + 2 * !a);
+                    (xx, yy + !a + !c);
+                    (xx, yy + !a - !c);
                     |]
             )
             g

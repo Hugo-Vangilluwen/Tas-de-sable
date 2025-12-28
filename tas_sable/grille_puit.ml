@@ -61,6 +61,8 @@ module Ajouter_puit (G: GRILLE): GRILLE with type param = coord list * G.param =
 
     let imprimer (g: t) = G.imprimer g.grille_int
 
+    let mettre_dim_cases = G.mettre_dim_cases
+
     let ouvrir_fenetre (g: t) = G.ouvrir_fenetre g.grille_int
 
     let afficher_grille (g: t) (g_opt: t option) =

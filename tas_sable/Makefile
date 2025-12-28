@@ -1,7 +1,7 @@
 CIBLE := tas_sable
 BUILD_DIR := ./build
 
-SOURCES := tas_sable.ml grille_carree.ml grille_hexagonale.ml grille_puit.ml grille_ligne.ml main.ml
+SOURCES := tas_sable.ml grille_carree.ml grille_hexagonale.ml grille_puit.ml grille_ligne.ml test.ml main.ml
 # grille_montagne.ml
 OBJETS := $(SOURCES:%.ml=%.cmx)
 
@@ -13,6 +13,7 @@ all: $(CIBLE)
 $(CIBLE): $(SOURCES)
 	ocamlfind ocamlopt -o $(CIBLE) -linkpkg $(OCAML_OPT) $(SOURCES)
 
+# Décommenter pour complier les objets
 # $(CIBLE): $(OBJETS)
 # 	ocamlfind ocamlopt -o $(CIBLE) -linkpkg $(OCAML_OPT) $(OBJETS)
 

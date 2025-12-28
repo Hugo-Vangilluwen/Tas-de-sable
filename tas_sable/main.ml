@@ -25,6 +25,9 @@ let main: unit =
     print_newline ();
     Tsc.afficher id;
 
+    Tsc.mettre_dim_cases 20;
+    (50, 40) |> (Tsc.identite ()) |> Tsc.afficher;
+
     let debut = Sys.time() in
     let id = Tsp.identite ([(5, 5)], ()) (n, n) in
     let fin = Sys.time() in
@@ -48,4 +51,3 @@ let main: unit =
     let _ = Tsm.un_grain_temps id (5, 5) 5000 0.01 in
     ()
     *)
-(*     (50, 50) |> Tsc.identite |> Tsc .afficher *)

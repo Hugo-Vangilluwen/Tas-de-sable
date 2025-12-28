@@ -78,11 +78,14 @@ module Grille_ligne: GRILLE with type param = unit = struct
         done;
         print_newline ()
 
-    let a: int = 50
+    let dim_cases: int ref = ref 50 (* Taille par défaut *)
+
+    let mettre_dim_cases (a: int): unit =
+        dim_cases := a
 
     let ouvrir_fenetre (g: t): unit =
-        " " ^(g.longueur * a |> string_of_int)
-        ^ "x" ^ (a |> string_of_int)
+        " " ^(g.longueur * !dim_cases |> string_of_int)
+        ^ "x" ^ (!dim_cases |> string_of_int)
         |> Graphics.open_graph
 
     let afficher_grille (g: t) (g_opt: t option): unit =
@@ -100,7 +103,11 @@ module Grille_ligne: GRILLE with type param = unit = struct
                     | n -> let u = 255 - 255 * n / max_valeur g (x, 0) in
                     Graphics.rgb u u u
                     ) |> Graphics.set_color;
-                    Graphics.fill_rect (a*x) (a*y) a a
+                    Graphics.fill_rect
+                        (!dim_cases*x)
+                        (!dim_cases*y)
+                        !dim_cases
+                        !dim_cases
                 end
             )
             g

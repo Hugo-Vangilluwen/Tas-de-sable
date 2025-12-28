@@ -36,6 +36,8 @@ c_{max} = \sum_{u \in \widetilde{S}} \left(\left|V^+(s)\right| - 1\right) u
 $$
 \end{definition}
 
+Remarquons que $(\widetilde{S}^{\mathbb{Z}}, +)$ est un groupe.
+
 \begin{definition}[Écroulement]
 Pour une configuration $c$ et $s \in \widetilde{S}$, l'écroulement de $c$ en $s$
 est :
@@ -66,10 +68,12 @@ Notons $Stab(G)$ ce monoïde.
 \end{definition}
 
 \begin{definition}[Groupe des tas de sable récurrents]
-$(Stab(G), \circledast)$ est un semi-groupe commutatif fini.
+$(\widetilde{S}^{\mathbb{N}}, \circledast)$ est un semi-groupe commutatif fini.
 D'après le théorème 1, en notant $S(G)$ son idéal minimal,
 $(S(G), \circledast)$ est un groupe abélien.
+On a $S(G) \subset Stab(G)$.
 Ses éléments sont appelés \textit{les tas de sable récurrents}.
+Notons $c_0$ son élément neutre.
 \end{definition}
 
 \begin{proposition}
@@ -77,19 +81,39 @@ Soit $c \in Stab(G)$.
 On a l'équivalence entre :
 \begin{enumerate}[label=\roman*)]
     \item  $c \in S(G)$
-    \item  $c$ est la valeur d'adhérence d'une suite arithmétique dans $(Stab(G), \circledast)$
     \item $c$ est un tas de sable et
     $\forall a \in \widetilde{S}^{\mathbb{Z}},
     \exists b \in \widetilde{S}^{\mathbb{N}} : c = a \circledast b$
-    \item $\exists b \in \widetilde{S}^{\mathbb{N}} : c = c_{max} \circledast b$
-    \item La probabilité que $c$ apparaisse une infinité de fois en considérant
-    l'expérience aléatoire où à partir de $0$, on dépose à chaque étape,
-    un grain de sable aléatoirement uniformément sur un sommet de
-    $\widetilde{S}$ puis on stabilise
-    est 1.
+    \item $\exists b \in \widetilde{S}^{\mathbb{N}} : c = c_{max} \circledast b$ on stabilise est de 1 (c'est la définition historique
+    des tas de sable).
+%    \item  $c$ est la valeur d'adhérence d'une suite arithmétique dans
+%    $(Stab(G), \circledast)$ pour la topologie discrète.
+%    Je pense que cette caractérisation est fausse
 \end{enumerate}
 \end{proposition}
 
-\begin{proof}
-À faire
+\begin{proof} ~\par
+$ii \implies iii$ \ car $c_{max} \in \widetilde{S}^{\mathbb{Z}}$
+
+$i \implies ii$ \ Soit $c \in S(G)$ et $a \in \widetilde{S}^{\mathbb{Z}}$.
+$S(G)$ est un idéal de $(Stab(G), \circledast)$
+donc de $(\widetilde{S}^{\mathbb{Z}}, \circledast)$.
+D'où $b' = a \circledast c_0 \in S(G)$.
+Posons $b = c_0 \circledast b'^{-1} \circledast c$ de sorte que $c = a \circledast b$.
+
+$iii \implies i$ \ On a $c = c_0 \circledast c$ i.e. $c = c_0 \circledast
+c_{max} \circledast b$.
+Soit $I$ un idéal de $\widetilde{S}^{\mathbb{N}}$.
+$c_0 \in S(G)\subset I$.
+Par définition d'un idéal, $I \circledast \widetilde{S}^{\mathbb{N}} \subset I$.
+Or $c_max \circledast b \in \widetilde{S}^{\mathbb{N}}$ donc $c \in I$.
+$c$ appartient à tous les idéaux donc à l'idéal minimal, $c \in S(G)$.
 \end{proof}
+
+\begin{proposition}
+Considérons l'expérience aléatoire où à partir de $0$, on dépose à chaque étape,
+un grain de sable aléatoirement uniformément sur un sommet de $\widetilde{S}$
+puis on stabilise. La probabilité que c apparaisse une infinité de fois est 1.
+Ceci est la définition historique des tas de sable récurrents (d'où l'adjectif
+de "récurrent").
+\end{proposition}

@@ -108,7 +108,7 @@ module Grille_carree: GRILLE with type param = unit = struct
             print_newline ()
         done
 
-    let dim_cases: int ref = ref 20 (* Taille par défaut *)
+    let dim_cases: int ref = ref 10 (* Taille par défaut *)
 
     let mettre_dim_cases (a: int): unit =
         dim_cases := a

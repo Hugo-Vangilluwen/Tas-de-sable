@@ -1,7 +1,7 @@
 CIBLE := tas_sable
 BUILD_DIR := ./build
 
-SOURCES := tas_sable.ml grille_carree.ml grille_hexagonale.ml grille_puit.ml grille_ligne.ml test.ml main.ml
+SOURCES := tas_sable.ml grille_carree.ml grille_hexagonale.ml grille_puit.ml grille_ligne.ml
 # grille_montagne.ml
 OBJETS := $(SOURCES:%.ml=%.cmx)
 
@@ -10,8 +10,8 @@ OCAML_OPT := -package graphics -package unix
 
 all: $(CIBLE)
 
-$(CIBLE): $(SOURCES)
-	ocamlfind ocamlopt -o $(CIBLE) -linkpkg $(OCAML_OPT) $(SOURCES)
+$(CIBLE): $(SOURCES) main.ml
+	ocamlfind ocamlopt -o $(CIBLE) -linkpkg $(OCAML_OPT) $(SOURCES) main.ml
 
 # Décommenter pour complier les objets
 # $(CIBLE): $(OBJETS)
@@ -20,10 +20,13 @@ $(CIBLE): $(SOURCES)
 # %.cmx: %.ml
 # 	ocamlfind ocamlopt -c $< $(OCAML_OPT)
 
+test: $(SOURCES) test.ml
+	ocamlfind ocamlopt -o test -linkpkg $(OCAML_OPT) $(SOURCES) test.ml
+
 
 .PHONY: clean execute
 clean:
-	rm -f *.cmx *.cmi *.o $(CIBLE)
+	rm -f *.cmx *.cmi *.o $(CIBLE) test
 
 execute: $(CIBLE)
 	./$(CIBLE)

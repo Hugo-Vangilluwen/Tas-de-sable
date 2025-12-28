@@ -113,6 +113,12 @@ module Grille_carree: GRILLE with type param = unit = struct
     let mettre_dim_cases (a: int): unit =
         dim_cases := a
 
+    let couleur_case (g: t) (c: coord): Graphics.color =
+        let (x, y) = c in
+        match valeur g (x, y) with
+        | n -> let u = 255 - 255 * n / max_valeur g (x, y) in
+            Graphics.rgb u u u
+
     let ouvrir_fenetre (g: t): unit =
         " " ^ (g.largeur * !dim_cases |> string_of_int)
         ^ "x" ^ (g.hauteur * !dim_cases |> string_of_int)
@@ -128,10 +134,7 @@ module Grille_carree: GRILLE with type param = unit = struct
             (fun (x,y)  ->
                 if egal_grilles (x, y) then ()
                 else begin
-                    (match valeur g (x, y) with
-                    | n -> let u = 255 - 255 * n / max_valeur g (x, y) in
-                    Graphics.rgb u u u
-                    ) |>  Graphics.set_color;
+                    couleur_case g (x, y) |>  Graphics.set_color;
                     Graphics.fill_rect
                         (!dim_cases*x)
                         (!dim_cases*y)
@@ -140,6 +143,10 @@ module Grille_carree: GRILLE with type param = unit = struct
                 end
             )
             g
+
+    let afficher_case (g: t) (c: coord): unit =
+        let (x, y) = c in
+        Graphics.fill_rect (!dim_cases*x) (!dim_cases*y) !dim_cases !dim_cases
 end
 
 (* Tas de sable carre *)

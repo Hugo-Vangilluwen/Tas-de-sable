@@ -121,39 +121,41 @@ module Grille_hexagonale: GRILLE with type param = unit = struct
         x |> float_of_int |> f |> int_of_float
 
     (* Dimension d'une case dans l'affichage *)
-    let a : int ref = ref 10 (* Taille par défaut *)
+    let dim_cases : int ref = ref 10 (* Taille par défaut *)
     (* cos 30 = 0,866 et sin 30 = 0,5 *)
     (* largeur de l'hexagone *)
-    let b : int ref = ref (float_calcul (( *.) 0.866) !a)
-    (* demi-longeur d'un cote *)
-    let c : int ref = ref (float_calcul (( *.) 0.5) !a)
+    let largeur : int ref = ref (float_calcul (( *.) 0.866) !dim_cases)
+    (* demi-longeur d'un côté *)
+    let demi_longeur : int ref = ref (float_calcul (( *.) 0.5) !dim_cases)
 
-    let mettre_dim_cases (aa: int): unit =
-        a := aa;
-        b := float_calcul (( *.) 0.866) aa;
-        c := float_calcul (( *.) 0.5) aa
+    let mettre_dim_cases (a: int): unit =
+        dim_cases := a;
+        largeur := float_calcul (( *.) 0.866) a;
+        demi_longeur := float_calcul (( *.) 0.5) a
 
+    let couleur_case (g: t) (c: coord): Graphics.color =
+        let (x, y) = c in
+        match valeur g (x, y) with
+        | 0 -> Graphics.rgb 255 255 255
+        | 1 -> Graphics.rgb 200 200 200
+        | 2 -> Graphics.rgb 150 150 150
+        | 3 -> Graphics.rgb 100 100 100
+        | 4 -> Graphics.rgb 50 50 50
+        | 5 -> Graphics.rgb 0 0 0
+        | _ -> failwith ( "La valeur de ("
+            ^ (string_of_int x) ^ "," ^ (string_of_int y)
+            ^ ") depasse " ^
+            ((x, y) |> (max_valeur g) |> string_of_int) )
 
     let ouvrir_fenetre (g: t): unit =
-        " " ^ ((2 * g.largeur + g.hauteur - 1) * !b |> string_of_int)
-        ^ "x" ^ (g.hauteur * (!a + !c) + (!a - !c) |> string_of_int)
+        " " ^ ((2 * g.largeur + g.hauteur - 1) * !largeur |> string_of_int)
+        ^ "x" ^ (g.hauteur * (!dim_cases + !demi_longeur) + (!dim_cases - !demi_longeur) |> string_of_int)
         |> Graphics.open_graph
 
-    let afficher_grille (g: t) (_: t option): unit =
+    (*let afficher_grille (g: t) (_: t option): unit =
         iterer
             (fun (x,y)  ->
-                (match valeur g (x, y) with
-                | 0 -> Graphics.rgb 255 255 255
-                | 1 -> Graphics.rgb 200 200 200
-                | 2 -> Graphics.rgb 150 150 150
-                | 3 -> Graphics.rgb 100 100 100
-                | 4 -> Graphics.rgb 50 50 50
-                | 5 -> Graphics.rgb 0 0 0
-                | _ -> failwith ( "La valeur de ("
-                    ^ (string_of_int x) ^ "," ^ (string_of_int y)
-                    ^ ") depasse " ^
-                    ((x, y) |> (max_valeur g) |> string_of_int) )
-                ) |>  Graphics.set_color;
+                couleur_case g (x, y) |>  Graphics.set_color;
                 let xx = !b * (2 * x + y) in
                 let yy = (!a + !c) * y in
                 Graphics.fill_poly
@@ -166,7 +168,22 @@ module Grille_hexagonale: GRILLE with type param = unit = struct
                     (xx, yy + !a - !c);
                     |]
             )
-            g
+            g*)
+
+
+    let afficher_case (g: t) (c: coord): unit =
+        let (x, y) = c in
+        let xx = !largeur * (2 * x + y) in
+        let yy = (!dim_cases + !demi_longeur) * y in
+        Graphics.fill_poly
+            [|
+            (xx + !largeur, yy);
+            (xx + 2 * !largeur, yy + !dim_cases - !demi_longeur);
+            (xx + 2 * !largeur, yy + !dim_cases + !demi_longeur);
+            (xx + !largeur, yy + 2 * !dim_cases);
+            (xx, yy + !dim_cases + !demi_longeur);
+            (xx, yy + !dim_cases - !demi_longeur);
+            |]
 end
 
 (* Tas de sable carre *)

@@ -49,15 +49,16 @@ module type GRILLE = sig
     (* Définit la dimension des cases dans l'affichage  *)
     val mettre_dim_cases : int -> unit
 
+    (* Donne la couleur de la case pour l'affichage *)
+    val couleur_case: t -> coord -> Graphics.color
+
     (* Ouvre une fenetre Graphics de la bonne taille *)
     val ouvrir_fenetre : t -> unit
 
     (* Affiche la grille dans une fenetre graphique
      * Les valeurs de la grille doivent etre entre 0 et max_voisin - 1
-     * Si une seconde grille est donnee, seuls les cases de valeurs differentes
-     * sont redessinees
      *)
-    val afficher_grille : t -> t option -> unit
+    val afficher_case: t -> coord -> unit
 end
 
 
@@ -111,6 +112,28 @@ module Tas_sable (G: GRILLE) = struct
         let somme = superposer tas1 tas2 in
         avalanche somme;
         somme
+
+
+    (* Affiche la grille dans une fenetre graphique
+     * Les valeurs de la grille doivent etre entre 0 et max_voisin - 1
+     * Si une seconde grille est donnee, seuls les cases de valeurs differentes
+     * sont redessinees
+     *)
+    let afficher_grille (g: t) (g_opt: t option): unit =
+        let egal_grilles : coord -> bool = match g_opt with
+        | None -> fun _ -> false
+        | Some(gg) -> fun c -> (valeur g c) = (valeur gg c)
+        in
+
+        iterer
+            (fun c ->
+                if egal_grilles c then ()
+                else begin
+                    (couleur_case g c) |> Graphics.set_color;
+                    afficher_case g c
+                end
+            )
+            g
 
     (* Affiche le tas de sable dans une fenetre graphique *)
     let afficher (tas: t): unit =

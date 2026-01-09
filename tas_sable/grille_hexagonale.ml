@@ -21,6 +21,9 @@ module Grille_hexagonale: GRILLE with type param = unit = struct
             hauteur = y
         }
 
+    let nb_cases (g: t): int =
+        g.largeur * g.hauteur
+
     let correcte_coord (g: t) (c: coord): bool =
         let (x, y) = c in
         0 <= x && x < g.largeur && 0 <= y && y < g.hauteur

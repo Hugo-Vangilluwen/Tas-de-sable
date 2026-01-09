@@ -1,7 +1,6 @@
 (* Ajoute un puit dans une grille *)
 
 open Tas_sable
-open Printf
 
 module Ajouter_puit (G: GRILLE): GRILLE with type param = coord list * G.param = struct
     type param = coord list * G.param
@@ -21,12 +20,15 @@ module Ajouter_puit (G: GRILLE): GRILLE with type param = coord list * G.param =
 
     let creer ((puits, param_int): param) (dim: coord): t =
         let g = G.creer param_int dim in
-        List.iter (fun puit -> assert (G.correcte_coord g puit); printf "%d, %d\n" (fst puit) (snd puit)) puits;
+        List.iter (fun puit -> assert (G.correcte_coord g puit)) puits;
         (* Trier est nécessaire pour tester tester l'égalité des puits *)
         {
             grille_int = g;
             puits = List.sort compare puits;
         }
+
+    let nb_cases (g: t): int =
+        G.nb_cases g.grille_int - List.length g.puits
 
     let valeur (g: t) = G.valeur g.grille_int
 

@@ -17,6 +17,9 @@ module type GRILLE = sig
     (* Cree une grille de dimension n x m *)
     val creer : param -> coord -> t
 
+    (* Renvoie le nombre de case dans la grille *)
+    val nb_cases: t -> int
+
     (* Renvoie la valeur de la case de coordonnees c *)
     val valeur : t -> coord -> int
 
@@ -209,5 +212,15 @@ module Tas_sable (G: GRILLE) = struct
 
         double_max + stat_db_max
 
+    (* Calcule le laplacien réduit de la grille *)
+    let laplacien_reduit (p: param) (dim: coord): int array array =
+        (* Fonction non finie *)
+        let n = G.creer p dim |> G.nb_cases in
+        let l = Array.make_matrix n n 0 in
+        l
+
+    (* Calcule le cardinal des tas de sable récurrents *)
+    let cardinal_recurrents (p: param) (dim: coord): int =
+        0
 
 end

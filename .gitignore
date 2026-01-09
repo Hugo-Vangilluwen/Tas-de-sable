@@ -3,6 +3,7 @@
 *.cmx
 *.o
 tas_sable/tas_sable
+tas_sable/test
 
 # Relatif au LaTeX
 *.aux

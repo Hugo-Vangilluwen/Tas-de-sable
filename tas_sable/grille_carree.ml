@@ -21,6 +21,9 @@ module Grille_carree: GRILLE with type param = unit = struct
             hauteur = y
         }
 
+    let nb_cases (g: t): int =
+        g.largeur * g.hauteur
+
     let valeur (g: t) ((x, y): coord): int =
         g.grille.(x).(y)
 

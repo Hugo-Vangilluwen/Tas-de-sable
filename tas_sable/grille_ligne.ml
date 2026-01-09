@@ -20,6 +20,9 @@ module Grille_ligne: GRILLE with type param = unit = struct
             longueur = x;
         }
 
+    let nb_cases (g: t): int =
+        g.longueur
+
     let valeur (g: t) ((x, y): coord): int =
         g.ligne.(x)
 

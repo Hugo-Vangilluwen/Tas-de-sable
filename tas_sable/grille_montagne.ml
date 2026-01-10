@@ -1,6 +1,8 @@
 open Tas_sable
 
-module Grille_montagne: GRILLE = struct
+module Grille_montagne : GRILLE with type param = float = struct
+    type param = float
+
     type t = {
         grille: int array array;
         largeur: int;
@@ -8,14 +10,12 @@ module Grille_montagne: GRILLE = struct
         alpha : float;
     }
 
-    let alpha_defaut = Float.pi /. 4.0
-
-    let creer (dim: coord) : t =
+    let creer (alpha: param) (dim: coord) : t =
         let (x, y) = dim in
         { grille = Array.make_matrix x y 0;
             largeur = x;
             hauteur = y;
-            alpha = alpha_defaut }
+            alpha = alpha }
 
     let valeur (g: t) (c: coord): int =
         let (x, y) = c in
@@ -29,69 +29,52 @@ module Grille_montagne: GRILLE = struct
         let (x, y) = c in
         0 <= x && x < g.largeur && 0 <= y && y < g.hauteur
 
-    let voisins (g: t) ((x, y): coord): coord list =
+    let voisins (g: t) ((x, y): coord) : coord list =
         let v = ref [] in
-        let ajouter (c: coord) (n: int) =
-            for _ = 1 to n do
-                v := c :: !v
-            done
-        in
 
-        let a = g.alpha in
-        let k = min 1.0 (max 0.0 (a /. (Float.pi /. 2.0))) in
+        let alpha = max 0.0 (min (Float.pi /. 2.0) g.alpha) in
 
-        let m_haut   = int_of_float (1.0 *. (1.0 -. k)) in
-        let m_droite = int_of_float (1.0 *. (1.0 -. k)) in
-        let m_bas    = int_of_float (1.0 *. (1.0 +. k)) in
-        let m_gauche = int_of_float (1.0 *. (1.0 +. k)) in
-
-        let m_diag =
-            if a > Float.pi /. 4.0 then
-                int_of_float (2.0 *. (a -. Float.pi /. 4.0) /. (Float.pi /. 4.0))
-            else
-                0
-        in
+        let denom = exp ((Float.pi /. 2.0)) in
+        let k = if alpha = 0.0 then 0.0
+            else exp (alpha) /. denom in
 
 
-        if y > 0 then ajouter (x, y-1) m_bas;
-        if x > 0 then ajouter (x-1, y) m_gauche;
-        if x > 0 && y > 0 then ajouter (x-1, y-1) m_diag;
-        if y < g.hauteur - 1 then ajouter (x, y+1) m_haut;
-        if x < g.largeur - 1 then ajouter (x+1, y) m_droite;
+        let w_side = (-. 110.0 /. 21.0) *. (k *. k) +. (89.0 /. 21.0) *. k +. 1.
+        and w_diag = k
+        and w_opposite = (exp(-. 10.0 *. k) -. exp(-. 10.))/.(1. -. exp(-. 10.)) in
+
+        let candidats = [
+            ((0,-1), w_side);
+            ((-1,0), w_side);
+            ((-1,-1), w_diag);
+            ((0,1), w_opposite);
+            ((1,0), w_opposite)
+        ] in
+
+        let l = List.filter (fun ((dx,dy),_) ->
+            let nx = x + dx and ny = y + dy in
+            0 <= nx && nx < g.largeur && 0 <= ny && ny < g.hauteur
+        ) candidats in
+
+        let n_tot = 12 in
+
+        let wtot = List.fold_left (fun s (_, w) -> s +. w) 0.0 l |> max 1e-6 in
+
+        List.iter (fun ((dx,dy), w) ->
+            let n_c = float n_tot *. (w /. wtot) in
+
+            let n =
+                if alpha = 0.0 then int_of_float n_c
+                else max 1 (int_of_float n_c)
+            in
+
+            let nx = x + dx and ny = y + dy in
+            for _ = 1 to n do v := (nx, ny) :: !v done
+        ) l;
 
         !v
 
 
-    let voisins (g: t) ((x, y): coord): coord list =
-        let v = ref [] in
-        let ajouter (c: int*int) (n: int) = 
-            for _ = 1 to n do 
-                v := c :: !v 
-            done 
-        in
-        let alpha_diag = Float.pi /. 4.0 in
-        let m_bas = max 1 (int_of_float (g.alpha *. 4.0)) in
-        let m_gauche = m_bas in
-        let m_haut = 1 in
-        let m_droite = m_haut in
-
-        if y > 0 then 
-            ajouter (x, y-1) m_bas;
-        if x > 0 then 
-            ajouter (x-1, y) m_gauche;
-
-        if g.alpha >= alpha_diag then begin
-            let m_diag = int_of_float (g.alpha *. 2.0) in
-            if x > 0 && y > 0 then 
-                ajouter (x-1, y-1) m_diag;
-        end;
-
-        if y < g.hauteur - 1 then 
-            ajouter (x, y+1) m_haut;
-        if x < g.largeur - 1 then 
-            ajouter (x+1, y) m_droite;
-
-        !v
 
     let max_valeur g c = List.length (voisins g c) - 1
 

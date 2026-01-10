@@ -3,7 +3,9 @@
 
 open Tas_sable
 
-module Grille_hexagonale: GRILLE = struct
+module Grille_hexagonale: GRILLE with type param = unit = struct
+    type param = unit
+
     type t = {
         grille: int array array;
         largeur: int;
@@ -12,7 +14,7 @@ module Grille_hexagonale: GRILLE = struct
 
     let max_valeur (_: t) (_: coord): int = 5
 
-    let creer (c: coord): t =
+    let creer () (c: coord): t =
         let (x, y) = c in {
             grille = Array.make_matrix x y 0;
             largeur = x;
@@ -78,7 +80,7 @@ module Grille_hexagonale: GRILLE = struct
 
     let superposer (g1: t) (g2: t): t =
         assert (g1.largeur = g2.largeur && g1.hauteur = g2.hauteur);
-        let g =  g1 |> dimensions |> creer in
+        let g =  g1 |> dimensions |> (creer ()) in
 
         for x = 0 to g.largeur - 1 do
             for y = 0 to g.hauteur - 1 do

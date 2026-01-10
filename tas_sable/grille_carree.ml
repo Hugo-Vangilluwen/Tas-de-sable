@@ -3,7 +3,9 @@
 
 open Tas_sable
 
-module Grille_carree: GRILLE = struct
+module Grille_carree: GRILLE with type param = unit = struct
+    type param = unit
+
     type t = {
         grille: int array array;
         largeur: int;
@@ -12,7 +14,7 @@ module Grille_carree: GRILLE = struct
 
     let max_valeur (_: t) (_: coord): int = 3
 
-    let creer (dim: coord): t =
+    let creer (_: param) (dim: coord): t =
         let (x, y) = dim in {
             grille = Array.make_matrix x y 0;
             largeur = x;
@@ -58,7 +60,7 @@ module Grille_carree: GRILLE = struct
 
     let superposer (g1: t) (g2: t): t =
         assert (g1.largeur = g2.largeur && g1.hauteur = g2.hauteur);
-        let g = creer (g1.largeur, g1.hauteur) in
+        let g = creer () (g1.largeur, g1.hauteur) in
 
         for x = 0 to g1.largeur - 1 do
             for y = 0 to g1.hauteur - 1 do
@@ -116,7 +118,7 @@ module Grille_carree: GRILLE = struct
     let afficher_grille (g: t) (g_opt: t option): unit =
         let egal_grilles : coord -> bool = match g_opt with
         | None -> fun _ -> false
-        | Some(gg) -> fun c -> (valeur g c) == (valeur gg c)
+        | Some(gg) -> fun c -> (valeur g c) = (valeur gg c)
         in
 
         iterer

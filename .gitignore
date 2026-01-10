@@ -7,4 +7,4 @@ tas_sable/tas_sable
 # Relatif au LaTeX
 *.aux
 *.log
-*.synctex.tex
+*.synctex.gz

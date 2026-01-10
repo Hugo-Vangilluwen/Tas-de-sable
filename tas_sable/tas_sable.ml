@@ -1,6 +1,6 @@
-open Matrix
+open Matrix.EltMatrix
 
-(* Type representant les coordonnees d'une case *)
+(* Type representant les coordonnées d'une case *)
 type coord = int * int
 
 (* Signature d'une structure de grille *)
@@ -8,7 +8,7 @@ module type GRILLE = sig
     (* Paramètre interne *)
     type param
 
-    (* Type representant une grille *)
+    (* Type représentant une grille *)
     type t
 
     (* Nombre maximum de voisin moins un
@@ -22,13 +22,16 @@ module type GRILLE = sig
     (* Renvoie le nombre de case dans la grille *)
     val nb_cases: t -> int
 
-    (* Renvoie la valeur de la case de coordonnees c *)
+    (* Linéraise les coordonnées entre 1 et nb_cases grille *)
+    val linearise: t -> coord -> int
+
+    (* Renvoie la valeur de la case de coordonnées c *)
     val valeur : t -> coord -> int
 
-    (* Modifie la valeur de la case de coordonnees c *)
+    (* Modifie la valeur de la case de coordonnées c *)
     val deposer : t -> int -> coord -> unit
 
-    (* Teste si la coordonnee est correcte *)
+    (* Teste si la coordonnée est correcte *)
     val correcte_coord : t -> coord -> bool
 
     (* Renvoie les voisins de c *)
@@ -215,14 +218,35 @@ module Tas_sable (G: GRILLE) = struct
         double_max + stat_db_max
 
     (* Calcule le laplacien réduit de la grille *)
-    let laplacien_reduit (p: param) (dim: coord): int array array =
+    let laplacien_reduit (p: param) (dim: coord): matrix =
         (* Fonction non finie *)
-        let n = G.creer p dim |> G.nb_cases in
-        let l = Array.make_matrix n n 0 in
+        (* L = out(G) - A^t *)
+        let graphe = G.creer p dim in
+        let n = graphe |> G.nb_cases in
+        let l = empty n n in
+
+        iterer
+            ( fun c ->
+                let voisins_c = voisins graphe c in
+                let nb_voisins = voisins_c |> List.length in
+
+                let lin_c = linearise graphe c in
+                set_elt l (lin_c, lin_c) (float_of_int nb_voisins);
+
+                List.iter
+                    ( fun c_v ->
+                        let lin_c_v = linearise graphe c_v in
+                        let coeff_v = (lin_c_v, lin_c_v) in
+                        set_elt l coeff_v (get_elt l coeff_v -. 1.)
+                    )
+                    voisins_c
+            )
+            graphe;
+
         l
 
     (* Calcule le cardinal des tas de sable récurrents *)
     let cardinal_recurrents (p: param) (dim: coord): int =
-        0
+        laplacien_reduit p dim |> determinant |> int_of_float
 
 end

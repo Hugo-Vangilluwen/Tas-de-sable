@@ -50,7 +50,8 @@ struct
 
   let divide = (/.)
 
-  let print a = print_string ((to_string a) ^ "\n")
+(*   let print a = print_string ((to_string a) ^ "\n") *)
+  let print a = print_float a
 
   let trim = int_of_float
 

@@ -175,7 +175,7 @@ module Tas_sable (G: GRILLE) = struct
 
     (* Dépose un à un les grain de sable dans tas dans la case c
      * change d'étape à chaque appuis de touche sur le clavier
-     * Effectue au total n étapes
+     * Effectue au total ng.longueur étapes
      *)
     let un_grain_clavier (p: param) (tas: t) (c: coord) (n: int): t =
         let source = tas |> dimensions |> (creer p) in
@@ -219,7 +219,6 @@ module Tas_sable (G: GRILLE) = struct
 
     (* Calcule le laplacien réduit de la grille *)
     let laplacien_reduit (p: param) (dim: coord): matrix =
-        (* Fonction non finie *)
         (* L = out(G) - A^t *)
         let graphe = G.creer p dim in
         let n = graphe |> G.nb_cases in
@@ -228,16 +227,18 @@ module Tas_sable (G: GRILLE) = struct
         iterer
             ( fun c ->
                 let voisins_c = voisins graphe c in
-                let nb_voisins = voisins_c |> List.length in
-
                 let lin_c = linearise graphe c in
-                set_elt l (lin_c, lin_c) (float_of_int nb_voisins);
 
+                (* out(G) *)
+                let max_c = c |> (max_valeur graphe) |> float_of_int in
+                set_elt l (lin_c, lin_c) max_c;
+
+                (* - A^t *)
                 List.iter
                     ( fun c_v ->
                         let lin_c_v = linearise graphe c_v in
-                        let coeff_v = (lin_c_v, lin_c_v) in
-                        set_elt l coeff_v (get_elt l coeff_v -. 1.)
+                        let coeff = (lin_c_v, lin_c) in
+                        set_elt l coeff ((get_elt l coeff) -. 1.)
                     )
                     voisins_c
             )

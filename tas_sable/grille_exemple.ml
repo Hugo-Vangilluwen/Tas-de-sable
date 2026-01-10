@@ -78,11 +78,11 @@ module Grille_exemple: GRILLE with type param = unit = struct
         f (1, 0)
 
     let imprimer (g: t): unit =
-        for x = 0 to 1 do
-            (x, 0) |> (valeur g) |>
-            (fun n -> char_of_int (n + 48) (* char_of_int '0' *)
-            ) |> print_char
-        done;
+        print_string "u ";
+        print_int g.u;
+        print_newline ();
+        print_string "v ";
+        print_int g.v;
         print_newline ()
 
     let dim_cases: int ref = ref 200 (* Taille par défaut *)

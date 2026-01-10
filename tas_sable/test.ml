@@ -43,4 +43,4 @@ let main_test: unit =
     Test_hexagonale.test () (40, 40);
     Test_ligne.test () (21, 0);
     Test_exemple.test () (2, 0);
-    Test_puit_carree.test ([(15, 15); (14, 15)], ()) (50, 50)
+    Test_puit_carree.test ([(15, 15); (14, 15)], ()) (50, 50);

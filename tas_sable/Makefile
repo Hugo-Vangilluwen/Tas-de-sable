@@ -20,13 +20,27 @@ $(CIBLE): $(SOURCES) main.ml
 # %.cmx: %.ml
 # 	ocamlfind ocamlopt -c $< $(OCAML_OPT)
 
+
 test: $(SOURCES) test.ml
 	ocamlfind ocamlopt -o test -linkpkg $(OCAML_OPT) $(SOURCES) test.ml
 
+doc: $(CIBLE)
+	@if [ -e "doc" ]; then \
+		if [ ! -d "doc" ]; then \
+			echo "doc existe déjà comme fichier"; \
+			exit 1; \
+		fi \
+	else \
+		mkdir doc; \
+	fi
+	ocamlfind ocamldoc -html -d doc $(OCAML_OPT) $(SOURCES) main.ml
 
-.PHONY: clean execute
+
+.PHONY: clean run
+
 clean:
 	rm -f *.cmx *.cmi *.o $(CIBLE) test
+	rm -rf doc
 
 run: $(CIBLE)
 	./$(CIBLE)

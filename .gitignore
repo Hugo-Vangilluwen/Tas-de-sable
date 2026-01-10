@@ -4,6 +4,7 @@
 *.o
 tas_sable/tas_sable
 tas_sable/test
+tas_sable/doc/*
 
 # Relatif au LaTeX
 *.aux

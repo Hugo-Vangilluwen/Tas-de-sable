@@ -1,7 +1,7 @@
 CIBLE := tas_sable
 BUILD_DIR := ./build
 
-SOURCES := tas_sable.ml grille_carree.ml grille_hexagonale.ml grille_puit.ml grille_ligne.ml
+SOURCES := tas_sable.ml grille_carree.ml grille_hexagonale.ml grille_puit.ml grille_ligne.ml order.ml eltsI.ml elts.ml helpers.ml matrixI.ml matrix.ml
 # grille_montagne.ml
 OBJETS := $(SOURCES:%.ml=%.cmx)
 
@@ -28,5 +28,5 @@ test: $(SOURCES) test.ml
 clean:
 	rm -f *.cmx *.cmi *.o $(CIBLE) test
 
-execute: $(CIBLE)
+run: $(CIBLE)
 	./$(CIBLE)

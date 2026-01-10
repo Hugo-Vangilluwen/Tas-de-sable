@@ -1,3 +1,5 @@
+open Matrix
+
 (* Type representant les coordonnees d'une case *)
 type coord = int * int
 

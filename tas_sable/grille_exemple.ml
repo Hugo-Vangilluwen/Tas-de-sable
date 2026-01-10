@@ -33,7 +33,7 @@ module Grille_exemple: GRILLE with type param = unit = struct
     let nb_cases (g: t): int =
         2
 
-    let linearise (_: t) ((x, _): coord): int =
+    let lineariser (_: t) ((x, _): coord): int =
         x + 1
 
     let valeur (g: t) ((x, y): coord): int =

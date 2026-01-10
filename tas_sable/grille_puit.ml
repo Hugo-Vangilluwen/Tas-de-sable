@@ -30,6 +30,10 @@ module Ajouter_puit (G: GRILLE): GRILLE with type param = coord list * G.param =
     let nb_cases (g: t): int =
         G.nb_cases g.grille_int - List.length g.puits
 
+    let lineariser (g: t) (c: coord): int =
+        G.lineariser g.grille_int c
+        - List.length (List.filter (fun p -> c < p) g.puits)
+
     let valeur (g: t) = G.valeur g.grille_int
 
     (* Teste si la coordonnee n'est pas un puit *)

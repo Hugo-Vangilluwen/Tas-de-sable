@@ -23,7 +23,7 @@ module type GRILLE = sig
     val nb_cases: t -> int
 
     (* Linéraise les coordonnées entre 1 et nb_cases grille *)
-    val linearise: t -> coord -> int
+    val lineariser: t -> coord -> int
 
     (* Renvoie la valeur de la case de coordonnées c *)
     val valeur : t -> coord -> int
@@ -227,7 +227,7 @@ module Tas_sable (G: GRILLE) = struct
         iterer
             ( fun c ->
                 let voisins_c = voisins graphe c in
-                let lin_c = linearise graphe c in
+                let lin_c = lineariser graphe c in
 
                 (* out(G) *)
                 let max_c = c |> (max_valeur graphe) |> float_of_int in
@@ -236,7 +236,7 @@ module Tas_sable (G: GRILLE) = struct
                 (* - A^t *)
                 List.iter
                     ( fun c_v ->
-                        let lin_c_v = linearise graphe c_v in
+                        let lin_c_v = lineariser graphe c_v in
                         let coeff = (lin_c_v, lin_c) in
                         set_elt l coeff ((get_elt l coeff) -. 1.)
                     )

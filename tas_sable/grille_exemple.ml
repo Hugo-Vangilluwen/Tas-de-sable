@@ -1,90 +1,91 @@
-(* Modélise une grille en ligne
+(* Modélise le multigraphe de l'exemple 6.14 du livre
+ * Divisors and Sandpiles: An Introduction to Chip-Firing
+ * de Scott David et Corry Perkinson
  *)
 
 open Tas_sable
 
-module Grille_ligne: GRILLE with type param = unit = struct
+(* Cette erreur est levé quand la coordonnée en entrée n'est pas
+ * (0, 0) ou (1, 0)
+ *)
+exception NiuNiv
+
+module Grille_exemple: GRILLE with type param = unit = struct
     type param = unit
 
     type t = {
-        ligne: int array;
-        longueur: int;
+        mutable u: int; (* 0 *)
+        mutable v: int; (* 1 *)
     }
 
-    let max_valeur (_: t) (_: coord): int = 1
+    let max_valeur (_: t) ((x, y): coord): int =
+        if x = 0 then 6
+        else if x = 1 then 5
+        else raise NiuNiv
 
-    let creer () ((x, y): coord): t =
-        assert (y = 0);
+    let creer () (c: coord): t =
+        assert (c = (2, 0));
         {
-            ligne = Array.make x 0;
-            longueur = x;
+            u = 0;
+            v = 0
         }
 
     let nb_cases (g: t): int =
-        g.longueur
+        2
 
-    let lineariser (g: t) ((x, y): coord): int =
+    let lineariser (_: t) ((x, _): coord): int =
         x + 1
 
     let valeur (g: t) ((x, y): coord): int =
-        g.ligne.(x)
+        if x = 0 then g.u
+        else if x = 1 then g.v
+        else raise NiuNiv
 
     let deposer (g: t) (n: int) ((x, y): coord): unit =
         assert (y = 0);
-        g.ligne.(x) <- g.ligne.(x) + n
+        if x = 0 then g.u <- g.u + n
+        else if x = 1 then g.v <- g.v + n
+        else raise NiuNiv
 
     let correcte_coord (g: t) ((x, y): coord): bool =
-        0 <= x && x < g.longueur && y = 0
+        (x = 0 || x = 1) && y = 0
 
     let voisins (g: t) ((x, y): coord): coord list =
         assert (y = 0);
-        let v = ref [] in
-
-        if 0 < x then
-            v := (x-1, y) :: !v
-        else ();
-        if x < g.longueur - 1 then
-            v := (x+1, y) :: !v
-        else ();
-
-        !v
+        if x = 0 then [(1, 0); (1, 0); (1, 0); (1, 0); (1, 0)]
+        else if x = 1 then [(0, 0); (0, 0); (0, 0)]
+        else raise NiuNiv
 
     let copier (g: t): t =
         {
-            ligne = Array.copy g.ligne;
-            longueur = g.longueur
+            u = g.u;
+            v = g.v
         }
 
     let dimensions (g: t): coord =
-        (g.longueur, 0)
+        (2, 0)
 
     let superposer (g1: t) (g2: t): t =
-        assert (g1.longueur = g2.longueur);
-        let g = creer () (g1.longueur, 0) in
+        let g = creer () (2, 0) in
 
-        for x = 0 to g1.longueur - 1 do
-            g.ligne.(x) <- g1.ligne.(x) + g2.ligne.(x)
-        done;
+        g.u <- g1.u + g2.u;
+        g.v <- g1.v + g2.v;
 
         g
 
     let iterer (f: coord -> unit) (g: t): unit =
-        for x = 0 to g.longueur - 1 do
-            f (x, 0)
-        done
+        f (0, 0);
+        f (1, 0)
 
     let imprimer (g: t): unit =
-        for x = 0 to g.longueur - 1 do
-            (x, 0) |> (valeur g) |>
-            (fun n -> match n with
-            | 0 -> ' '
-            | 1 -> '*'
-            | _ -> char_of_int (n + 48) (* char_of_int '0' *)
-            ) |> print_char
-        done;
+        print_string "u ";
+        print_int g.u;
+        print_newline ();
+        print_string "v ";
+        print_int g.v;
         print_newline ()
 
-    let dim_cases: int ref = ref 50 (* Taille par défaut *)
+    let dim_cases: int ref = ref 200 (* Taille par défaut *)
 
     let mettre_dim_cases (a: int): unit =
         dim_cases := a
@@ -96,7 +97,7 @@ module Grille_ligne: GRILLE with type param = unit = struct
             Graphics.rgb u u u
 
     let ouvrir_fenetre (g: t): unit =
-        " " ^(g.longueur * !dim_cases |> string_of_int)
+        " " ^ (2 * !dim_cases |> string_of_int)
         ^ "x" ^ (!dim_cases |> string_of_int)
         |> Graphics.open_graph
 
@@ -126,5 +127,6 @@ module Grille_ligne: GRILLE with type param = unit = struct
         Graphics.fill_rect (!dim_cases*x) (!dim_cases*y) !dim_cases !dim_cases
 end
 
-(* Tas de sable linéaire *)
-module Tsl = Tas_sable(Grille_ligne)
+(* Tas de sable exemple *)
+module Tse = Tas_sable(Grille_exemple)
+

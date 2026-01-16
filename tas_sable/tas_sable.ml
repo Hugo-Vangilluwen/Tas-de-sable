@@ -1,4 +1,6 @@
-(* Type representant les coordonnees d'une case *)
+open EltsQ
+
+(* Type representant les coordonnées d'une case *)
 type coord = int * int
 
 (* Signature d'une structure de grille *)
@@ -6,7 +8,7 @@ module type GRILLE = sig
     (* Paramètre interne *)
     type param
 
-    (* Type representant une grille *)
+    (* Type représentant une grille *)
     type t
 
     (* Nombre maximum de voisin moins un
@@ -17,13 +19,19 @@ module type GRILLE = sig
     (* Cree une grille de dimension n x m *)
     val creer : param -> coord -> t
 
-    (* Renvoie la valeur de la case de coordonnees c *)
+    (* Renvoie le nombre de case dans la grille *)
+    val nb_cases: t -> int
+
+    (* Linéraise les coordonnées entre 1 et nb_cases grille *)
+    val lineariser: t -> coord -> int
+
+    (* Renvoie la valeur de la case de coordonnées c *)
     val valeur : t -> coord -> int
 
-    (* Modifie la valeur de la case de coordonnees c *)
+    (* Modifie la valeur de la case de coordonnées c *)
     val deposer : t -> int -> coord -> unit
 
-    (* Teste si la coordonnee est correcte *)
+    (* Teste si la coordonnée est correcte *)
     val correcte_coord : t -> coord -> bool
 
     (* Renvoie les voisins de c *)
@@ -46,15 +54,19 @@ module type GRILLE = sig
     (* Imprime la grille dans la console *)
     val imprimer : t -> unit
 
+    (* Définit la dimension des cases dans l'affichage  *)
+    val mettre_dim_cases : int -> unit
+
+    (* Donne la couleur de la case pour l'affichage *)
+    val couleur_case: t -> coord -> Graphics.color
+
     (* Ouvre une fenetre Graphics de la bonne taille *)
     val ouvrir_fenetre : t -> unit
 
     (* Affiche la grille dans une fenetre graphique
      * Les valeurs de la grille doivent etre entre 0 et max_voisin - 1
-     * Si une seconde grille est donnee, seuls les cases de valeurs differentes
-     * sont redessinees
      *)
-    val afficher_grille : t -> t option -> unit
+    val afficher_case: t -> coord -> unit
 end
 
 
@@ -109,6 +121,28 @@ module Tas_sable (G: GRILLE) = struct
         avalanche somme;
         somme
 
+
+    (* Affiche la grille dans une fenetre graphique
+     * Les valeurs de la grille doivent etre entre 0 et max_voisin - 1
+     * Si une seconde grille est donnee, seuls les cases de valeurs differentes
+     * sont redessinees
+     *)
+    let afficher_grille (g: t) (g_opt: t option): unit =
+        let egal_grilles : coord -> bool = match g_opt with
+        | None -> fun _ -> false
+        | Some(gg) -> fun c -> (valeur g c) = (valeur gg c)
+        in
+
+        iterer
+            (fun c ->
+                if egal_grilles c then ()
+                else begin
+                    (couleur_case g c) |> Graphics.set_color;
+                    afficher_case g c
+                end
+            )
+            g
+
     (* Affiche le tas de sable dans une fenetre graphique *)
     let afficher (tas: t): unit =
         ouvrir_fenetre tas;
@@ -141,7 +175,7 @@ module Tas_sable (G: GRILLE) = struct
 
     (* Dépose un à un les grain de sable dans tas dans la case c
      * change d'étape à chaque appuis de touche sur le clavier
-     * Effectue au total n étapes
+     * Effectue au total ng.longueur étapes
      *)
     let un_grain_clavier (p: param) (tas: t) (c: coord) (n: int): t =
         let source = tas |> dimensions |> (creer p) in
@@ -183,5 +217,40 @@ module Tas_sable (G: GRILLE) = struct
 
         double_max + stat_db_max
 
+    (* Calcule le laplacien réduit de la grille *)
+    let laplacien_reduit (p: param) (dim: coord): RationnalMatrix.matrix =
+        (* L = out(G) - A^t *)
+        let graphe = G.creer p dim in
+        let n = graphe |> G.nb_cases in
+        let l = RationnalMatrix.empty n n in
+
+        iterer
+            ( fun c ->
+            let voisins_c = voisins graphe c in
+            let lin_c = lineariser graphe c in
+
+            (* out(G) *)
+            let max_c = c |> (max_valeur graphe) |> Q.of_int in
+            RationnalMatrix.set_elt l (lin_c, lin_c) max_c;
+
+            (* - A^t *)
+            List.iter
+                ( fun c_v ->
+                let lin_c_v = lineariser graphe c_v in
+                let coeff = (lin_c_v, lin_c) in
+                RationnalMatrix.set_elt
+                    l
+                    coeff
+                    (Q.sub (RationnalMatrix.get_elt l coeff) (Q.of_int 1))
+                )
+                voisins_c
+            )
+            graphe;
+
+        l
+
+    (* Calcule le cardinal des tas de sable récurrents *)
+    let cardinal_recurrents (p: param) (dim: coord): int =
+        laplacien_reduit p dim |> RationnalMatrix.determinant |> Q.to_int |> abs
 
 end

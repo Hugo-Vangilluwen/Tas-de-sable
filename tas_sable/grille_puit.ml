@@ -21,10 +21,18 @@ module Ajouter_puit (G: GRILLE): GRILLE with type param = coord list * G.param =
     let creer ((puits, param_int): param) (dim: coord): t =
         let g = G.creer param_int dim in
         List.iter (fun puit -> assert (G.correcte_coord g puit)) puits;
+        (* Trier est nécessaire pour tester tester l'égalité des puits *)
         {
             grille_int = g;
             puits = List.sort compare puits;
         }
+
+    let nb_cases (g: t): int =
+        G.nb_cases g.grille_int - List.length g.puits
+
+    let lineariser (g: t) (c: coord): int =
+        G.lineariser g.grille_int c
+        - List.length (List.filter (fun p -> c < p) g.puits)
 
     let valeur (g: t) = G.valeur g.grille_int
 
@@ -57,14 +65,20 @@ module Ajouter_puit (G: GRILLE): GRILLE with type param = coord list * G.param =
         }
 
     let iterer (f: coord -> unit) (g: t): unit =
-        G.iterer (fun c -> if est_pas_puit g c then f c) g.grille_int
+        G.iterer f g.grille_int
 
     let imprimer (g: t) = G.imprimer g.grille_int
 
+    let mettre_dim_cases = G.mettre_dim_cases
+
+    let couleur_case (g: t) (c: coord): Graphics.color =
+        if List.mem c g.puits then begin
+            Graphics.blue
+            end
+        else
+            G.couleur_case g.grille_int c
+
     let ouvrir_fenetre (g: t) = G.ouvrir_fenetre g.grille_int
 
-    let afficher_grille (g: t) (g_opt: t option) =
-        match g_opt with
-        | None -> G.afficher_grille g.grille_int None
-        | Some(gg) -> G.afficher_grille g.grille_int (Some(gg.grille_int))
+    let afficher_case (g: t) = G.afficher_case g.grille_int
 end

@@ -1,11 +1,11 @@
 CIBLE := tas_sable
 BUILD_DIR := ./build
 
-SOURCES := order.ml eltsI.ml elts.ml helpers.ml matrixI.ml matrix.ml tas_sable.ml grille_carree.ml grille_hexagonale.ml grille_puit.ml grille_ligne.ml grille_exemple.ml
+SOURCES := order.ml eltsI.ml elts.ml helpers.ml matrixI.ml matrix.ml eltsQ.ml tas_sable.ml grille_carree.ml grille_hexagonale.ml grille_puit.ml grille_ligne.ml grille_exemple.ml
 # grille_montagne.ml
 OBJETS := $(SOURCES:%.ml=%.cmx)
 
-OCAML_OPT := -package graphics -package unix
+OCAML_OPT := -package graphics,unix,zarith
 
 
 all: $(CIBLE)

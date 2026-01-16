@@ -5,13 +5,18 @@ open Grille_hexagonale
 open Grille_puit
 open Grille_ligne
 
+open EltsQ
+
 module Tsp = Tas_sable(Ajouter_puit (Grille_carree))
 
 
 let main: unit =
     for n = 1 to 10 do
+        print_int n;
+        print_string ": ";'
         print_int (Tsc.cardinal_recurrents () (n, n));
         print_newline ();
+(*         RationnalMatrix.print (Tsc.laplacien_reduit () (n,n)); *)
     done
 
     (*

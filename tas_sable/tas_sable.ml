@@ -1,4 +1,4 @@
-open Matrix.EltMatrix
+open EltsQ
 
 (* Type representant les coordonnées d'une case *)
 type coord = int * int
@@ -218,29 +218,32 @@ module Tas_sable (G: GRILLE) = struct
         double_max + stat_db_max
 
     (* Calcule le laplacien réduit de la grille *)
-    let laplacien_reduit (p: param) (dim: coord): matrix =
+    let laplacien_reduit (p: param) (dim: coord): RationnalMatrix.matrix =
         (* L = out(G) - A^t *)
         let graphe = G.creer p dim in
         let n = graphe |> G.nb_cases in
-        let l = empty n n in
+        let l = RationnalMatrix.empty n n in
 
         iterer
             ( fun c ->
-                let voisins_c = voisins graphe c in
-                let lin_c = lineariser graphe c in
+            let voisins_c = voisins graphe c in
+            let lin_c = lineariser graphe c in
 
-                (* out(G) *)
-                let max_c = c |> (max_valeur graphe) |> float_of_int in
-                set_elt l (lin_c, lin_c) max_c;
+            (* out(G) *)
+            let max_c = c |> (max_valeur graphe) |> Q.of_int in
+            RationnalMatrix.set_elt l (lin_c, lin_c) max_c;
 
-                (* - A^t *)
-                List.iter
-                    ( fun c_v ->
-                        let lin_c_v = lineariser graphe c_v in
-                        let coeff = (lin_c_v, lin_c) in
-                        set_elt l coeff ((get_elt l coeff) -. 1.)
-                    )
-                    voisins_c
+            (* - A^t *)
+            List.iter
+                ( fun c_v ->
+                let lin_c_v = lineariser graphe c_v in
+                let coeff = (lin_c_v, lin_c) in
+                RationnalMatrix.set_elt
+                    l
+                    coeff
+                    (Q.sub (RationnalMatrix.get_elt l coeff) (Q.of_int 1))
+                )
+                voisins_c
             )
             graphe;
 
@@ -248,6 +251,6 @@ module Tas_sable (G: GRILLE) = struct
 
     (* Calcule le cardinal des tas de sable récurrents *)
     let cardinal_recurrents (p: param) (dim: coord): int =
-        laplacien_reduit p dim |> determinant |> int_of_float
+        laplacien_reduit p dim |> RationnalMatrix.determinant |> Q.to_int |> abs
 
 end

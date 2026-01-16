@@ -11,13 +11,18 @@ module Tsp = Tas_sable(Ajouter_puit (Grille_carree))
 
 
 let main: unit =
-    for n = 1 to 10 do
+    for n = 1 to 7 do
         print_int n;
-        print_string ": ";'
+        print_string ": ";
         print_int (Tsc.cardinal_recurrents () (n, n));
-        print_newline ();
+        print_newline ()
 (*         RationnalMatrix.print (Tsc.laplacien_reduit () (n,n)); *)
-    done
+    done;
+
+(*     let _ = Tsm.un_grain_temps 0.5 (Tsm.creer 0.5 (10, 10)) (4, 4) 300 0.01 in *)
+(*     Graphics.close_graph () *)
+(*     let id = Tsm.identite 0.5 (10, 10) in *)
+(*     Tsm.afficher id *)
 
     (*
     let source = Tsm.creer (20, 20) in

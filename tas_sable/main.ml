@@ -4,6 +4,7 @@ open Grille_hexagonale
 open Grille_montagne
 open Grille_puit
 open Grille_ligne
+open Grille_complete
 
 open EltsQ
 
@@ -11,16 +12,28 @@ module Tsp = Tas_sable(Ajouter_puit (Grille_carree))
 
 
 let main: unit =
-    for n = 1 to 7 do
+    for n = 1 to 20 do
+        let c = (n, n) in
+        let card_rec = Tsc.cardinal_recurrents () c in
+(*         let card_stab = Tsh.cardinal_stables () c in *)
         print_int n;
         print_string ": ";
-        print_int (Tsc.cardinal_recurrents () (n, n));
+        print_int (card_rec);
+        let graphe = Tsc.creer () c in
+        let rapport_rec_stab = Tsc.reduire graphe
+            (fun acc c -> Q.div acc (Q.of_int (Tsc.max_valeur graphe c + 1)))
+            (Q.of_int card_rec)
+            in
+(*         print_int (card_stab); *)
+(*         print_string " = "; *)
+        print_string " / ";
+        print_float (Q.to_float rapport_rec_stab);
         print_newline ()
-(*         RationnalMatrix.print (Tsc.laplacien_reduit () (n,n)); *)
+(*         RationnalMatrix.print (Tsc.laplacien_reduit () (n,n)) *)
     done;
 
-(*     let _ = Tsm.un_grain_temps 0.5 (Tsm.creer 0.5 (10, 10)) (4, 4) 300 0.01 in *)
-(*     Graphics.close_graph () *)
+(*     let _ = Tscomplet.un_grain_temps () (Tscomplet.creer () (10, 0)) (4, 0) 123 0.05 in () *)
+(*     in Graphics.close_graph () *)
 (*     let id = Tsm.identite 0.5 (10, 10) in *)
 (*     Tsm.afficher id *)
 

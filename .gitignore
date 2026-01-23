@@ -10,3 +10,6 @@ tas_sable/doc/*
 *.aux
 *.log
 *.synctex.gz
+
+# Semi-groupe
+Semigroup/*

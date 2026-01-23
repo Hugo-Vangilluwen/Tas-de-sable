@@ -116,11 +116,20 @@ module Tas_sable (G: GRILLE) = struct
         else ()
 
     (* Somme tas1 et tas2 *)
-    let (+) (tas1: t) (tas2: t) =
+    let sommer (tas1: t) (tas2: t) =
         let somme = superposer tas1 tas2 in
         avalanche somme;
         somme
 
+    (* Calcule f( f( ... f(acc, (0, 0)) (0, 1)) ... )
+     * f doit être associative et commutative
+     *)
+    let reduire (tas: t) (f: 'a -> coord -> 'a) (acc: 'a): 'a =
+        let res = ref acc in
+        iterer
+            (fun c -> res := f !res c)
+            tas;
+        !res
 
     (* Affiche la grille dans une fenetre graphique
      * Les valeurs de la grille doivent etre entre 0 et max_voisin - 1
@@ -162,7 +171,7 @@ module Tas_sable (G: GRILLE) = struct
         let tas_anime = ref tas in
 
         for i = 1 to n do
-            let tas_tmp = !tas_anime + source in
+            let tas_tmp = sommer !tas_anime source in
             afficher_grille tas_tmp (Some(!tas_anime));
             tas_anime := tas_tmp;
             attendre ()
@@ -215,7 +224,12 @@ module Tas_sable (G: GRILLE) = struct
             (fun c -> deposer stat_db_max (-2 * (valeur stat_db_max c)) c)
             stat_db_max;
 
-        double_max + stat_db_max
+        sommer double_max stat_db_max
+
+    (* Calcule le cardinal des tas de sable stables *)
+    let cardinal_stables (p: param) (dim: coord): int =
+        let graphe = G.creer p dim in
+        reduire graphe (fun acc c -> acc * (max_valeur graphe c + 1)) 1
 
     (* Calcule le laplacien réduit de la grille *)
     let laplacien_reduit (p: param) (dim: coord): RationnalMatrix.matrix =
@@ -230,7 +244,7 @@ module Tas_sable (G: GRILLE) = struct
             let lin_c = lineariser graphe c in
 
             (* out(G) *)
-            let max_c = c |> (max_valeur graphe) |> Q.of_int in
+            let max_c = c |> (max_valeur graphe) |> ((+) 1) |> Q.of_int in
             RationnalMatrix.set_elt l (lin_c, lin_c) max_c;
 
             (* - A^t *)

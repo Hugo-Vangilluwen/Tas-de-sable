@@ -1,7 +1,11 @@
 CIBLE := tas_sable
 BUILD_DIR := ./build
 
-SOURCES := order.ml eltsI.ml elts.ml helpers.ml matrixI.ml matrix.ml eltsQ.ml tas_sable.ml grille_carree.ml grille_hexagonale.ml grille_puit.ml grille_ligne.ml grille_exemple.ml grille_montagne.ml
+MATRIX_LIB := order.ml eltsI.ml elts.ml helpers.ml matrixI.ml matrix.ml eltsQ.ml
+
+GRILLES := grille_carree.ml grille_hexagonale.ml grille_puit.ml grille_ligne.ml grille_exemple.ml grille_montagne.ml grille_complete.ml
+
+SOURCES := $(MATRIX_LIB) tas_sable.ml $(GRILLES)
 OBJETS := $(SOURCES:%.ml=%.cmx)
 
 OCAML_OPT := -package graphics,unix,zarith
@@ -20,9 +24,6 @@ $(CIBLE): $(SOURCES) main.ml
 # 	ocamlfind ocamlopt -c $< $(OCAML_OPT)
 
 
-test: $(SOURCES) test.ml
-	ocamlfind ocamlopt -o test -linkpkg $(OCAML_OPT) $(SOURCES) test.ml
-
 doc: $(CIBLE)
 	@if [ -e "doc" ]; then \
 		if [ ! -d "doc" ]; then \
@@ -35,7 +36,11 @@ doc: $(CIBLE)
 	ocamlfind ocamldoc -html -d doc $(OCAML_OPT) $(SOURCES) main.ml
 
 
-.PHONY: clean run
+.PHONY: clean run test
+
+test: $(SOURCES) test.ml
+	ocamlfind ocamlopt -o test -linkpkg $(OCAML_OPT) $(SOURCES) test.ml
+	./test
 
 clean:
 	rm -f *.cmx *.cmi *.o $(CIBLE) test

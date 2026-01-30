@@ -12,6 +12,21 @@ module Tsp = Tas_sable(Ajouter_puit (Grille_carree))
 
 
 let main: unit =
+    let source = Tsc.creer () (40, 40) in
+    Tsc.deposer source 1 (15, 15);
+    Tsc.deposer source 1 (34, 26);
+    let attendre1 () =
+         Unix.sleepf 0.001
+    in
+    let attendre2 () =
+        let _ = Graphics.wait_next_event[Key_pressed] in ()
+    in
+    let tas1 = Tsc.creer () (40, 40) in
+    Tsc.mettre_dim_cases 20;
+    let tas2 = Tsc.animer tas1 1000 source attendre1 in
+    let tas3 = Tsc.animer tas2 500 source attendre2 in ()
+
+(*
     for n = 1 to 20 do
         let c = (n, n) in
         let card_rec = Tsc.cardinal_recurrents () c in
@@ -31,8 +46,9 @@ let main: unit =
         print_newline ()
 (*         RationnalMatrix.print (Tsc.laplacien_reduit () (n,n)) *)
     done;
+*)
 
-(*     let _ = Tscomplet.un_grain_temps () (Tscomplet.creer () (10, 0)) (4, 0) 123 0.05 in () *)
+(*     let _ = Tsc.un_grain_temps () (Tscomplet.creer () (10, 0)) (4, 0) 123 0.05 in () *)
 (*     in Graphics.close_graph () *)
 (*     let id = Tsm.identite 0.5 (10, 10) in *)
 (*     Tsm.afficher id *)

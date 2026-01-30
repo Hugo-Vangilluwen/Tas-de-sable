@@ -67,7 +67,6 @@ module Grille_montagne : GRILLE with type param = float = struct
                 if alpha = 0.0 then int_of_float n_c
                 else max 1 (int_of_float n_c)
             in
-
             let nx = x + dx and ny = y + dy in
             for _ = 1 to n do v := (nx, ny) :: !v done
         ) l;

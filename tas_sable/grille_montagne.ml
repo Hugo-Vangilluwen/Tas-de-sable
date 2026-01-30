@@ -10,12 +10,19 @@ module Grille_montagne : GRILLE with type param = float = struct
         alpha : float;
     }
 
+    (* alpha est en radian *)
     let creer (alpha: param) (dim: coord) : t =
         let (x, y) = dim in
         { grille = Array.make_matrix x y 0;
             largeur = x;
             hauteur = y;
             alpha = alpha }
+
+    let nb_cases (g: t): int =
+        g.largeur * g.hauteur
+
+    let lineariser (g: t) ((x, y): coord): int =
+        x * g.hauteur + y + 1
 
     let valeur (g: t) (c: coord): int =
         let (x, y) = c in
@@ -90,7 +97,7 @@ module Grille_montagne : GRILLE with type param = float = struct
 
     let superposer (g1: t) (g2: t): t =
         assert (g1.largeur = g2.largeur && g1.hauteur = g2.hauteur && g1.alpha = g2.alpha);
-        let g = { 
+        let g = {
             grille = Array.make_matrix g1.largeur g1.hauteur 0;
             largeur = g1.largeur;
             hauteur = g1.hauteur;
@@ -127,13 +134,23 @@ module Grille_montagne : GRILLE with type param = float = struct
             print_newline ()
         done
 
-    let a: int = 20
+    let dim_cases: int ref = ref 20 (* Taille par défaut *)
+
+    let mettre_dim_cases (a: int): unit =
+        dim_cases := a
+
+    let couleur_case (g: t) (c: coord): Graphics.color =
+        let (x, y) = c in
+        match valeur g (x, y) with
+        | n -> let u = 255 - 255 * n / max_valeur g (x, y) in
+            Graphics.rgb u u u
 
     let ouvrir_fenetre (g: t): unit =
-        " " ^ (g.largeur * a |> string_of_int)
-        ^ "x" ^ (g.hauteur * a |> string_of_int)
+        " " ^ (g.largeur * !dim_cases |> string_of_int)
+        ^ "x" ^ (g.hauteur * !dim_cases |> string_of_int)
         |> Graphics.open_graph
 
+    (*
     let afficher_grille (g: t) (g_opt: t option): unit =
         let egal_grilles : coord -> bool = match g_opt with
         | None -> fun _ -> false
@@ -152,6 +169,11 @@ module Grille_montagne : GRILLE with type param = float = struct
                 end
             )
             g
+    *)
+
+    let afficher_case (g: t) (c: coord): unit =
+        let (x, y) = c in
+        Graphics.fill_rect (!dim_cases*x) (!dim_cases*y) !dim_cases !dim_cases
 end
 
 (* Tas de sable montagne *)

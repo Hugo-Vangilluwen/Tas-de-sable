@@ -21,6 +21,12 @@ module Grille_carree: GRILLE with type param = unit = struct
             hauteur = y
         }
 
+    let nb_cases (g: t): int =
+        g.largeur * g.hauteur
+
+    let lineariser (g: t) ((x, y): coord): int =
+        x * g.hauteur + y + 1
+
     let valeur (g: t) ((x, y): coord): int =
         g.grille.(x).(y)
 
@@ -108,11 +114,20 @@ module Grille_carree: GRILLE with type param = unit = struct
             print_newline ()
         done
 
-    let a: int = 20
+    let dim_cases: int ref = ref 10 (* Taille par défaut *)
+
+    let mettre_dim_cases (a: int): unit =
+        dim_cases := a
+
+    let couleur_case (g: t) (c: coord): Graphics.color =
+        let (x, y) = c in
+        match valeur g (x, y) with
+        | n -> let u = 255 - 255 * n / max_valeur g (x, y) in
+            Graphics.rgb u u u
 
     let ouvrir_fenetre (g: t): unit =
-        " " ^ (g.largeur * a |> string_of_int)
-        ^ "x" ^ (g.hauteur * a |> string_of_int)
+        " " ^ (g.largeur * !dim_cases |> string_of_int)
+        ^ "x" ^ (g.hauteur * !dim_cases |> string_of_int)
         |> Graphics.open_graph
 
     let afficher_grille (g: t) (g_opt: t option): unit =
@@ -125,14 +140,19 @@ module Grille_carree: GRILLE with type param = unit = struct
             (fun (x,y)  ->
                 if egal_grilles (x, y) then ()
                 else begin
-                    (match valeur g (x, y) with
-                    | n -> let u = 255 - 255 * n / max_valeur g (x, y) in
-                    Graphics.rgb u u u
-                    ) |>  Graphics.set_color;
-                    Graphics.fill_rect (a*x) (a*y) a a
+                    couleur_case g (x, y) |>  Graphics.set_color;
+                    Graphics.fill_rect
+                        (!dim_cases*x)
+                        (!dim_cases*y)
+                        !dim_cases
+                        !dim_cases
                 end
             )
             g
+
+    let afficher_case (g: t) (c: coord): unit =
+        let (x, y) = c in
+        Graphics.fill_rect (!dim_cases*x) (!dim_cases*y) !dim_cases !dim_cases
 end
 
 (* Tas de sable carre *)

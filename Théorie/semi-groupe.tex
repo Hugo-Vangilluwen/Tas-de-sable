@@ -3,29 +3,68 @@
 \section{Semi-groupe}
 
 \begin{definition}
-Soit $E$ un ensemble et $*: E \times E \rightarrow E$ un loi interne.
+Un magma est un couple $(E, *)$ où $E$ est un ensemble et $*: E \times E
+\rightarrow E$ est une loi interne.
 $(E, *)$ est un semi-groupe si $*$ est associative.
-$(E, *)$ est un monoïde si de plus, il existe un élément neutre
-c'est-à-dire est unifère.
+$(E, *)$ est un monoïde si de plus, il est unifère
+c'est-à-dire il existe un élément neutre $e$.
 \end{definition}
 
-\begin{definition}[Idéal]
-Soit $(E, *)$ un semi-groupe.
+\begin{exemple}
+$(\mathbb{N}, +, 0)$ est un monoïde.
+$(\mathbb{Z}, -)$ est un magma non associatif et non unifère.
+\end{exemple}
+
+\begin{remarque}
+S'il n'y a aucune ambiguïté, on notera simplement $x * y = xy$.
+\end{remarque}
+
+\begin{remarque}
+On utilisera le terme de structure dans les propositions qui s'applique à la fois aux magmas, semi-groupes et monoïdes.
+\end{remarque}
+
+\begin{proposition}
+Dans un monoïde, le neutre est unique.
+On note alors $(M, *, e)$.
+\end{proposition}
+
+\begin{proof}
+Soient $(M, *)$ un monoïde et $e, e'$ deux neutres.
+Alors $e * e' = e' * e = e$ et $e' * e = e' * e = e'$.
+Ainsi $e = e'$.
+\end{proof}
+
+\begin{definition}[Structure des parties]
+Soit $(E, *)$ un magma (resp. semi-groupe).
 L'opération $*$ peut être étendue aux parties de $E$ ainsi,
 pour $(A, B) \in \mathcal{P}(E)^2$ :
 \begin{equation}
     A * B = \left\{ a * b \;|\; (a, b) \in A \times B \right\}
 \end{equation}
-Soit $I \subset E$. On dit que $I$ est
-un idéal à droite si $I * E \subset I$
-et un idéal à gauche si $E * I \subset I$.
-En particulier, $I * I \subset I$
-donc tout idéal à gauche ou à droite est un sous-semi-groupe.
-Si $(E, *)$ est commutatif, on dit simplement idéal puisque $I*E = E*I$.
+$(\mathcal{P}(E), *)$ est un magma (resp. semi-groupe)
+appelé magma des parties (resp. semi-groupe des parties).
+$\emptyset$ est un élément absorbant.
+Si $(E, *, e)$ est un monoïde, $(\mathcal{P}(E), *, \{e\})$ est aussi un monoïde appelé le monoïde des parties.
 \end{definition}
 
+\begin{definition}[Sous-structure]
+Soit $(E, *)$ un magma (resp. semi-groupe).
+Si $A$ est un partie stable de $E$ pour $*$ i.e. $A * A \subseteq A$,
+alors $A$ est appelé un sous-magma (resp. sous-semi-groupe) de $(E, *)$.
+
+Soit $(M, *, e)$ un monoïde.
+Si $A$ est une partie stable de $M$ contenant $e$,
+alors $A$ est appelé un sous-monoïde de $(M, *, e)$.
+
+Dans les trois structures, un sous-structure muni de la restriction de la loi est une structure.
+\end{definition}
+
+\begin{exemple}
+$\emptyset$ (plutôt $\{e\}$ pour un monoïde) et $E$ sont des sous-structures.
+\end{exemple}
+
 \begin{proposition}
-Soit $(E, *)$ un semi-groupe fini non-vide.
+Soit $(E, *)$ un semi-groupe fini non vide.
 Il existe un élément de $E$ idempotent.
 \end{proposition}
 
@@ -42,31 +81,200 @@ Sinon, on obtient $e^2 = y^{2^p + 2^p - 2} = y * y^{2^p - 2} = y^{2^p - 1} = e$
 Donc $e$ est idempotent.
 \end{proof}
 
+\subsection{Idéal}
+
+\begin{definition}[Idéal]
+Soit $I \subseteq E$. On dit que $I$ est
+un idéal à droite si $I * E \subseteq I$
+et un idéal à gauche si $E * I \subseteq I$.
+En particulier, $I * I \subseteq I$
+donc tout idéal à gauche ou à droite est un sous-semi-groupe.
+Si $(E, *)$ est commutatif, on dit simplement idéal puisque $I*E = E*I$.
+\end{definition}
+
+\begin{exemple}
+$\emptyset$ et $E$ sont toujours des idéaux.
+\end{exemple}
+
+\begin{remarque}
+Soit $(M, *, e)$ un monoïde.
+On a ${e}.M = M$.
+Donc, si $I$ est un idéal de $M$ tel que $e \in I$, alors $I = M$.
+\end{remarque}
+
+\begin{proposition}
+Une intersection quelconque d'idéals est un idéal.
+\end{proposition}
+
+\begin{proof}
+Soit $\left(I_j\right)_{j \in J}$ une famille d'idéals à gauche de $(E, *)$. \\
+Le produit cartésien est distributif par rapport à l'intersection donc on a $\forall A \subseteq E, \left(\bigcap_{j \in J} I_j\right) * A \subseteq \bigcap_{j \in J} \left(I_j * A\right)$.
+En particulier, pour $A = E$, on obtient :
+$$
+\left( \bigcap_{j \in J} I_j \right) * E \subseteq \bigcap_{j \in J} \left( I_j * E \right) \subseteq E
+$$
+$\bigcap_{j \in J} I_j$ est donc un idéal à gauche.
+On a de même pour les idéaux à droite.
+\end{proof}
+
+\begin{definition}[Noyau]
+Soit $(E, *)$ un semi-groupe commutatif.
+Le noyau de $(E, *)$ est l'intersection de tous les idéaux non vides.
+Il est soit vide soit l'idéal minimal (au sens de l'inclusion).
+\end{definition}
+
 \begin{theoreme}
-Soit $(E, *)$ un semi-groupe commutatif fini.
-Si $I$ l'idéal minimal de $E$ (l'intersection de tous les idéaux) est non vide
-alors $(I, *)$ est un groupe commutatif.
+Si $(E, *)$ est un semi-groupe commutatif fini, alors
+le noyau de $(E, *)$ muni de la même loi est un groupe abélien fini
+ayant un unique élément idempotent.
 \end{theoreme}
 
 \begin{proof}
-
-L'intersection d'idéals est bien un idéal.
-$(I, *)$ est un sous-semi-groupe.
+Notons $K$ le noyau de $(E, *)$.
 Soit $x \in E$.
-$(x) = \{x\}.E = E.\{x\}$ est un idéal (celui engendré par $x$).
+Posons $(x) = \{x\}.E = E.\{x\}$ l'idéal engendré par $x$.
 Notons $X$ le produit de tous les éléments de $E$.
 Comme $E$ est fini, $X$ est bien défini.
-$\forall x \in E, X \in (x)$ donc $X \in I$.
-Ainsi $(I, *)$ est un semi-groupe fini non vide.
+$\forall x \in E, X \in (x)$ donc $X \in K$.
+Ainsi $K$ est non vide.
+$K$ est stable par $*$ et $K \subseteq E$ donc
+$(K, *)$ est un sous-semi-groupe fini de $(E, *)$.
 
-D'après la proposition précédente, $(I, *)$ admet un élément $e$ idempotent.
-Soit $x \in I$.
-On a $(x) = x * E = \subset I * E \subset I$.
-Or $(x)$ est un idéal donc $I \subset (x)$.
-D'où $(x) = (e) = I$.
-Donc il existe $y, z \in I$ tels que $x = ey$ et $e = xz$.
+D'après la proposition précédente, $(K, *)$ admet un élément $e$ idempotent.
+Soit $x \in K$.
+On a $(x) = x * E \subseteq K * E \subseteq K$.
+Or $(x)$ est un idéal donc $K \subseteq (x)$.
+D'où $(x) = K$.
+En particulier, $(e) = K$.
+
+Soit $x \in K$.
+On a $x \in (e)$ et $e \in (x)$.
+Donc il existe $y, z \in K$ tels que $x = ey$ et $e = xz$.
 On a alors $ex = eey = ey = x$ et $x(ze) = (xz)e = ee = e$.
-Comme $I$ est commutatif, $e$ est un élément neutre et $ze$ est l'inverse de $x$.
+Comme $*$ est commutative, $e$ est un élément neutre et $ze$ est l'inverse de $x$.
+Par unicité du neutre dans un monoïde donc dans un groupe, l'élément $e$
+idempotent fixé au début de la preuve est unique.
 
-Ainsi $(I, *)$ est un groupe commutatif.
+Ainsi $(K, *)$ est un groupe commutatif.
 \end{proof}
+
+\begin{proposition}[Caractérisation du noyau]
+Soit $(E, *)$ un semi-groupe commutatif fini.
+Notons $K$ le noyau de $(E, *)$.
+Soit $x_0 \in K$.
+Pour tout $x \in E$, on a l'équivalence entre :
+\begin{enumerate}[label=\roman*)]
+    \item $x \in K$
+    \item $\forall y \in E, \exists z \in K : x = y * z$
+    \item $\forall y \in E, \exists z \in E : x = y * z$
+    \item $\exists z \in E : x = x_0 * z$
+\end{enumerate}
+\end{proposition}
+
+\begin{proof} ~\par
+$i \implies ii$ Soit $y \in E$.
+Par définition d'un idéal, il existe $u \in K$ tel que $y * x = u$.
+Donc $y * x * u^{-1} * x = e * x = x$ où $u^{-1}$ est l'inverse dans le groupe $(K, *)$.
+Ainsi $z = u^{-1} * x^2$ convient.
+
+$ii \implies iii$ $K \subseteq E$
+
+$iii \implies iv$ $x_0 \in E$
+
+$iv \implies i$ Si $I$ est un idéal de $(E, *)$, alors
+$x_0 \in K \subseteq I$ donc $x_0 * z \in I$. \\
+Ainsi $x$ appartient à tous les idéaux donc à l'idéal minimal i.e. $x \in K$.
+\end{proof}
+
+\subsection{Morphisme}
+
+\begin{definition}[Morphisme]
+Soit $(E, *)$ et $(E', \cdot)$ deux magmas (resp. semi-groupes).
+Une application $\varphi: E \rightarrow E'$ est un morphisme de magmas (resp. semi-groupes) lorsque :
+$$
+\forall (x, y) \in E^2, \varphi(x * y) = \varphi(x) \cdot \varphi(y)
+$$
+Pour $A \subseteq E$, l'image de $A$ par $\varphi$ est
+$\varphi(A) = \left\{\varphi(a) \;|\; a \in A\right\}$.
+
+Soient $(M, *, e)$ et $(M', \cdot, e')$ deux monoïdes.
+$\varphi: M \rightarrow M'$ est un morphisme de monoïdes lorsque $\varphi$ est un morphisme de semi-groupes et $\varphi(e) = e'$.
+
+Soient $(G, *, e)$ et $(G', \cdot, e')$ deux groupes.
+$\varphi: M \rightarrow M'$ est un morphisme de groupes lorsque $\varphi$ est un
+simplement morphisme de magmas. On a alors $\varphi(e) = e'$
+et $\forall x \in G, \varphi(x^{-1}) = \varphi(x)^{-1}$.
+\end{definition}
+
+\begin{remarque}
+Les preuves sur les morphismes de magmas et de semi-groupes sont les mêmes.
+Pour les monoïdes, il suffit de vérifier en plus que $\varphi(e) = e'$.
+\end{remarque}
+
+\begin{definition}[Isomorphisme]
+Une application $\varphi$ est un isomorphisme lorsque $\varphi$ est bijective et $\varphi$ et $\varphi$ sont des morphismes.
+Lorsqu'il existe un isomorphisme entre $E$ et $F$, on dit que $E$ et $F$ sont
+isomorphes et on note $E \simeq F$.
+\end{definition}
+
+\begin{proposition}
+Soient $(E, *)$, $(E', \cdot)$ deux structures et $\varphi: E \rightarrow E'$ un morphisme de structures.
+Alors $\varphi: \mathcal{P}(E) \rightarrow \mathcal{P}(E)$ est
+un morphisme sur les structures des parties.
+De plus, il est croissant pour l'inclusion.
+\end{proposition}
+
+\begin{proof}
+Soient $A, B \in \mathcal{P}(E)^2$. \\
+$\varphi(A * B)
+= \left\{ \varphi(a * b) \;|\; (a, b) \in A \times B \right\}
+= \left\{ \varphi(a) \cdot \varphi(b) \;|\; (a, b) \in A \times B \right\}
+= \varphi(A) \cdot \varphi(B)$ \\
+Pour des monoïdes, on a bien $\varphi(\{e\}) = \{e'\}$.
+\end{proof}
+
+\begin{proposition}
+L'image d'une sous-structure par un morphisme est une sous-structure.
+\end{proposition}
+
+\begin{proof}
+Soient $(E, *)$, $(E', \cdot)$ deux magmas et $\varphi: E \rightarrow E'$ un morphisme.
+Soit $A$ un sous-magma de $(E, *)$. \\
+Soient $(x, y) \in \varphi(A)^2$. Il existe $(u, v) \in A^2$ tels que
+$x = \varphi(u)$ et $y = \varphi(v)$.
+D'où $x \cdot y = \varphi(u * v) \in \varphi(A)$.
+\end{proof}
+
+\begin{corollaire}
+Un morphisme restreint à une sous-structure et correstreint à un ensemble contenant l'image de cette sous-structure est toujours un morphisme.
+\end{corollaire}
+
+\begin{proposition}
+Soient $(E, *)$, $(E', \cdot)$ deux semi-groupes et $\varphi: E \rightarrow E'$
+un morphisme de semi-groupes.
+L'image d'un idéal à gauche (resp. à droite) de $(E, *)$ est
+un idéal à gauche (resp. à droite) de $(E', \cdot)$.
+\end{proposition}
+
+\begin{proof}
+Soit $I$ un idéal à gauche de $(E, *)$.
+On a
+$\varphi(I) \cdot E = \varphi(I * E) \subseteq \varphi(E) \subseteq E'$.
+\end{proof}
+
+\begin{proposition}
+Soient $(E, *)$, $(E', \cdot)$ deux semi-groupes commutatifs finis et $\varphi: E \rightarrow E'$ un morphisme surjectif de semi-groupe.
+Notons $K$ et $K'$ leur noyau respectif.
+$\psi = \varphi_{\left|K\right.}^{\left|K'\right.}$ est un morphisme de groupe.
+\end{proposition}
+
+\begin{proof}
+Toutes les images d'idéal de $(E, *)$ sont des idéaux de $(E', \cdot)$ i.e. inclus dans $K'$.
+Or $K$ est un idéal de $(E, *)$.
+D'où $K \subseteq K'$. Donc $\psi$ est bien définie.
+D'après le corollaire précédent, $\psi$ est un morphisme de semi-groupes donc de groupes.
+\end{proof}
+
+\begin{corollaire}
+Avec les mêmes notations, si $E \simeq E'$ alors $K \simeq K'$.
+\end{corollaire}

@@ -8,3 +8,5 @@ tas_sable/tas_sable
 *.aux
 *.log
 *.synctex.gz
+*.out
+*.toc

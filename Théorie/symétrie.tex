@@ -1,0 +1,40 @@
+% !TeX root = théorie.tex
+
+\section{Symétries}
+
+\begin{definition}[morphisme de graphes]
+Soient $G = (S, A)$ et $G' = (S', A')$ deux graphes.
+$\phi: S \rightarrow S'$ est un morphisme de graphes entre $G$ et $G'$ lorsque :
+$$
+\forall (s, u) \in A, (\phi(s), \phi(u)) \in A'
+$$
+$\phi: S \rightarrow S'$ est un isomorphisme de graphes entre $G$ et $G'$ lorsque $\phi$ est bijective et $\phi$ et $\phi^{-1}$ sont des morphismes de graphes. On a alors :
+$$
+\forall (s, u) \in S^2, (s, u) \in A \iff (\phi(s), \phi(u)) \in A'
+$$
+\end{definition}
+
+\begin{proposition}
+Soit $G = (S, A, \pi, p)$ et $G' = (S', A', \pi', p')$ deux graphes de tas de sable et $\phi: S \rightarrow S'$ un morphisme de graphe.
+
+$\widehat{\phi}: \begin{matrix}
+\mathcal{M}(G) \rightarrow \mathcal{M}(G') \\
+\sum_{s \in S} a_s . \mathbf{1}_s \mapsto \sum_{s \in S} a_s . \mathbf{1}_{\phi(s)}
+\end{matrix}$ est un morphisme de monoïde.
+\end{proposition}
+
+\begin{proof}
+$\widehat{\phi}(0)
+= \widehat{\phi}\left(\sum_{s \in S} 0 . \mathbf{1}_s\right)
+= \sum_{s \in S} 0 . \mathbf{1}_{\phi(s)}
+= 0$
+
+Soient $(x, y) \in S^2$.
+Posons $x = \sum_{s \in S} a_s . \mathbf{1}_{s}$ et $y = \sum_{s \in S} b_s . \mathbf{1}_{s}$. \\
+$\widehat{\phi}(x + y)
+= \widehat{\phi}(\sum_{s \in S} \left(a_s + b_s\right) . \mathbf{1}_{s})
+= \sum_{s \in S} \left(a_s + b_s\right) . \mathbf{1}_{\phi(s)}
+= \sum_{s \in S} a_s . \mathbf{1}_{\phi(s)} + \sum_{s \in S} b_s . \mathbf{1}_{\phi(s)}
+= \widehat{\phi}(x) + \widehat{\phi}(y)$
+\end{proof}
+

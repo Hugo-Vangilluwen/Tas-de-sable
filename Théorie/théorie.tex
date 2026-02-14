@@ -13,6 +13,20 @@
     right=2cm
 }
 
+\usepackage{color}
+\usepackage{hyperref}
+\makeatletter
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,
+    urlcolor=blue,
+    citecolor=olive,
+    pdftitle={\@title},
+    pdfauthor={\@author}
+}
+\makeatother
+
 \usepackage{enumitem}
 
 \theoremstyle{definition}
@@ -21,6 +35,9 @@
 \newtheorem{proposition}{Proposition}
 \newtheorem{theoreme}{Théorème}
 \newtheorem{corollaire}{Corollaire}
+\theoremstyle{remark}
+\newtheorem*{exemple}{Exemple}
+\newtheorem*{remarque}{Remarque}
 
 \title{TIPE Tas de sable}
 \author{Hugo V}
@@ -28,8 +45,12 @@
 \begin{document}
 \maketitle
 
+\tableofcontents
+
 \include{semi-groupe.tex}
 
 \include{tas_sable.tex}
+
+\include{symétrie.tex}
 
 \end{document}

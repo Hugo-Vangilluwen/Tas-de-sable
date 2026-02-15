@@ -12,7 +12,7 @@ module Grille_complete: GRILLE with type param = unit = struct
     }
 
     let max_valeur (g: t) (_: coord): int =
-        g.nombre
+        g.nombre - 1
 
     let creer () ((x, y): coord): t =
         assert (y = 0);

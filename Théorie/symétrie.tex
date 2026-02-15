@@ -4,7 +4,7 @@
 
 \begin{definition}[morphisme de graphes]
 Soient $G = (S, A)$ et $G' = (S', A')$ deux graphes.
-$\phi: S \rightarrow S'$ est un morphisme de graphes entre $G$ et $G'$ lorsque :
+Une application $\phi: S \rightarrow S'$ est un morphisme de graphes entre $G$ et $G'$ lorsque :
 $$
 \forall (s, u) \in A, (\phi(s), \phi(u)) \in A'
 $$
@@ -16,25 +16,53 @@ $$
 
 \begin{proposition}
 Soit $G = (S, A, \pi, p)$ et $G' = (S', A', \pi', p')$ deux graphes de tas de sable et $\phi: S \rightarrow S'$ un morphisme de graphe.
-
-$\widehat{\phi}: \begin{matrix}
-\mathcal{M}(G) \rightarrow \mathcal{M}(G') \\
+L'application $\varphi: \begin{matrix}
+\left(\mathcal{M}(G), \circledast \right) \rightarrow
+\left(\mathcal{M}(G'), \circledast' \right) \\
 \sum_{s \in S} a_s . \mathbf{1}_s \mapsto \sum_{s \in S} a_s . \mathbf{1}_{\phi(s)}
 \end{matrix}$ est un morphisme de monoïde.
+De plus, notant $c_0$ et $c_0'$ les neutres de $\mathcal{G}(G)$ et de $\mathcal{G}(G')$, on a $c_0' = \varphi(c_0)$.
+Si $\phi$ est bijective alors $\varphi$ est aussi bijective.
 \end{proposition}
 
 \begin{proof}
-$\widehat{\phi}(0)
-= \widehat{\phi}\left(\sum_{s \in S} 0 . \mathbf{1}_s\right)
-= \sum_{s \in S} 0 . \mathbf{1}_{\phi(s)}
-= 0$
+$\left(\mathbb{R}^{\widetilde{S}}, +, \times, \cdot\right)$ et
+$\left(\mathbb{R}^{\widetilde{S'}}, +, \times, \cdot\right)$
+sont des $\mathbb{R}$ espaces vectoriels de base respectivement
+$\left(\mathbf{1}_s\right)_{s \in \widetilde{S}}$ et
+$\left(\mathbf{1}_s\right)_{s \in \widetilde{S'}}$.
+L'application $\widehat{\phi}: \mathbb{R}^{\widetilde{S}} \rightarrow
+\mathbb{R}^{\widetilde{S'}}$ définie par $\forall s \in \widetilde{S},
+\widehat{\phi}(\mathbf{1}_s) = \mathbf{1}_{\phi(s)}$
+est une application linéaire.
 
-Soient $(x, y) \in S^2$.
-Posons $x = \sum_{s \in S} a_s . \mathbf{1}_{s}$ et $y = \sum_{s \in S} b_s . \mathbf{1}_{s}$. \\
-$\widehat{\phi}(x + y)
-= \widehat{\phi}(\sum_{s \in S} \left(a_s + b_s\right) . \mathbf{1}_{s})
-= \sum_{s \in S} \left(a_s + b_s\right) . \mathbf{1}_{\phi(s)}
-= \sum_{s \in S} a_s . \mathbf{1}_{\phi(s)} + \sum_{s \in S} b_s . \mathbf{1}_{\phi(s)}
-= \widehat{\phi}(x) + \widehat{\phi}(y)$
+Par définition, les écroulements s'écrivent comme des combinaisons linéaires
+d'éléments de $\mathbb{N}^{\widetilde{S}} \subset \mathbb{R}^{\widetilde{S}}$.
+Par linéarité de $\widehat{\phi}$, effectuer un écroulement puis appliquer
+$\widehat{\phi}$ est égal à appliquer $\widehat{\phi}$ puis effectuer
+l'écroulement. On a donc $\forall c \in \mathbb{N}^{\widetilde{S}},
+\widehat{\phi}(c^\circ) = \widehat{\phi}(c)^\circ$.
+
+Ainsi, la restriction aux monoïdes des tas de sable
+$\varphi: \left(\mathcal{M}(G), \circledast \right) \rightarrow
+\left(\mathcal{M}(G'), \circledast' \right)$ est compatible avec
+et le changement de loi interne.
+Ainsi $\varphi$ est un morphisme de monoïdes.
+
+Calculons $\varphi(c_0)$.
+$\varphi(c_0)
+= \widehat{\phi}(c_0)
+= \widehat{\phi}\left(\left(2 c_{max} - \left(2 c_{max}\right)^\circ \right)^\circ\right)
+= \left(2 \widehat{\phi}\left(c_{max}\right) - \left(2 \widehat{\phi}\left(c_{max}\right)\right)^\circ \right)^\circ
+= \left(2 c_{max}' - \left(2 c_{max}'\right)^\circ \right)^\circ
+= c_0'$
+Si $\phi$ est bijective alors $\widehat{\phi}$ aussi donc $\varphi$ aussi.
 \end{proof}
 
+\begin{corollaire}
+Le neutre d'un groupe des tas de sable possède les mêmes symétrie que le graphe.
+\end{corollaire}
+
+\begin{proof}
+Les symétries du graphe sont des isomorphismes du graphe dans lui-même.
+\end{proof}

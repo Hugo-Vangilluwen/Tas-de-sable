@@ -212,7 +212,7 @@ Pour les monoïdes, il suffit de vérifier en plus que $\varphi(e) = e'$.
 \end{remarque}
 
 \begin{definition}[Isomorphisme]
-Une application $\varphi$ est un isomorphisme lorsque $\varphi$ est bijective et $\varphi$ et $\varphi$ sont des morphismes.
+Une application $\varphi$ est un isomorphisme lorsque $\varphi$ est bijective et $\varphi$ est des morphismes.
 Lorsqu'il existe un isomorphisme entre $E$ et $F$, on dit que $E$ et $F$ sont
 isomorphes et on note $E \simeq F$.
 \end{definition}
@@ -252,29 +252,58 @@ Un morphisme restreint à une sous-structure et correstreint à un ensemble cont
 \begin{proposition}
 Soient $(E, *)$, $(E', \cdot)$ deux semi-groupes et $\varphi: E \rightarrow E'$
 un morphisme de semi-groupes.
-L'image d'un idéal à gauche (resp. à droite) de $(E, *)$ est
-un idéal à gauche (resp. à droite) de $(E', \cdot)$.
+\begin{itemize}
+\item L'image réciproque d'un idéal à gauche (resp. à droite) de $(E', \cdot)$
+    est un idéal à gauche (resp. à droite) de $(E, *)$.
+\item Si $\varphi$ est surjectif, alors
+    l'image d'un idéal à gauche (resp. à droite) de $(E, *)$
+    est un idéal à gauche (resp. à droite) de $(E', \cdot)$.
+\end{itemize}
 \end{proposition}
 
 \begin{proof}
+Soit $I'$ un idéal à gauche de $(E', \cdot)$.
+On a $\varphi(\varphi^{-1}(I') * E)
+= \varphi(\varphi^{-1}(I')) \cdot \varphi(E)
+= I' \cdot \varphi(E)
+\subseteq I'$.
+Donc $\varphi^{-1}(I') * E \subset \varphi^{-1}(I')$.
+
+Supposons que $\varphi$ est surjectif i.e. $\varphi(E) = E'$.
 Soit $I$ un idéal à gauche de $(E, *)$.
-On a
-$\varphi(I) \cdot E = \varphi(I * E) \subseteq \varphi(E) \subseteq E'$.
+On a $\varphi(I) \cdot E'
+= \varphi(I) \cdot \varphi(E)
+= \varphi(I * E)
+\subseteq \varphi(I)$.
+
+De même pour les idéaux à droite.
 \end{proof}
 
-\begin{proposition}
-Soient $(E, *)$, $(E', \cdot)$ deux semi-groupes commutatifs finis et $\varphi: E \rightarrow E'$ un morphisme surjectif de semi-groupe.
+\begin{theoreme}
+Soient $(E, *)$, $(E', \cdot)$ deux semi-groupes commutatifs finis et $\varphi: E \rightarrow E'$ un morphisme de semi-groupe.
 Notons $K$ et $K'$ leur noyau respectif.
 $\psi = \varphi_{\left|K\right.}^{\left|K'\right.}$ est un morphisme de groupe.
-\end{proposition}
+De plus, si $\varphi$ est bijective alors $\psi$ est bijective.
+
+Ainsi, si $E \simeq E'$ alors $K \simeq K'$.
+\end{theoreme}
+
+\begin{remarque}
+Comme $E$ et $E'$ sont de cardinaux finis, l'injectivité, la surjectivité et la
+bijectivité de $\varphi$ sont équivalentes.
+\end{remarque}
 
 \begin{proof}
-Toutes les images d'idéal de $(E, *)$ sont des idéaux de $(E', \cdot)$ i.e. inclus dans $K'$.
-Or $K$ est un idéal de $(E, *)$.
-D'où $K \subseteq K'$. Donc $\psi$ est bien définie.
+Toutes les images réciproques d'idéaux de $(E', \cdot)$ sont des idéaux de $(E, *)$ i.e. contenant $K$.
+Or $K'$ est un idéal de $(E', \cdot)$.
+D'où $K \subseteq \varphi^{-1}(K')$ i.e. $\varphi(K) \subseteq K'$. Donc $\psi$ est bien définie.
 D'après le corollaire précédent, $\psi$ est un morphisme de semi-groupes donc de groupes.
-\end{proof}
 
-\begin{corollaire}
-Avec les mêmes notations, si $E \simeq E'$ alors $K \simeq K'$.
-\end{corollaire}
+Supposons que $\varphi$ est bijective, en particulier surjective.
+Toutes les images d'idéaux de $(E, *)$ sont des idéaux de $(E', \cdot)$ i.e.
+contenant $K'$.
+Or $K$ est un idéal de $(E, *)$.
+D'où $\psi(K) \supseteq K'$.
+Donc $\psi(K) = K'$.
+$\psi$ est surjective donc bijective (puisque les cardinaux sont finis).
+\end{proof}

@@ -2,19 +2,45 @@
 
 \section{Tas de sable}
 
-\begin{definition}[Graphe de tas de sable]
-Un graphe de tas de sable $G$ est un triplet $(S, A, \pi, p)$ où $(S, A)$ est
-un graphe orienté pondéré par $\pi: A \rightarrow \mathbb{N}$ et $p \in S$ appelé puits.
-$\pi(s, u)$ indique le nombre d'arcs de $s$ à $u$.
-On notera $\widetilde{S} = S \setminus \{p\}$, et pour $s \in S$, $V^+(s)$ les successeurs et $d^+(s)$ le degré sortant :
+\subsection{Définitions}
+
+\begin{definition}[Multi-ensemble]
+Un multiensemble est un couple $(E, m)$ où $E$ est un ensemble et
+$m: E \rightarrow \mathbb{N}$ un fonction de multiplicité.
+Intuitivement, il s'agit d'ensemble où les nombre de fois où apparaît chaque
+élément est spécifié.
+On les notera avec des doubles accolades, par exemple $\left\{\left\{ a, a,
+a, b, c, c \right\}\right\}$.
+
+On dit que $M' = (E', m')$ est un sous-multi-ensemble de $M = (E, m)$ si
+$E' \subseteq E$ et $\forall x \in E, m'(x) \leqslant m(x)$.
+On le note $M' \subseteq M$.
+Le cardinal de $M = (E, m)$ est $|M| = \sum_{x \in M} 1 = \sum_{x \in E} m(x)$.
+
+On écrira pour simplifier pour $M = (E, m)$ un multi-ensemble, $(F, +, f)$ un
+monoïde commutatif et $\phi: E \rightarrow F$ une application :
 $$
-d^+(s) = \sum_{u \in V^+(s)} \pi(s,u)
+\sum_{x \in M} \phi(x) = \sum_{x \in E} m(x) . \phi(x)
+$$
+En particulier, si $M$ est vide (i.e. $m(E) \subseteq \{0\}$) alors cette somme
+vaut $f$.
+\end{definition}
+
+\begin{definition}[Graphe de tas de sable]
+Un graphe de tas de sable $G$ est un triplet $(S, A, p)$ où $(S, A)$ est
+un multi-graphe orienté (i.e. $A$ est un multi-ensemble)
+et $p \in S$ appelé puits.
+La multiplicité de $(s, u)$ indique le nombre d'arcs de $s$ à $u$.
+On notera $\widetilde{S} = S \setminus \{p\}$, et pour $s \in S$, $V^+(s)
+\subseteq A$ le multi-graphe des successeurs et $d^+(s)$ le degré sortant :
+$$
+d^+(s) = \left| V^+(s) \right|
 $$
 % $$V^+(s) = \sum_{(s, u) \in A} \pi(u)$$
 \end{definition}
 
 Dans le reste de cette partie, on fixe
-$G = (S, A, \pi, p)$ un graphe de tas de sable.
+$G = (S, A, p)$ un graphe de tas de sable.
 
 \begin{definition}[Monoïde des configurations]
 Une configuration sur $G$ est une fonction
@@ -34,10 +60,12 @@ c_{max} = \sum_{s \in \widetilde{S}} \left(d^+(s) - 1\right) . \mathbf{1}_s
 $$
 \end{definition}
 
+\subsection{Stabilisation}
+
 \begin{definition}[Écroulement]
 Pour une configuration $c$ et $s \in \widetilde{S}$ tels que $c(s) \geqslant d^+(s)$, l'écroulement de $c$ en $s$
 est :
-$$c' = c - d^+(s) . \mathbf{1}_s + \sum_{u \in V^+(s), u \neq p} \pi(s, u) . \mathbf{1}_u$$
+$$c' = c - d^+(s) . \mathbf{1}_s + \sum_{u \in V^+(s), u \neq p} . \mathbf{1}_u$$
 Un écroulement correspond à transférer un grain de sable de $s$ à ses voisins sur chaque arc. Les grains allant dans le puits disparaissent.
 \end{definition}
 
@@ -76,10 +104,16 @@ $(\mathcal{M}(G), \circledast)$ est un semi-groupe commutatif fini.
 D'après le théorème 1, en notant $\mathcal{G}(G)$ son noyau,
 $(\mathcal{G}(G), \circledast)$ est un groupe abélien fini.
 Ses éléments sont appelés \textit{les tas de sable récurrents}.
-Notons $c_0$ son élément neutre.
 \end{definition}
 
 S'il n'y a aucune ambiguïté, on notera simplement $\mathcal{M}$ et $\mathcal{G}$.
+
+\begin{proposition}[Neutre du groupe récurrent]
+Notons $c_0$ l'élément neutre de $\mathcal{G}$.
+$$
+c_0 = \left( 2 c_{max} - \left(2 c_{max}\right)^\circ \right)^\circ
+$$
+\end{proposition}
 
 \begin{proposition}
 Soit $c \in \mathcal{M}$.

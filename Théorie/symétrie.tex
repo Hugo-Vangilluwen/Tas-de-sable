@@ -14,16 +14,17 @@ $$
 $$
 \end{definition}
 
-\begin{proposition}
+\begin{theoreme}
 Soit $G = (S, A, \pi, p)$ et $G' = (S', A', \pi', p')$ deux graphes de tas de sable et $\phi: S \rightarrow S'$ un morphisme de graphe.
-L'application $\varphi: \begin{matrix}
+Posons : $$\varphi: \begin{matrix}
 \left(\mathcal{M}(G), \circledast \right) \rightarrow
 \left(\mathcal{M}(G'), \circledast' \right) \\
-\sum_{s \in S} a_s . \mathbf{1}_s \mapsto \sum_{s \in S} a_s . \mathbf{1}_{\phi(s)}
-\end{matrix}$ est un morphisme de monoïde.
+\displaystyle \sum_{s \in S} a_s . \mathbf{1}_s \mapsto \left( \sum_{s \in S} a_s . \mathbf{1}_{\phi(s)} \right)^\circ
+\end{matrix}$$
+L'application $\varphi$ est un morphisme de monoïde.
 De plus, notant $c_0$ et $c_0'$ les neutres de $\mathcal{G}(G)$ et de $\mathcal{G}(G')$, on a $c_0' = \varphi(c_0)$.
 Si $\phi$ est bijective alors $\varphi$ est aussi bijective.
-\end{proposition}
+\end{theoreme}
 
 \begin{proof}
 $\left(\mathbb{R}^{\widetilde{S}}, +, \times, \cdot\right)$ et
@@ -40,23 +41,26 @@ Par définition, les écroulements s'écrivent comme des combinaisons linéaires
 d'éléments de $\mathbb{N}^{\widetilde{S}} \subset \mathbb{R}^{\widetilde{S}}$.
 Par linéarité de $\widehat{\phi}$, effectuer un écroulement puis appliquer
 $\widehat{\phi}$ est égal à appliquer $\widehat{\phi}$ puis effectuer
-l'écroulement. On a donc $\forall c \in \mathbb{N}^{\widetilde{S}},
-\widehat{\phi}(c^\circ) = \widehat{\phi}(c)^\circ$.
+l'écroulement.
 
 Ainsi, la restriction aux monoïdes des tas de sable
 $\varphi: \left(\mathcal{M}(G), \circledast \right) \rightarrow
 \left(\mathcal{M}(G'), \circledast' \right)$ est compatible avec
 et le changement de loi interne.
-Ainsi $\varphi$ est un morphisme de monoïdes.
-
 Calculons $\varphi(c_0)$.
 $\varphi(c_0)
 = \widehat{\phi}(c_0)
 = \widehat{\phi}\left(\left(2 c_{max} - \left(2 c_{max}\right)^\circ \right)^\circ\right)
 = \left(2 \widehat{\phi}\left(c_{max}\right) - \left(2 \widehat{\phi}\left(c_{max}\right)\right)^\circ \right)^\circ
 = \left(2 c_{max}' - \left(2 c_{max}'\right)^\circ \right)^\circ
-= c_0'$
-Si $\phi$ est bijective alors $\widehat{\phi}$ aussi donc $\varphi$ aussi.
+= c_0'$.
+Ainsi $\varphi$ est un morphisme de monoïdes.
+
+Supposons que $\phi$ est bijective. Alors $\widehat{\phi}$ aussi.
+Si $c$ est un tas de sable stable alors $\widehat{\phi}(c)$ est aussi stable.
+Donc $\varphi(c) = \sum_{s \in S} a_s . \mathbf{1}_{\phi(s)}$.
+$\varphi$ est simplement un restriction de $\widehat{\phi}$.
+Donc $\varphi$ est bijective.
 \end{proof}
 
 \begin{corollaire}

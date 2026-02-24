@@ -255,7 +255,7 @@ module Tas_sable (G: GRILLE) = struct
                 RationnalMatrix.set_elt
                     l
                     coeff
-                    (Q.sub (RationnalMatrix.get_elt l coeff) (Q.of_int 1))
+                    (Q.sub (RationnalMatrix.get_elt l coeff) (Q.of_int 1))q
                 )
                 voisins_c
             )

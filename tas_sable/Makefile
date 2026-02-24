@@ -8,13 +8,14 @@ GRILLES := grille_carree.ml grille_hexagonale.ml grille_puit.ml grille_ligne.ml 
 SOURCES := $(MATRIX_LIB) tas_sable.ml $(GRILLES)
 OBJETS := $(SOURCES:%.ml=%.cmx)
 
-OCAML_OPT := -package graphics,unix,zarith
+OCAML_PKG := -package graphics,unix,zarith
+OCAML_OPT :=
 
 
 all: $(CIBLE)
 
 $(CIBLE): $(SOURCES) main.ml
-	ocamlfind ocamlc -o $(CIBLE) -linkpkg $(OCAML_OPT) $(SOURCES) main.ml
+	ocamlfind ocamlc -o $(CIBLE) -linkpkg $(OCAML_PKG) $(OCAML_OPT) $(SOURCES) main.ml
 
 # Décommenter pour complier les objets
 # $(CIBLE): $(OBJETS)
@@ -36,15 +37,19 @@ doc: $(CIBLE)
 	ocamlfind ocamldoc -html -d doc $(OCAML_OPT) $(SOURCES) main.ml
 
 
-.PHONY: clean run test
+.PHONY: clean run test debug
 
 test: $(SOURCES) test.ml
 	ocamlfind ocamlopt -o test -linkpkg $(OCAML_OPT) $(SOURCES) test.ml
 	./test
 
 clean:
-	rm -f *.cm[xio] *.o $(CIBLE) test
+	rm -f *.cm[iox] *.o $(CIBLE) test
 	rm -rf doc
 
 run: $(CIBLE)
 	./$(CIBLE)
+
+debug:
+	make -B OCAML_OPT=-g
+	ocamldebug ./$(CIBLE)

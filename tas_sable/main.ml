@@ -8,7 +8,7 @@ open Grille_complete
 
 open EltsQ
 
-module Tsp = Tas_sable(Ajouter_puit (Grille_carree))
+module Tsp = Tas_sable(Ajouter_puit (Grille_hexagonale))
 
 
 let main: unit =
@@ -29,15 +29,32 @@ let main: unit =
     *)
 
 
-    for n = 1 to 10 do
-        let c = (n, n) in
-        let card_rec, rapport_rec_stab = Tsc.rapport_recurrents_stables () c in
+    let c = (13, 5) in
+    let card_rec, rapport_rec_stab =
+        Tsh.rapport_recurrents_stables
+        ()
+        c in
+    print_string ": ";
+    Z.print (card_rec);
+    print_string " / ";
+    print_float (Q.to_float rapport_rec_stab);
+    print_newline ();
+
+
+    for n = 0 to 4 do
+(*         Tsp.identite ([(n,n)], ()) c |> Tsp.afficher *)
+
+        let card_rec, rapport_rec_stab =
+            Tsp.rapport_recurrents_stables
+            ([(n, n)], ())
+            c in
         print_int n;
         print_string ": ";
         Z.print (card_rec);
         print_string " / ";
         print_float (Q.to_float rapport_rec_stab);
         print_newline ()
+
     done
 
 (*     let _ = Tsc.un_grain_temps () (Tscomplet.creer () (10, 0)) (4, 0) 123 0.05 in () *)

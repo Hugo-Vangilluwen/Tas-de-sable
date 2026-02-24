@@ -14,7 +14,7 @@ OCAML_OPT := -package graphics,unix,zarith
 all: $(CIBLE)
 
 $(CIBLE): $(SOURCES) main.ml
-	ocamlfind ocamlopt -o $(CIBLE) -linkpkg $(OCAML_OPT) $(SOURCES) main.ml
+	ocamlfind ocamlc -o $(CIBLE) -linkpkg $(OCAML_OPT) $(SOURCES) main.ml
 
 # Décommenter pour complier les objets
 # $(CIBLE): $(OBJETS)
@@ -43,7 +43,7 @@ test: $(SOURCES) test.ml
 	./test
 
 clean:
-	rm -f *.cmx *.cmi *.o $(CIBLE) test
+	rm -f *.cm[xio] *.o $(CIBLE) test
 	rm -rf doc
 
 run: $(CIBLE)

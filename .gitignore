@@ -1,6 +1,5 @@
 # Relatif au OCaml
-*.cmi
-*.cmx
+*.cm[iox]
 *.o
 tas_sable/tas_sable
 tas_sable/test

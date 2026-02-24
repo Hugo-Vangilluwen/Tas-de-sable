@@ -8,13 +8,6 @@ module Q = struct
 end
 open Matrix
 
-(*let (-) (a: int) (b: int): int =
-    Q.to_int (Q.of_int a - Q.of_int b)
-
-let (=) (a: int) (b: int): bool =
-    Q.of_int a = Q.of_int b*)
-
-
 
 module Rationnal : EltsI.ORDERED_AND_OPERATIONAL with type t = Q.t =
 struct

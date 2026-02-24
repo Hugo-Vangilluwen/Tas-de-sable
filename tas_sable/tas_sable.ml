@@ -264,7 +264,22 @@ module Tas_sable (G: GRILLE) = struct
         l
 
     (* Calcule le cardinal des tas de sable récurrents *)
-    let cardinal_recurrents (p: param) (dim: coord): int =
-        laplacien_reduit p dim |> RationnalMatrix.determinant |> Q.to_int |> abs
+    let cardinal_recurrents (p: param) (dim: coord): Z.t =
+        laplacien_reduit p dim
+        |> RationnalMatrix.determinant
+        |> Q.to_bigint
+        |> Z.abs
+
+    (* Calcule le cardinal des tas de sable récurrents
+     * et le rapport entre ceux récurrents et ceux stables
+     *)
+    let rapport_recurrents_stables (p: param) (dim: coord): Z.t * Q.t =
+        let card_rec = cardinal_recurrents p dim in
+        let graphe = creer p dim in
+        let rapport_rec_stab = reduire graphe
+            (fun acc c -> Q.div acc (Q.of_int (max_valeur graphe c + 1)))
+            (Q.of_bigint card_rec)
+            in
+        card_rec, rapport_rec_stab
 
 end

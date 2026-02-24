@@ -219,7 +219,7 @@ isomorphes et on note $E \simeq F$.
 
 \begin{proposition}
 Soient $(E, *)$, $(E', \cdot)$ deux structures et $\varphi: E \rightarrow E'$ un morphisme de structures.
-Alors $\varphi: \mathcal{P}(E) \rightarrow \mathcal{P}(E)$ est
+Alors $\varphi: \mathcal{P}(E) \rightarrow \mathcal{P}(E')$ est
 un morphisme sur les structures des parties.
 De plus, il est croissant pour l'inclusion.
 \end{proposition}
@@ -267,7 +267,7 @@ On a $\varphi(\varphi^{-1}(I') * E)
 = \varphi(\varphi^{-1}(I')) \cdot \varphi(E)
 = I' \cdot \varphi(E)
 \subseteq I'$.
-Donc $\varphi^{-1}(I') * E \subset \varphi^{-1}(I')$.
+Donc $\varphi^{-1}(I') * E \subseteq \varphi^{-1}(I')$.
 
 Supposons que $\varphi$ est surjectif i.e. $\varphi(E) = E'$.
 Soit $I$ un idéal à gauche de $(E, *)$.
@@ -280,7 +280,9 @@ De même pour les idéaux à droite.
 \end{proof}
 
 \begin{theoreme}
-Soient $(E, *)$, $(E', \cdot)$ deux semi-groupes commutatifs finis et $\varphi: E \rightarrow E'$ un morphisme de semi-groupe.
+Soient $(E, *)$, $(E', \cdot)$ deux semi-groupes commutatifs finis et
+$\varphi: E \rightarrow E'$ un morphisme de semi-groupe tel que
+$\varphi^{-1}(K') \neq \emptyset$.
 Notons $K$ et $K'$ leur noyau respectif.
 $\psi = \varphi_{\left|K\right.}^{\left|K'\right.}$ est un morphisme de groupe.
 De plus, si $\varphi$ est bijective alors $\psi$ est bijective.
@@ -296,14 +298,21 @@ bijectivité de $\varphi$ sont équivalentes.
 \begin{proof}
 Toutes les images réciproques d'idéaux de $(E', \cdot)$ sont des idéaux de $(E, *)$ i.e. contenant $K$.
 Or $K'$ est un idéal de $(E', \cdot)$.
+Par hypothèse, $\varphi^{-1}(K')$ est non vide.
 D'où $K \subseteq \varphi^{-1}(K')$ i.e. $\varphi(K) \subseteq K'$. Donc $\psi$ est bien définie.
-D'après le corollaire précédent, $\psi$ est un morphisme de semi-groupes donc de groupes.
+D'après le corollaire précédent, $\psi$ est un morphisme de semi-groupes
+donc de groupes (par unicité du neutre).
 
 Supposons que $\varphi$ est bijective, en particulier surjective.
 Toutes les images d'idéaux de $(E, *)$ sont des idéaux de $(E', \cdot)$ i.e.
 contenant $K'$.
-Or $K$ est un idéal de $(E, *)$.
+Or $K$ est un idéal de $(E, *)$ et $\varphi(K) \neq \emptyset$.
 D'où $\psi(K) \supseteq K'$.
 Donc $\psi(K) = K'$.
 $\psi$ est surjective donc bijective (puisque les cardinaux sont finis).
 \end{proof}
+
+\begin{remarque}
+Notons $e$ et $e'$ les neutres respectivement de $K$ et $K'$.
+On a alors $\varphi(e) = e' \iff \varphi^{-1}(K') \neq \emptyset$.
+\end{remarque}

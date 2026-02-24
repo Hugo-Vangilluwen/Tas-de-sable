@@ -2,20 +2,22 @@
 
 \section{Symétries}
 
-\begin{definition}[morphisme de graphes]
-Soient $G = (S, A)$ et $G' = (S', A')$ deux graphes.
+\begin{definition}[morphisme de multi-graphes]
+Soient $G = (S, A)$ et $G' = (S', A')$ deux multi-graphes.
 Une application $\phi: S \rightarrow S'$ est un morphisme de graphes entre $G$ et $G'$ lorsque :
 $$
-\forall (s, u) \in A, (\phi(s), \phi(u)) \in A'
+\phi(A) \subseteq A'
 $$
-$\phi: S \rightarrow S'$ est un isomorphisme de graphes entre $G$ et $G'$ lorsque $\phi$ est bijective et $\phi$ et $\phi^{-1}$ sont des morphismes de graphes. On a alors :
+$\phi: S \rightarrow S'$ est un isomorphisme de multi-graphes entre $G$ et $G'$
+lorsque $\phi$ est bijective et $\phi$ et $\phi^{-1}$ sont des morphismes de
+multi-graphes. On a alors :
 $$
-\forall (s, u) \in S^2, (s, u) \in A \iff (\phi(s), \phi(u)) \in A'
+\phi(A) = A'
 $$
 \end{definition}
 
 \begin{theoreme}
-Soit $G = (S, A, \pi, p)$ et $G' = (S', A', \pi', p')$ deux graphes de tas de sable et $\phi: S \rightarrow S'$ un morphisme de graphe.
+Soit $G = (S, A, \pi, p)$ et $G' = (S', A', \pi', p')$ deux graphes de tas de sable et $\phi: S \rightarrow S'$ un morphisme de multi-graphe.
 Posons : $$\varphi: \begin{matrix}
 \left(\mathcal{M}(G), \circledast \right) \rightarrow
 \left(\mathcal{M}(G'), \circledast' \right) \\

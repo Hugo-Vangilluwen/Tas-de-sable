@@ -5,7 +5,7 @@
 \subsection{Définitions}
 
 \begin{definition}[Multi-ensemble]
-Un multiensemble est un couple $(E, m)$ où $E$ est un ensemble et
+Un multi-ensemble est un couple $(E, m)$ où $E$ est un ensemble et
 $m: E \rightarrow \mathbb{N}$ un fonction de multiplicité.
 Intuitivement, il s'agit d'ensemble où les nombre de fois où apparaît chaque
 élément est spécifié.
@@ -24,6 +24,11 @@ $$
 $$
 En particulier, si $M$ est vide (i.e. $m(E) \subseteq \{0\}$) alors cette somme
 vaut $f$.
+
+Soient $M = (E, m)$ un multi-ensemble, $E'$ un ensemble et
+$f: E \rightarrow E'$ une application.
+Pour tout $A \subseteq M$, on note le multi-ensemble image de $A$,
+$f(A) = \left( f(E), x \mapsto \sum_{y \in f^{-1}(x)} m(y) \right)$.
 \end{definition}
 
 \begin{definition}[Graphe de tas de sable]

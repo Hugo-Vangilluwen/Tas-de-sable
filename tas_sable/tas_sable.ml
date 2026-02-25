@@ -54,8 +54,11 @@ module type GRILLE = sig
     (* Imprime la grille dans la console *)
     val imprimer : t -> unit
 
+    (* Retourne la taille des cases dans l'affichage  *)
+    val obtenir_taille_cases : unit -> int
+
     (* Définit la dimension des cases dans l'affichage  *)
-    val mettre_dim_cases : int -> unit
+    val mettre_taille_cases : int -> unit
 
     (* Donne la couleur de la case pour l'affichage *)
     val couleur_case: t -> coord -> Graphics.color
@@ -154,11 +157,22 @@ module Tas_sable (G: GRILLE) = struct
 
     (* Affiche le tas de sable dans une fenetre graphique *)
     let afficher (tas: t): unit =
+        let a_redimensionne = G.dimensions tas <= (5, 5) in
+        let taille_initiale = G.obtenir_taille_cases () in
+
+        if a_redimensionne then
+            G.mettre_taille_cases 100
+        else ();
+
         ouvrir_fenetre tas;
         afficher_grille tas None;
 
         let _ = Graphics.wait_next_event[Button_down] in ();
-        Graphics.close_graph ()
+        Graphics.close_graph ();
+
+        if a_redimensionne then
+            G.mettre_taille_cases taille_initiale
+        else ()
 
     (* Affiche l'animation de n etape à partir de tas en ajoutant la source à
      * chaque etape en passant d'une etape à une autre avec attendre
@@ -255,7 +269,7 @@ module Tas_sable (G: GRILLE) = struct
                 RationnalMatrix.set_elt
                     l
                     coeff
-                    (Q.sub (RationnalMatrix.get_elt l coeff) (Q.of_int 1))q
+                    (Q.sub (RationnalMatrix.get_elt l coeff) (Q.of_int 1))
                 )
                 voisins_c
             )

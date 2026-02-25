@@ -127,15 +127,18 @@ module Grille_hexagonale: GRILLE with type param = unit = struct
         x |> float_of_int |> f |> int_of_float
 
     (* Dimension d'une case dans l'affichage *)
-    let dim_cases : int ref = ref 10 (* Taille par défaut *)
+    let taille_cases : int ref = ref 10 (* Taille par défaut *)
     (* cos 30 = 0,866 et sin 30 = 0,5 *)
     (* largeur de l'hexagone *)
-    let largeur : int ref = ref (float_calcul (( *.) 0.866) !dim_cases)
+    let largeur : int ref = ref (float_calcul (( *.) 0.866) !taille_cases)
     (* demi-longeur d'un côté *)
-    let demi_longeur : int ref = ref (float_calcul (( *.) 0.5) !dim_cases)
+    let demi_longeur : int ref = ref (float_calcul (( *.) 0.5) !taille_cases)
 
-    let mettre_dim_cases (a: int): unit =
-        dim_cases := a;
+    let obtenir_taille_cases (): int =
+        !taille_cases
+
+    let mettre_taille_cases (a: int): unit =
+        taille_cases := a;
         largeur := float_calcul (( *.) 0.866) a;
         demi_longeur := float_calcul (( *.) 0.5) a
 
@@ -155,7 +158,7 @@ module Grille_hexagonale: GRILLE with type param = unit = struct
 
     let ouvrir_fenetre (g: t): unit =
         " " ^ ((2 * g.largeur + g.hauteur - 1) * !largeur |> string_of_int)
-        ^ "x" ^ (g.hauteur * (!dim_cases + !demi_longeur) + (!dim_cases - !demi_longeur) |> string_of_int)
+        ^ "x" ^ (g.hauteur * (!taille_cases + !demi_longeur) + (!taille_cases - !demi_longeur) |> string_of_int)
         |> Graphics.open_graph
 
     (*let afficher_grille (g: t) (_: t option): unit =
@@ -180,15 +183,15 @@ module Grille_hexagonale: GRILLE with type param = unit = struct
     let afficher_case (g: t) (c: coord): unit =
         let (x, y) = c in
         let xx = !largeur * (2 * x + y) in
-        let yy = (!dim_cases + !demi_longeur) * y in
+        let yy = (!taille_cases + !demi_longeur) * y in
         Graphics.fill_poly
             [|
             (xx + !largeur, yy);
-            (xx + 2 * !largeur, yy + !dim_cases - !demi_longeur);
-            (xx + 2 * !largeur, yy + !dim_cases + !demi_longeur);
-            (xx + !largeur, yy + 2 * !dim_cases);
-            (xx, yy + !dim_cases + !demi_longeur);
-            (xx, yy + !dim_cases - !demi_longeur);
+            (xx + 2 * !largeur, yy + !taille_cases - !demi_longeur);
+            (xx + 2 * !largeur, yy + !taille_cases + !demi_longeur);
+            (xx + !largeur, yy + 2 * !taille_cases);
+            (xx, yy + !taille_cases + !demi_longeur);
+            (xx, yy + !taille_cases - !demi_longeur);
             |]
 end
 

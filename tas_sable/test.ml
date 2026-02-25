@@ -37,7 +37,7 @@ let test_laplacien: unit =
     let laplacien_exemple = Tse.laplacien_reduit () (2, 0) in
     let resultat = RationnalMatrix.from_list [[Q.of_int 6; Q.of_int (-3)]; [Q.of_int (-5); Q.of_int 5]] in
     assert (laplacien_exemple = resultat);
-    assert (Tse.cardinal_recurrents () (2, 0) = 15)
+    assert (Tse.cardinal_recurrents () (2, 0) = Z.of_int 15)
 
 
 let main_test: unit =

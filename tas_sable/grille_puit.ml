@@ -72,7 +72,9 @@ module Ajouter_puit (G: GRILLE): GRILLE with type param = coord list * G.param =
 
     let imprimer (g: t) = G.imprimer g.grille_int
 
-    let mettre_dim_cases = G.mettre_dim_cases
+    let obtenir_taille_cases = G.obtenir_taille_cases
+
+    let mettre_taille_cases = G.mettre_taille_cases
 
     let couleur_case (g: t) (c: coord): Graphics.color =
         if List.mem c g.puits then begin

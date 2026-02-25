@@ -134,10 +134,13 @@ module Grille_montagne : GRILLE with type param = float = struct
             print_newline ()
         done
 
-    let dim_cases: int ref = ref 20 (* Taille par défaut *)
+    let taille_cases: int ref = ref 20 (* Taille par défaut *)
 
-    let mettre_dim_cases (a: int): unit =
-        dim_cases := a
+    let obtenir_taille_cases (): int =
+        !taille_cases
+
+    let mettre_taille_cases (a: int): unit =
+        taille_cases := a
 
     let couleur_case (g: t) (c: coord): Graphics.color =
         let (x, y) = c in
@@ -146,8 +149,8 @@ module Grille_montagne : GRILLE with type param = float = struct
             Graphics.rgb u u u
 
     let ouvrir_fenetre (g: t): unit =
-        " " ^ (g.largeur * !dim_cases |> string_of_int)
-        ^ "x" ^ (g.hauteur * !dim_cases |> string_of_int)
+        " " ^ (g.largeur * !taille_cases |> string_of_int)
+        ^ "x" ^ (g.hauteur * !taille_cases |> string_of_int)
         |> Graphics.open_graph
 
     (*
@@ -173,7 +176,7 @@ module Grille_montagne : GRILLE with type param = float = struct
 
     let afficher_case (g: t) (c: coord): unit =
         let (x, y) = c in
-        Graphics.fill_rect (!dim_cases*x) (!dim_cases*y) !dim_cases !dim_cases
+        Graphics.fill_rect (!taille_cases*x) (!taille_cases*y) !taille_cases !taille_cases
 end
 
 (* Tas de sable montagne *)

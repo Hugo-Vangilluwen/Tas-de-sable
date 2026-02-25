@@ -85,10 +85,13 @@ module Grille_exemple: GRILLE with type param = unit = struct
         print_int g.v;
         print_newline ()
 
-    let dim_cases: int ref = ref 200 (* Taille par défaut *)
+    let taille_cases: int ref = ref 100 (* Taille par défaut *)
 
-    let mettre_dim_cases (a: int): unit =
-        dim_cases := a
+    let obtenir_taille_cases (): int =
+        !taille_cases
+
+    let mettre_taille_cases (a: int): unit =
+        taille_cases := a
 
     let couleur_case (g: t) (c: coord): Graphics.color =
         let (x, y) = c in
@@ -97,8 +100,8 @@ module Grille_exemple: GRILLE with type param = unit = struct
             Graphics.rgb u u u
 
     let ouvrir_fenetre (g: t): unit =
-        " " ^ (2 * !dim_cases |> string_of_int)
-        ^ "x" ^ (!dim_cases |> string_of_int)
+        " " ^ (2 * !taille_cases |> string_of_int)
+        ^ "x" ^ (!taille_cases |> string_of_int)
         |> Graphics.open_graph
 
     let afficher_grille (g: t) (g_opt: t option): unit =
@@ -114,17 +117,17 @@ module Grille_exemple: GRILLE with type param = unit = struct
                 else begin
                     couleur_case g (x, 0) |> Graphics.set_color;
                     Graphics.fill_rect
-                        (!dim_cases*x)
-                        (!dim_cases*y)
-                        !dim_cases
-                        !dim_cases
+                        (!taille_cases*x)
+                        (!taille_cases*y)
+                        !taille_cases
+                        !taille_cases
                 end
             )
             g
 
     let afficher_case (g: t) (c: coord): unit =
         let (x, y) = c in
-        Graphics.fill_rect (!dim_cases*x) (!dim_cases*y) !dim_cases !dim_cases
+        Graphics.fill_rect (!taille_cases*x) (!taille_cases*y) !taille_cases !taille_cases
 end
 
 (* Tas de sable exemple *)

@@ -40,7 +40,7 @@ doc: $(CIBLE)
 .PHONY: clean run test debug
 
 test: $(SOURCES) test.ml
-	ocamlfind ocamlopt -o test -linkpkg $(OCAML_OPT) $(SOURCES) test.ml
+	ocamlfind ocamlopt -o test -linkpkg $(OCAML_PKG) $(OCAML_OPT) $(SOURCES) test.ml
 	./test
 
 clean:

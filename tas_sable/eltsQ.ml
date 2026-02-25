@@ -2,10 +2,6 @@
 (* Copié et modifié depuis elts.ml *)
 
 open EltsI
-module Q = struct
-    open Q
-    include Q
-end
 open Matrix
 
 

@@ -2,7 +2,8 @@
 
 \section{Tas de sable}
 
-\subsection{Définitions}
+
+\subsection{Multi-ensembles}
 
 \begin{definition}[Multi-ensemble]
 Un multi-ensemble est un couple $(E, m)$ où $E$ est un ensemble et
@@ -31,6 +32,19 @@ Pour tout $A \subseteq M$, on note le multi-ensemble image de $A$,
 $f(A) = \left( f(E), x \mapsto \sum_{y \in f^{-1}(x)} m(y) \right)$.
 \end{definition}
 
+\begin{definition}[Ensemble des multi-parties]
+Une multi-partie de $E$ est un multi-ensemble $(E, m)$.
+On note $\mathcal{MP}(E)$ l'ensemble des multi-parties de $E$.
+Il est muni de l'ordre partiel $\subseteq$.
+\end{definition}
+
+\begin{definition}[Multi-graphe]
+content
+\end{definition}
+
+
+\subsection{Définitions}
+
 \begin{definition}[Graphe de tas de sable]
 Un graphe de tas de sable $G$ est un triplet $(S, A, p)$ où $(S, A)$ est
 un multi-graphe orienté (i.e. $A$ est un multi-ensemble)
@@ -57,7 +71,12 @@ et $0$ partout ailleurs.
 
 Les configurations $\widetilde{S}^{\mathbb{N}}$  munies de la loi $+$ définie
 par $(c + c')(s) = c(s) + c'(s)$ forment un monoïde abélien de neutre $0$.
-Il est engendré par les configurations $s$ pour $s \in \widetilde{S}$.
+Il est engendré par les configurations $\mathbf{1}_s$
+pour $s \in \widetilde{S}$ :
+$$
+\forall c \in \widetilde{S}^{\mathbb{N}},
+c = \sum_{s \in \widetilde{S}} c(s) \mathbf{1}_s
+$$
 
 Posons la configuration où tous les sommets ont leur degré sortant moins un grain :
 $$

@@ -1,0 +1,118 @@
+% !TeX root = théorie.tex
+
+\section{Groupes abéliens}
+
+\begin{definition}[Jonction par le puits]
+Soient $\left(G_i\right)_{1 \leqslant i \leqslant n} =
+\left(S_i, A_i, p_i\right)_{1 \leqslant i \leqslant n}$ des graphes des tas de
+sable où $\left(S_i\right)_{1 \leqslant i \leqslant n}$ sont des ensembles
+disjoints.
+La jonction par le puits est le graphe des tas de sable
+$(\left\{p\right\} \cup \bigcup_{i=1}^{n} \widetilde{S_i},
+\bigcup_{i=1}^{n} A_i, p)$ où tous les $\left(p_i\right)_
+{1 \leqslant i \leqslant n}$ sont identifiés au puits commun $p$.
+\end{definition}
+
+\begin{proposition}
+Si $G$ est la jonction par le puits de $\left(G_i\right)
+_{1 \leqslant i \leqslant n}$ alors $\mathcal{M}\left(G\right)
+= \mathcal{M}\left(G_1\right) \times \ldots \times \mathcal{M}\left(G_n\right)$
+et $\mathcal{G}\left(G\right)
+= \mathcal{G}\left(G_1\right) \times \ldots \times \mathcal{G}\left(G_n\right)$.
+\end{proposition}
+
+\begin{proof}
+À faire
+\end{proof}
+
+\begin{theoreme}
+Soit $(G, \cdot)$ un magma fini.
+On a l'équivalence entre :
+\begin{itemize}[label=\textbullet]
+    \item $(G, \cdot)$ est isomorphe à un groupe des tas de sable récurrents
+    \item $(G, \cdot)$ est un groupe abélien
+\end{itemize}
+\end{theoreme}
+
+\begin{proof}
+Le sens direct découle de la construction du groupe des tas de sable récurrents.
+Supposons que $(G, \cdot)$ est un groupe abélien.
+D'après le théorème de Kronecker, il existe des entiers naturels non nuls
+$a_1 | a_2 | \ldots | a_k$ tels que :
+$$
+G \simeq \mathbb {Z} / a_1 \mathbb{Z} \times \mathbb{Z} / a_2 \mathbb{Z} \times \cdots \times \mathbb{Z} / a_k \mathbb{Z}
+$$
+Pour tout $i \in [\![1;k]\!]$, posons le graphe des tas de sable $H_i =
+\left( \left\{s_i, p_i\right\}, \left(\left\{\left(s_i, p_i\right)\right\},
+\left(s_i, p_i\right) \mapsto a_i\right), p_i \right)$
+de sorte que $\mathcal{M}\left(H_i\right) = \mathcal{G}\left(H_i\right) =
+\mathbb{Z} / a_i \mathbb{Z}$.
+Posons $H$ la jonction par le puits de $\left(H_i\right)_
+{1 \leqslant i \leqslant n}$ de sorte que $\mathcal{G}(H) \simeq G$ d'après la
+proposition ci-dessus.
+\end{proof}
+
+\begin{question}
+Soit $(M, *)$ un magma fini.
+A-t-on l'équivalence entre :
+\begin{itemize}[label=\textbullet]
+    \item $(M, *)$ est isomorphe à un monoïde des tas de sable stables
+    \item $(M, *)$ est un monoïde abélien simplifiable
+\end{itemize}
+ou faut-il ajouter des conditions pour le second point ?
+Je donne ci-dessous un début de démonstration inachevé.
+\end{question}
+
+\begin{proof}
+Le sens direct découle de la construction du groupe des tas de sable stables.
+Réciproquement, soit $(M, *)$ un monoïde abélien.
+L'ensemble des parties génératrices de $(M, *)$ est non vide car $M$ en est une.
+Il existe alors $X$ une partie génératrice minimale au sens de l'inclusion.
+Notons $X = \left\{ x_1, x_2, \ldots, x_n \right\}$.
+Posons $S = \left\{ s_1, s_2, \ldots, s_n, p \right\}$.
+
+Munissons $\mathcal{MP}(X)$ de l'ordre total :
+$$
+(X, m) \sqsubseteq (X, m')
+\iff \left(|(X, m')|, m(x_1), m(x_2), \ldots, m(x_n)\right)
+\leqslant \left(|(X, m')|, m'(x_1), m'(x_2), \ldots, m'(x_n)\right)
+$$
+Pour tout $i \in [\![1;n]\!]$, posons
+$(K_i, \xi_i) = \min \left\{ (k, \chi) \in \mathbb{N}^* \times
+\mathcal{MP}(X) \;|\; \begin{matrix}
+x_i^k = \prod_{x \in \chi} x \\
+\chi \neq \left\{\left(x_i, k\right)\right\} \\
+\end{matrix} \right\}$.
+Posons $A = \left(S, \begin{matrix}
+\left(s_i, s_j\right) \mapsto m_{\xi_i}(x_j) \\
+\left(s_i, p \right) \mapsto K_i - \left|\xi_i\right|
+\end{matrix} \right)$.
+Posons $G = (S, A, p)$
+Montrons maintenant que $\mathcal{M}(G) \simeq M$.
+
+Comme $(M, *)$ est un semi-groupe abélien, tout élément $y \in M$ peut s'écrire
+sous la forme $y = \prod_{x \in \chi} x$ avec $\chi \in
+\mathcal{MP}(X)$.
+Posons alors $\varphi(y) = \sum_{i=1}^{n} m_\chi(x_i) . \mathbf{1}_{s_i}$.
+Montrons que l'application $\varphi$ est bien définie c'est-à-dire que la valeur
+de $\varphi(y)$ ne dépend pas du choix de $\chi$.
+\end{proof}
+
+\begin{remarque}
+Il est possible que la démonstration pour les groupes abéliens soit un cas particulier du problème précédent.
+\end{remarque}
+
+\begin{question}
+$$
+\textsc{Problème sans nom} :
+\left\{ \begin{array}{lcl}
+\text{\textbf{Entrée}} & \textbf{ : } & \text{un groupe abélien } (G, \cdot) \\
+\text{\textbf{Sortie}} & \textbf{ : } &
+\min \left\{ |A| \;|\; \mathcal{G}(S, A, p) \simeq G \right\}
+\end{array} \right.
+$$
+Dans le problème ci-dessus, $(G, \cdot)$ est représenté par le multi-ensemble de
+sa décomposition en groupes cycliques.
+
+Ce problème est \textbf{NP}. Est-il \textbf{NP}-difficile ?
+\end{question}

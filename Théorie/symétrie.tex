@@ -2,7 +2,7 @@
 
 \section{Symétries}
 
-\begin{definition}[morphisme de multi-graphes]
+\begin{definition}[Morphisme de multi-graphes]
 Soient $G = (S, A)$ et $G' = (S', A')$ deux multi-graphes.
 Une application $\phi: S \rightarrow S'$ est un morphisme de graphes entre $G$ et $G'$ lorsque :
 $$
@@ -17,15 +17,18 @@ $$
 \end{definition}
 
 \begin{theoreme}
-Soit $G = (S, A, \pi, p)$ et $G' = (S', A', \pi', p')$ deux graphes de tas de sable et $\phi: S \rightarrow S'$ un morphisme de multi-graphe.
-Posons : $$\varphi: \begin{matrix}
+Soit $G = (S, A, p)$ et $G' = (S', A', p')$ deux multi-graphes de tas de sable et $\phi: S \rightarrow S'$ un morphisme de multi-graphe.
+Posons : $$\Phi: \begin{matrix}
 \left(\mathcal{M}(G), \circledast \right) \rightarrow
 \left(\mathcal{M}(G'), \circledast' \right) \\
-\displaystyle \sum_{s \in S} a_s . \mathbf{1}_s \mapsto \left( \sum_{s \in S} a_s . \mathbf{1}_{\phi(s)} \right)^\circ
+\displaystyle \sum_{s \in \widetilde{S}} c(s) . \mathbf{1}_s \mapsto
+\left( \sum_{s \in \widetilde{S}} c(s) . \mathbf{1}_{\phi(s)} \right)^\circ
 \end{matrix}$$
 L'application $\varphi$ est un morphisme de monoïde.
 De plus, notant $c_0$ et $c_0'$ les neutres de $\mathcal{G}(G)$ et de $\mathcal{G}(G')$, on a $c_0' = \varphi(c_0)$.
-Si $\phi$ est bijective alors $\varphi$ est aussi bijective.
+Si $\phi$ est bijective alors $\Phi$ est aussi bijective et
+$\forall c \in \mathcal{M}(G), \Phi(c) = \sum_{s \in \widetilde{S}}
+c(s) . \mathbf{1}_{\phi(s)}$.
 \end{theoreme}
 
 \begin{proof}
@@ -46,23 +49,23 @@ $\widehat{\phi}$ est égal à appliquer $\widehat{\phi}$ puis effectuer
 l'écroulement.
 
 Ainsi, la restriction aux monoïdes des tas de sable
-$\varphi: \left(\mathcal{M}(G), \circledast \right) \rightarrow
+$\Phi: \left(\mathcal{M}(G), \circledast \right) \rightarrow
 \left(\mathcal{M}(G'), \circledast' \right)$ est compatible avec
 et le changement de loi interne.
-Calculons $\varphi(c_0)$.
-$\varphi(c_0)
+Calculons $\Phi(c_0)$.
+$\Phi(c_0)
 = \widehat{\phi}(c_0)
 = \widehat{\phi}\left(\left(2 c_{max} - \left(2 c_{max}\right)^\circ \right)^\circ\right)
 = \left(2 \widehat{\phi}\left(c_{max}\right) - \left(2 \widehat{\phi}\left(c_{max}\right)\right)^\circ \right)^\circ
 = \left(2 c_{max}' - \left(2 c_{max}'\right)^\circ \right)^\circ
 = c_0'$.
-Ainsi $\varphi$ est un morphisme de monoïdes.
+Ainsi $\Phi$ est un morphisme de monoïdes.
 
 Supposons que $\phi$ est bijective. Alors $\widehat{\phi}$ aussi.
 Si $c$ est un tas de sable stable alors $\widehat{\phi}(c)$ est aussi stable.
-Donc $\varphi(c) = \sum_{s \in S} a_s . \mathbf{1}_{\phi(s)}$.
-$\varphi$ est simplement un restriction de $\widehat{\phi}$.
-Donc $\varphi$ est bijective.
+Donc $\Phi(c) = \sum_{s \in S} a_s . \mathbf{1}_{\phi(s)}$.
+$\Phi$ est simplement un restriction de $\widehat{\phi}$.
+Donc $\Phi$ est bijective.
 \end{proof}
 
 \begin{corollaire}
@@ -71,4 +74,61 @@ Le neutre d'un groupe des tas de sable possède les mêmes symétrie que le grap
 
 \begin{proof}
 Les symétries du graphe sont des isomorphismes du graphe dans lui-même.
+\end{proof}
+
+\begin{proposition}
+En reprenant les mêmes notations, si $\phi(A) = A'$ alors
+$\Phi: \left(\mathcal{G}(G), \circledast \right) \rightarrow
+\left(\mathcal{G}(G'), \circledast' \right)$ est injective.
+\end{proposition}
+
+\begin{proof}
+$x \mapsto x + c_{max}$ est une bijection donc $\ker \Phi$ a le même cardinal
+que $\Phi^{-1}\left(c_{max}'\right)$.
+Comme $\phi(A) = A'$, on a $\forall s' \in \widetilde{S'},
+d^+(s') = \sum_{u \in \Phi^{-1}(s')} d^+(s)$ donc
+$\forall c \in \mathcal{M}(G), \forall s \in \widetilde{S}, c(s) < d^+(s)
+\implies \Phi(c)(s) < d^+\left(\Phi(s)\right) =
+\sum_{u \in \Phi^{-1}(\Phi(s))} d^+(u)$.
+Ainsi $c_{max}$ est le seul antécédent de $c_{max}'$.
+$\left|\ker\Phi\right| = 1$ i.e. $\Phi$ est injective.
+\end{proof}
+
+\begin{theoreme}
+Soit $G = (S, A, p)$ un multi-graphe de tas de sable.
+Soit $\left(S_i\right)_{i \in I}$ une partition de $S$.
+$\begin{matrix}
+\mathcal{G} &\rightarrow& \mathbb{N}^{I} \\
+c &\mapsto&  \left(\sum_{s \in S_i} c(s)\right)_{i \in I}
+\end{matrix}$ est injective.
+\end{theoreme}
+
+\begin{proof}
+Pour tout $s \in \widetilde{S}$, par définition d'une partition, il existe un
+unique $i \in I$ tel que $s \in S_i$. Notons ce $i$, $\phi(s)$.
+Soit $p'$. Posons de plus, $\phi(p) = p'$.
+On a défini $\phi: \widetilde{S} \rightarrow I \cup \{p'\}$.
+Posons le multi-ensemble $A' = \phi(A)$.
+$G' = (I \cup \{p'\}, A', p')$ est un multi-graphe de tas de sable.
+D'après la proposition précédente, $\Phi$ est un morphisme de groupe injectif
+ce qui conclut.
+\end{proof}
+
+\begin{corollaire}
+Soit $G = (S, A, p)$ un multi-graphe de tas de sable.
+$$
+\forall c \in \mathcal{G}, \forall \sigma \in \mathfrak{S}_{\widetilde{S}},
+c_{\sigma}: \begin{matrix}
+\widetilde{S} &\rightarrow& \mathbb{N} \\
+s &\mapsto& c(\sigma)(s)
+\end{matrix} \in \mathcal{M}
+\text{ et } \left(
+c_\sigma \neq c \implies c_\sigma \notin \mathcal{G}
+\right)
+$$
+\end{corollaire}
+
+\begin{proof}
+Si $c_\sigma \neq c$ alors $c_\sigma \in \mathcal{G}$ contredit la proposition
+ci-dessus pour la partition réduite à $(S)$.
 \end{proof}

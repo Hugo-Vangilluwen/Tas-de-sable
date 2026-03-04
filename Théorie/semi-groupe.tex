@@ -81,9 +81,11 @@ Sinon, on obtient $e^2 = y^{2^p + 2^p - 2} = y * y^{2^p - 2} = y^{2^p - 1} = e$
 Donc $e$ est idempotent.
 \end{proof}
 
+
 \subsection{Idéaux}
 
 \begin{definition}[Idéal]
+Soit $(E, *)$ un semi-groupe.
 Soit $I \subseteq E$. On dit que $I$ est
 un idéal à droite si $I * E \subseteq I$
 et un idéal à gauche si $E * I \subseteq I$.
@@ -107,7 +109,7 @@ Une intersection quelconque d'idéals est un idéal.
 \end{proposition}
 
 \begin{proof}
-Soit $\left(I_j\right)_{j \in J}$ une famille d'idéals à gauche de $(E, *)$. \\
+Soit $\left(I_j\right)_{j \in J}$ une famille d'idéaux à gauche de $(E, *)$. \\
 Le produit cartésien est distributif par rapport à l'intersection donc on a $\forall A \subseteq E, \left(\bigcap_{j \in J} I_j\right) * A \subseteq \bigcap_{j \in J} \left(I_j * A\right)$.
 En particulier, pour $A = E$, on obtient :
 $$
@@ -185,6 +187,7 @@ $iv \implies i$ Si $I$ est un idéal de $(E, *)$, alors
 $x_0 \in K \subseteq I$ donc $x_0 * z \in I$. \\
 Ainsi $x$ appartient à tous les idéaux donc à l'idéal minimal i.e. $x \in K$.
 \end{proof}
+
 
 \subsection{Morphismes}
 
@@ -316,3 +319,53 @@ $\psi$ est surjective donc bijective (puisque les cardinaux sont finis).
 Notons $e$ et $e'$ les neutres respectivement de $K$ et $K'$.
 On a alors $\varphi(e) = e' \iff \varphi^{-1}(K') \neq \emptyset$.
 \end{remarque}
+
+
+\subsection{Parties génératrices}
+
+\begin{proposition}
+Une intersection non vide quelconque de sous-structures est un sous-structure.
+\end{proposition}
+
+\begin{proof}
+Soit $\left(F_i\right)_{i \in I}$ une famille de sous-structures de $(E, *)$
+avec $I \neq \empty$ (sinon l'intersection n'est pas définie).
+Posons $G \bigcap_{i \in I} F_i$.
+Soit $(x, y) \in G$. Soit $i \in I$.
+$x \in F_i$ et $y \in F_i$ donc $x * y \in F_i \subseteq G$.
+Si $(E, *, e)$ est un monoïde, on a $\forall i \in I, e \in F_i$ donc $e \in G$.
+Ainsi $G$ est un sous-structure de $(E, *)$.
+\end{proof}
+
+\begin{definition}[Sous-structure engendrée par une partie]
+Soit $(E, *)$ un structure et $A \subseteq E$.
+La sous-structure engendré par $A$ notée $\langle A \rangle$ est
+la plus petite sous-structure contenant $A$ (au sens de l'inclusion).
+Il s'agit de l'intersection de toutes les sous-structures contenant $A$.
+Cette intersection est non vide car elle contient notamment $E$.
+\end{definition}
+
+\begin{proposition}
+$$
+\langle A \rangle = \left\{ x \in E \;|\;
+\exists \left(a_1, \ldots, a_n\right) \in A^n : x = a_1 * \ldots * a_n \right\}
+$$
+\end{proposition}
+
+\begin{proof}
+À faire
+\end{proof}
+
+\begin{remarque}
+Si $(E, *)$ est un semi-groupe abélien, on a :
+$$
+\langle A \rangle = \left\{ x \in E \;|\;
+\exists \left(\alpha_1, \ldots, \alpha_n\right) \in \mathbb{N}^n :
+x = a_1^{\alpha_1} * \ldots * a_n^{\alpha_n} \right\}
+$$
+\end{remarque}
+
+\begin{definition}[Partie génératrice]
+$A \subseteq E$ est dite génératrice du semi-groupe $(E, *)$
+lorsque $\langle A \rangle = E$.
+\end{definition}

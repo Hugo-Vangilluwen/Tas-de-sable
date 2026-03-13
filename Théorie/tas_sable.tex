@@ -39,7 +39,8 @@ Il est muni de l'ordre partiel $\subseteq$.
 \end{definition}
 
 \begin{definition}[Multi-graphe]
-content
+Un multi-graphe $(S, A)$ est un couple où $S$ est un ensemble fini de sommets
+et $A$ une multi-partie de $S$ représentant les arêtes.
 \end{definition}
 
 
@@ -48,7 +49,7 @@ content
 \begin{definition}[Graphe de tas de sable]
 Un graphe de tas de sable $G$ est un triplet $(S, A, p)$ où $(S, A)$ est
 un multi-graphe orienté (i.e. $A$ est un multi-ensemble)
-et $p \in S$ appelé puits.
+et $p \in S$ appelé puits qui est accessible depuis tous les sommets.
 La multiplicité de $(s, u)$ indique le nombre d'arcs de $s$ à $u$.
 On notera $\widetilde{S} = S \setminus \{p\}$, et pour $s \in S$, $V^+(s)
 \subseteq A$ le multi-graphe des successeurs et $d^+(s)$ le degré sortant :

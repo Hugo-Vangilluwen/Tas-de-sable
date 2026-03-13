@@ -24,11 +24,12 @@ Posons : $$\Phi: \begin{matrix}
 \displaystyle \sum_{s \in \widetilde{S}} c(s) . \mathbf{1}_s \mapsto
 \left( \sum_{s \in \widetilde{S}} c(s) . \mathbf{1}_{\phi(s)} \right)^\circ
 \end{matrix}$$
-L'application $\varphi$ est un morphisme de monoïde.
-De plus, notant $c_0$ et $c_0'$ les neutres de $\mathcal{G}(G)$ et de $\mathcal{G}(G')$, on a $c_0' = \varphi(c_0)$.
+L'application $\Phi$ est un morphisme de monoïde.
+
 Si $\phi$ est bijective alors $\Phi$ est aussi bijective et
 $\forall c \in \mathcal{M}(G), \Phi(c) = \sum_{s \in \widetilde{S}}
 c(s) . \mathbf{1}_{\phi(s)}$.
+En particulier, $\Phi(c_0) = c_0'$.
 \end{theoreme}
 
 \begin{proof}
@@ -52,13 +53,6 @@ Ainsi, la restriction aux monoïdes des tas de sable
 $\Phi: \left(\mathcal{M}(G), \circledast \right) \rightarrow
 \left(\mathcal{M}(G'), \circledast' \right)$ est compatible avec
 et le changement de loi interne.
-Calculons $\Phi(c_0)$.
-$\Phi(c_0)
-= \widehat{\phi}(c_0)
-= \widehat{\phi}\left(\left(2 c_{max} - \left(2 c_{max}\right)^\circ \right)^\circ\right)
-= \left(2 \widehat{\phi}\left(c_{max}\right) - \left(2 \widehat{\phi}\left(c_{max}\right)\right)^\circ \right)^\circ
-= \left(2 c_{max}' - \left(2 c_{max}'\right)^\circ \right)^\circ
-= c_0'$.
 Ainsi $\Phi$ est un morphisme de monoïdes.
 
 Supposons que $\phi$ est bijective. Alors $\widehat{\phi}$ aussi.
@@ -68,67 +62,82 @@ $\Phi$ est simplement un restriction de $\widehat{\phi}$.
 Donc $\Phi$ est bijective.
 \end{proof}
 
+\begin{proposition}
+Si $\widehat{\phi}(c_{max}) = c_{max}'$ (ce qui est le cas quand $\phi$ est
+bijective), alors en notant $c_0$ et $c_0'$ les neutres de $\mathcal{G}(G)$ et
+de $\mathcal{G}(G')$, on a $c_0' = \varphi(c_0)$.
+\end{proposition}
+
+\begin{proof}
+$\Phi(c_0)
+= \widehat{\phi}(c_0)
+= \widehat{\phi}\left(\left(2 c_{max} - \left(2 c_{max}\right)^\circ \right)^\circ\right)
+= \left(2 \widehat{\phi}\left(c_{max}\right) - \left(2 \widehat{\phi}\left(c_{max}\right)\right)^\circ \right)^\circ$ \\
+$= \left(2 c_{max}' - \left(2 c_{max}'\right)^\circ \right)^\circ
+= c_0'$.
+\end{proof}
+
 \begin{corollaire}
 Le neutre d'un groupe des tas de sable possède les mêmes symétrie que le graphe.
 \end{corollaire}
 
 \begin{proof}
-Les symétries du graphe sont des isomorphismes du graphe dans lui-même.
+Les symétries du graphe sont des isomorphismes du multi-graphe dans lui-même.
 \end{proof}
 
-\begin{proposition}
-En reprenant les mêmes notations, si $\phi(A) = A'$ alors
-$\Phi: \left(\mathcal{G}(G), \circledast \right) \rightarrow
-\left(\mathcal{G}(G'), \circledast' \right)$ est injective.
-\end{proposition}
+% \begin{proposition}
+% En reprenant les mêmes notations, si $\phi(A) = A'$ alors
+% $\Phi: \left(\mathcal{G}(G), \circledast \right) \rightarrow
+% \left(\Phi\left(\mathcal{G}(G)\right), \circledast' \right)$ est injective.
+% \end{proposition}
 
-\begin{proof}
-$x \mapsto x + c_{max}$ est une bijection donc $\ker \Phi$ a le même cardinal
-que $\Phi^{-1}\left(c_{max}'\right)$.
-Comme $\phi(A) = A'$, on a $\forall s' \in \widetilde{S'},
-d^+(s') = \sum_{u \in \Phi^{-1}(s')} d^+(s)$ donc
-$\forall c \in \mathcal{M}(G), \forall s \in \widetilde{S}, c(s) < d^+(s)
-\implies \Phi(c)(s) < d^+\left(\Phi(s)\right) =
-\sum_{u \in \Phi^{-1}(\Phi(s))} d^+(u)$.
-Ainsi $c_{max}$ est le seul antécédent de $c_{max}'$.
-$\left|\ker\Phi\right| = 1$ i.e. $\Phi$ est injective.
-\end{proof}
+%\begin{proof}
+%$x \mapsto x + c_{max}$ est une bijection donc $\ker \Phi$ a le même cardinal
+%que $\Phi^{-1}\left(c_{max}'\right)$.
+%Comme $\phi(A) = A'$, on a $\forall s' \in \widetilde{S'},
+%d^+(s') = \sum_{u \in \Phi^{-1}(s')} d^+(s)$ donc
+%$\forall c \in \mathcal{M}(G), \forall s \in \widetilde{S}, c(s) < d^+(s)
+%\implies \Phi(c)(s) < d^+\left(\Phi(s)\right) =
+%\sum_{u \in \Phi^{-1}(\Phi(s))} d^+(u)$.
+%Ainsi $c_{max}$ est le seul antécédent de $c_{max}'$.
+%$\left|\ker\Phi\right| = 1$ i.e. $\Phi$ est injective.
+%\end{proof}
 
-\begin{theoreme}
-Soit $G = (S, A, p)$ un multi-graphe de tas de sable.
-Soit $\left(S_i\right)_{i \in I}$ une partition de $S$.
-$\begin{matrix}
-\mathcal{G} &\rightarrow& \mathbb{N}^{I} \\
-c &\mapsto&  \left(\sum_{s \in S_i} c(s)\right)_{i \in I}
-\end{matrix}$ est injective.
-\end{theoreme}
+%\begin{theoreme}
+%Soit $G = (S, A, p)$ un multi-graphe de tas de sable.
+%Soit $\left(S_i\right)_{i \in I}$ une partition de $S$.
+%$\begin{matrix}
+%\mathcal{G} &\rightarrow& \mathbb{N}^{I} \\
+%c &\mapsto&  \left(\sum_{s \in S_i} c(s)\right)_{i \in I}
+%\end{matrix}$ est injective.
+%\end{theoreme}
 
-\begin{proof}
-Pour tout $s \in \widetilde{S}$, par définition d'une partition, il existe un
-unique $i \in I$ tel que $s \in S_i$. Notons ce $i$, $\phi(s)$.
-Soit $p'$. Posons de plus, $\phi(p) = p'$.
-On a défini $\phi: \widetilde{S} \rightarrow I \cup \{p'\}$.
-Posons le multi-ensemble $A' = \phi(A)$.
-$G' = (I \cup \{p'\}, A', p')$ est un multi-graphe de tas de sable.
-D'après la proposition précédente, $\Phi$ est un morphisme de groupe injectif
-ce qui conclut.
-\end{proof}
+%\begin{proof}
+%Pour tout $s \in \widetilde{S}$, par définition d'une partition, il existe un
+%unique $i \in I$ tel que $s \in S_i$. Notons ce $i$, $\phi(s)$.
+%Soit $p'$. Posons de plus, $\phi(p) = p'$.
+%On a défini $\phi: \widetilde{S} \rightarrow I \cup \{p'\}$.
+%Posons le multi-ensemble $A' = \phi(A)$.
+%$G' = (I \cup \{p'\}, A', p')$ est un multi-graphe de tas de sable.
+%D'après la proposition précédente, $\Phi$ est un morphisme de groupe injectif
+%ce qui conclut.
+%\end{proof}
 
-\begin{corollaire}
-Soit $G = (S, A, p)$ un multi-graphe de tas de sable.
-$$
-\forall c \in \mathcal{G}, \forall \sigma \in \mathfrak{S}_{\widetilde{S}},
-c_{\sigma}: \begin{matrix}
-\widetilde{S} &\rightarrow& \mathbb{N} \\
-s &\mapsto& c(\sigma)(s)
-\end{matrix} \in \mathcal{M}
-\text{ et } \left(
-c_\sigma \neq c \implies c_\sigma \notin \mathcal{G}
-\right)
-$$
-\end{corollaire}
+%\begin{corollaire}
+%Soit $G = (S, A, p)$ un multi-graphe de tas de sable.
+%$$
+%\forall c \in \mathcal{G}, \forall \sigma \in \mathfrak{S}_{\widetilde{S}},
+%c_{\sigma}: \begin{matrix}
+%\widetilde{S} &\rightarrow& \mathbb{N} \\
+%s &\mapsto& c(\sigma)(s)
+%\end{matrix} \in \mathcal{M}
+%\text{ et } \left(
+%c_\sigma \neq c \implies c_\sigma \notin \mathcal{G}
+%\right)
+%$$
+%\end{corollaire}
 
-\begin{proof}
-Si $c_\sigma \neq c$ alors $c_\sigma \in \mathcal{G}$ contredit la proposition
-ci-dessus pour la partition réduite à $(S)$.
-\end{proof}
+%\begin{proof}
+%Si $c_\sigma \neq c$ alors $c_\sigma \in \mathcal{G}$ contredit la proposition
+%ci-dessus pour la partition réduite à $(S)$.
+%\end{proof}

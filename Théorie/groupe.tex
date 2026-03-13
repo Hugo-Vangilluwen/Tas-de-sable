@@ -52,63 +52,120 @@ Posons $H$ la jonction par le puits de $\left(H_i\right)_
 proposition ci-dessus.
 \end{proof}
 
-\begin{question}
+\begin{definition}[Pseudo-base]
+Soit $(M, \cdot, e)$ un monoïde.
+Soit $F \subseteq M$ et $E \in \mathcal{MP}(F)$.
+$(F, M)$ est une pseudo-base du monoïde  si :
+\begin{enumerate}
+\item $\forall x \in M, \exists ! E'_x \subseteq E: x = \prod_{f \in E'_x} f$
+\item $\forall (x, y) \in M^2, |E'_{xy}| \leqslant |E'_x| + |E'_y|$
+\item $\forall f \in F, \exists k \in \mathbb{N}^*: |E'_{f^k}| < k$
+\end{enumerate}
+avec la convention $\prod_{y \in \emptyset} y = e$.
+$F$ est alors une partie génératrice.
+\end{definition}
+
+\begin{proposition}
 Soit $(M, *)$ un magma fini.
-A-t-on l'équivalence entre :
+on a l'équivalence entre :
 \begin{itemize}[label=\textbullet]
     \item $(M, *)$ est isomorphe à un monoïde des tas de sable stables
-    \item $(M, *)$ est un monoïde abélien simplifiable
+    \item $(M, *)$ est un monoïde abélien admettant une pseudo-base
 \end{itemize}
-ou faut-il ajouter des conditions pour le second point ?
-Je donne ci-dessous un début de démonstration inachevé.
-\end{question}
+\end{proposition}
 
 \begin{proof}
 Le sens direct découle de la construction du groupe des tas de sable stables.
-Réciproquement, soit $(M, *)$ un monoïde abélien.
-L'ensemble des parties génératrices de $(M, *)$ est non vide car $M$ en est une.
-Il existe alors $X$ une partie génératrice minimale au sens de l'inclusion.
-Notons $X = \left\{ x_1, x_2, \ldots, x_n \right\}$.
-Posons $S = \left\{ s_1, s_2, \ldots, s_n, p \right\}$.
+Réciproquement, soit $(M, *)$ un monoïde abélien admettant une pseudo-base
+$(F, E)$.
+Construisons un multi-graphe des tas de sable $G = (S, A, p)$.
+Soit $p$ un puits. Posons $S = F \cup \{p\}$.
+Pour tout élément $f \in F$, par définition d'une pseudo-base, il existe
+$\hat{E}_f \subseteq E : f^{m_E(f)+1} = \prod_{g \in \hat{E}_f} g$ (d'après la
+condition 1) et $|\hat{E}_f| \leqslant m_E(f) + 1$ (d'après la condition 2).
+Posons $A = \left\{ (f, g, m) \;|\; f \in F, (m, g) \in \hat{E}_f \right\}
+\cup \left\{ (f, p, m_E(f) + 1 - |\hat{E}_f|) \;|\; f \in F \right\}$.
+La condition $3$ garantit que le puits est accessible.
 
-Munissons $\mathcal{MP}(X)$ de l'ordre total :
-$$
-(X, m) \sqsubseteq (X, m')
-\iff \left(|(X, m')|, m(x_1), m(x_2), \ldots, m(x_n)\right)
-\leqslant \left(|(X, m')|, m'(x_1), m'(x_2), \ldots, m'(x_n)\right)
-$$
-Pour tout $i \in [\![1;n]\!]$, posons
-$(K_i, \xi_i) = \min \left\{ (k, \chi) \in \mathbb{N}^* \times
-\mathcal{MP}(X) \;|\; \begin{matrix}
-x_i^k = \prod_{x \in \chi} x \\
-\chi \neq \left\{\left(x_i, k\right)\right\} \\
-\end{matrix} \right\}$.
-Posons $A = \left(S, \begin{matrix}
-\left(s_i, s_j\right) \mapsto m_{\xi_i}(x_j) \\
-\left(s_i, p \right) \mapsto K_i - \left|\xi_i\right|
-\end{matrix} \right)$.
-Posons $G = (S, A, p)$
-Montrons maintenant que $\mathcal{M}(G) \simeq M$.
-
-Comme $(M, *)$ est un semi-groupe abélien, tout élément $y \in M$ peut s'écrire
-sous la forme $y = \prod_{x \in \chi} x$ avec $\chi \in
-\mathcal{MP}(X)$.
-Posons alors $\varphi(y) = \sum_{i=1}^{n} m_\chi(x_i) . \mathbf{1}_{s_i}$.
-Montrons que l'application $\varphi$ est bien définie c'est-à-dire que la valeur
-de $\varphi(y)$ ne dépend pas du choix de $\chi$.
+L'application $\varphi: \begin{matrix}
+M \rightarrow \mathcal{M}(G) \\
+x = \prod_{f \in E'_x} f \mapsto \sum_{f \in E'_x} \mathbf{1}_f
+\end{matrix}$
+est un morphisme de monoïdes.
 \end{proof}
+
+\begin{corollaire}
+Tout monoïde abélien admettant une pseudo-base est simplifiable.
+\end{corollaire}
+
+%\begin{question}
+%Soit $(M, *)$ un magma fini.
+%A-t-on l'équivalence entre :
+%\begin{itemize}[label=\textbullet]
+%    \item $(M, *)$ est isomorphe à un monoïde des tas de sable stables
+%    \item $(M, *)$ est un monoïde abélien simplifiable
+%\end{itemize}
+%ou faut-il ajouter des conditions pour le second point ?
+%Je donne ci-dessous un début de démonstration inachevé.
+%\end{question}
+
+%\begin{proof}
+%Le sens direct découle de la construction du groupe des tas de sable stables.
+%Réciproquement, soit $(M, *)$ un monoïde abélien.
+%L'ensemble des parties génératrices de $(M, *)$ est non vide car $M$ en est une.
+%Il existe alors $X$ une partie génératrice minimale au sens de l'inclusion.
+%Notons $X = \left\{ x_1, x_2, \ldots, x_n \right\}$.
+%Posons $S = \left\{ s_1, s_2, \ldots, s_n, p \right\}$.
+
+%Munissons $\mathcal{MP}(X)$ de l'ordre total :
+%$$
+%(X, m) \sqsubseteq (X, m')
+%\iff \left(|(X, m')|, m(x_1), m(x_2), \ldots, m(x_n)\right)
+%\leqslant \left(|(X, m')|, m'(x_1), \ldots, m'(x_n)\right)
+%$$
+%Pour tout $i \in [\![1;n]\!]$, posons
+%$(K_i, \xi_i) = \min \left\{ (k, \chi) \in \mathbb{N}^* \times
+%\mathcal{MP}(X) \;|\; \begin{matrix}
+%x_i^k = \prod_{x \in \chi} x \\
+%\chi \neq \left\{\left(x_i, k\right)\right\} \\
+%\end{matrix} \right\}$.
+%Posons $A = \left(S, \begin{matrix}
+%\left(s_i, s_j\right) \mapsto m_{\xi_i}(x_j) \\
+%\left(s_i, p \right) \mapsto K_i - \left|\xi_i\right|
+%\end{matrix} \right)$.
+%Posons $G = (S, A, p)$
+%Montrons maintenant que $\mathcal{M}(G) \simeq M$.
+
+%Comme $(M, *)$ est un semi-groupe abélien, tout élément $y \in M$ peut s'écrire
+%sous la forme $y = \prod_{x \in \chi} x$ avec $\chi \in
+%\mathcal{MP}(X)$.
+%Posons alors $\varphi(y) = \sum_{i=1}^{n} m_\chi(x_i) . \mathbf{1}_{s_i}$.
+%Montrons que l'application $\varphi$ est bien définie c'est-à-dire que la valeur
+%de $\varphi(y)$ ne dépend pas du choix de $\chi$.
+%\end{proof}
 
 \begin{remarque}
 Il est possible que la démonstration pour les groupes abéliens soit un cas particulier du problème précédent.
 \end{remarque}
 
+\begin{definition}
+Soit $(G, \cdot)$ un groupe.
+Posons
+$$
+a(G) = \min \left\{ |A| \;|\; \mathcal{G}(S, A, p) \simeq G \right\}
+$$
+\end{definition}
+
+\begin{remarque}
+D'après la preuve précédente, $a(G) \leqslant \sum_{i = 1}^k  a_i$.
+\end{remarque}
+
 \begin{question}
 $$
-\textsc{Problème sans nom} :
+\normalfont{\textsc{Problème sans nom}} :
 \left\{ \begin{array}{lcl}
 \text{\textbf{Entrée}} & \textbf{ : } & \text{un groupe abélien } (G, \cdot) \\
-\text{\textbf{Sortie}} & \textbf{ : } &
-\min \left\{ |A| \;|\; \mathcal{G}(S, A, p) \simeq G \right\}
+\text{\textbf{Sortie}} & \textbf{ : } & a(G)
 \end{array} \right.
 $$
 Dans le problème ci-dessus, $(G, \cdot)$ est représenté par le multi-ensemble de

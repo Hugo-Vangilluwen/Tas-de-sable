@@ -39,11 +39,11 @@ let main: unit =
         print_string " / ";
         print_float (Q.to_float rapport_rec_stab);
         print_newline ();
-        RationnalMatrix.print (Tsc.laplacien_reduit () c);
+(*         RationnalMatrix.print (Tsc.laplacien_reduit () c); *)
         Tsc.identite () c |> Tsc.afficher
-    done
+    done;
 
-(*     let _ = Tsc.un_grain_temps () (Tscomplet.creer () (10, 0)) (4, 0) 123 0.05 in () *)
+     let _ = Tsh.un_grain_temps () (Tsh.creer () (10, 10)) (4, 4) 500 0.05 in ()
 (*     in Graphics.close_graph () *)
 (*     let id = Tsm.identite 0.5 (10, 10) in *)
 (*     Tsm.afficher id *)

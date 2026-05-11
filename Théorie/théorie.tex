@@ -1,0 +1,61 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath, amsfonts, amssymb, amsthm, mathrsfs}
+\usepackage[french]{babel}
+\usepackage[utf8]{inputenc} % Caractères spéciaux
+\usepackage[T1]{fontenc} % Encodage 8-bit
+
+\usepackage{geometry}
+\geometry{
+    a4paper,
+    top=2cm,
+    bottom=2cm,
+    left=2cm,
+    right=2cm
+}
+
+\usepackage{color}
+\usepackage{hyperref}
+\makeatletter
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,
+    urlcolor=blue,
+    citecolor=olive,
+    pdftitle={\@title},
+    pdfauthor={\@author}
+}
+\makeatother
+
+\usepackage{enumitem}
+
+\theoremstyle{definition}
+\newtheorem{definition}{Définition}
+\theoremstyle{plain}
+\newtheorem{proposition}{Proposition}
+\newtheorem{theoreme}{Théorème}
+\newtheorem{corollaire}{Corollaire}
+\newtheorem{question}{Question}
+\theoremstyle{remark}
+\newtheorem*{exemple}{Exemple}
+\newtheorem*{remarque}{Remarque}
+
+\title{TIPE Tas de sable}
+\author{Hugo V}
+
+\begin{document}
+\maketitle
+
+\tableofcontents
+
+\include{semi-groupe.tex}
+
+\include{tas_sable.tex}
+
+\include{symétrie.tex}
+
+\include{cardinal.tex}
+
+\include{groupe.tex}
+
+\end{document}

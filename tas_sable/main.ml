@@ -40,14 +40,23 @@ let main: unit =
         print_string " / ";
         print_float (Q.to_float rapport_rec_stab);
         print_newline ();
-        RationnalMatrix.print (Tsc.laplacien_reduit () c);
+(*         RationnalMatrix.print (Tsc.laplacien_reduit () c); *)
         Tsc.identite () c |> Tsc.afficher
+<<<<<<< HEAD
     done*)
 
    (*      let _ = Tsc.un_grain_temps () (Tscomplet.creer () (10, 0)) (4, 0) 123 0.05 in ()
         in Graphics.close_graph () *)
         let id = Tsc.identite () (73, 73) in
         Tsc.afficher id
+=======
+    done;
+
+     let _ = Tsh.un_grain_temps () (Tsh.creer () (10, 10)) (4, 4) 500 0.05 in ()
+(*     in Graphics.close_graph () *)
+(*     let id = Tsm.identite 0.5 (10, 10) in *)
+(*     Tsm.afficher id *)
+>>>>>>> b234bcb990425df6172c9f17b2c279226a50b0b4
 
     (*
     let source = Tsm.creer (20, 20) in

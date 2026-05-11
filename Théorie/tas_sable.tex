@@ -1,68 +1,201 @@
-\documentclass[11pt]{article}
-\usepackage{amsmath, amsfonts, amssymb, amsthm, mathrsfs}
-\usepackage[french]{babel}
-\usepackage[utf8]{inputenc} % Caractères spéciaux
-\usepackage[T1]{fontenc} % Encodage 8-bit
+% !TeX root = théorie.tex
 
-\theoremstyle{definition}
-\newtheorem{definition}{Définition}
+\section{Tas de sable}
 
-\title{TIPE Tas de sable}
-\author{Hugo V}
 
-\begin{document}
-\maketitle
+\subsection{Multi-ensembles}
 
-\begin{definition}
-Soit $E$ un ensemble et $*: E \times E \rightarrow E$ un loi interne.
-$(E, *)$ est un semi-groupe si $*$ est associative.
-$(E, *)$ est un monoïde si de plus, il existe un élément neutre.
+\begin{definition}[Multi-ensemble]
+Un multi-ensemble est un couple $(E, m)$ où $E$ est un ensemble et
+$m: E \rightarrow \mathbb{N}$ un fonction de multiplicité.
+Intuitivement, il s'agit d'ensemble où les nombre de fois où apparaît chaque
+élément est spécifié.
+On les notera avec des doubles accolades, par exemple $\left\{\left\{ a, a,
+a, b, c, c \right\}\right\}$.
+
+On dit que $M' = (E', m')$ est un sous-multi-ensemble de $M = (E, m)$ si
+$E' \subseteq E$ et $\forall x \in E, m'(x) \leqslant m(x)$.
+On le note $M' \subseteq M$.
+Le cardinal de $M = (E, m)$ est $|M| = \sum_{x \in M} 1 = \sum_{x \in E} m(x)$.
+
+On écrira pour simplifier pour $M = (E, m)$ un multi-ensemble, $(F, +, f)$ un
+monoïde commutatif et $\phi: E \rightarrow F$ une application :
+$$
+\sum_{x \in M} \phi(x) = \sum_{x \in E} m(x) . \phi(x)
+$$
+En particulier, si $M$ est vide (i.e. $m(E) \subseteq \{0\}$) alors cette somme
+vaut $f$.
+
+Soient $M = (E, m)$ un multi-ensemble, $E'$ un ensemble et
+$f: E \rightarrow E'$ une application.
+Pour tout $A \subseteq M$, on note le multi-ensemble image de $A$,
+$f(A) = \left( f(E), x \mapsto \sum_{y \in f^{-1}(x)} m(y) \right)$.
 \end{definition}
+
+\begin{definition}[Ensemble des multi-parties]
+Une multi-partie de $E$ est un multi-ensemble $(E, m)$.
+On note $\mathcal{MP}(E)$ l'ensemble des multi-parties de $E$.
+Il est muni de l'ordre partiel $\subseteq$.
+\end{definition}
+
+\begin{definition}[Multi-graphe]
+Un multi-graphe orienté $(S, A)$ est un couple où $S$ est un ensemble fini de sommets
+et $A$ une multi-partie de $S$ représentant les arêtes.
+\end{definition}
+
+
+\subsection{Définitions}
 
 \begin{definition}[Graphe de tas de sable]
-Un graphe de tas de sable $G$ est un triplet $(S, A, p)$ où $(S, A)$ est un graphe orienté et $p \in S$ un puits.
-On notera $\widetilde{S} = S \setminus \{p\}$ et les voisins sortant de
-$s \in S$, $V^+(s) = \left\{u \in S \;|\; (s, u) \in A\right\}$.
+Un graphe des tas de sable $G$ est un triplet $(S, A, p)$ où $(S, A)$ est
+un multi-graphe orienté
+et $p \in S$ appelé puits qui est accessible depuis tous les sommets.
+La multiplicité de $(s, u)$ indique le nombre d'arcs de $s$ à $u$.
+On notera $\widetilde{S} = S \setminus \{p\}$, et pour $s \in S$, $V^+(s)
+\subseteq A$ le multi-graphe des successeurs et $d^+(s)$ le degré sortant :
+$$
+d^+(s) = \left| V^+(s) \right|
+$$
+% $$V^+(s) = \sum_{(s, u) \in A} \pi(u)$$
 \end{definition}
+
+Dans le reste de cette partie, on fixe
+$G = (S, A, p)$ un graphe de tas de sable.
 
 \begin{definition}[Monoïde des configurations]
 Une configuration sur $G$ est une fonction
 $c: \widetilde{S} \rightarrow \mathbb{N}$.
 Elle indique à chaque sommet le nombre de grains de sable qu'il contient.
-
-Les configurations munies de la loi $+$ définie par$(c + c')(s) = c(s) + c'(s)$
-forment un monoïde.
-
-Pour $s\in \widetilde{S}$, on notera $s$ la configuration valant $1$ en $s$
+On notera $0$ la configuration où aucun sommet ne contient de grain de sable.
+Pour $s\in \widetilde{S}$, on notera $\mathbf{1}_s$ la configuration valant $1$ en $s$
 et $0$ partout ailleurs.
+
+Les configurations $\widetilde{S}^{\mathbb{N}}$  munies de la loi $+$ définie
+par $(c + c')(s) = c(s) + c'(s)$ forment un monoïde abélien de neutre $0$.
+Il est engendré par les configurations $\mathbf{1}_s$
+pour $s \in \widetilde{S}$ :
+$$
+\forall c \in \widetilde{S}^{\mathbb{N}},
+c = \sum_{s \in \widetilde{S}} c(s) \mathbf{1}_s
+$$
+
+Posons la configuration où tous les sommets ont leur degré sortant moins un grain :
+$$
+c_{max} = \sum_{s \in \widetilde{S}} \left(d^+(s) - 1\right) . \mathbf{1}_s
+$$
 \end{definition}
 
+\subsection{Stabilisation}
+
 \begin{definition}[Écroulement]
-Pour une configuration $c$ et $s \in \widetilde{S}$, l'écroulement de $c$ en $s$
-est $c' = c - \left|V^+(s)\right| s + \sum_{u \in V^+(s), u \neq p} u$.
-On ne peut réaliser un écroulement uniquement si
-$c(s) \geqslant \left|V^+(s)\right|$.
+Pour une configuration $c$ et $s \in \widetilde{S}$ tels que $c(s) \geqslant d^+(s)$, l'écroulement de $c$ en $s$
+est :
+$$c' = c - d^+(s) . \mathbf{1}_s + \sum_{u \in V^+(s), u \neq p} . \mathbf{1}_u$$
+Un écroulement correspond à transférer un grain de sable de $s$ à ses voisins sur chaque arc. Les grains allant dans le puits disparaissent.
 \end{definition}
 
 \begin{definition}[Stabilité]
 Une configuration $c$ est dite stable si
-$\forall s \in S, c(s) \leqslant \left|V^+(s)\right|$.
+$\forall s \in \widetilde{S}, c(s) < d^+(s)$
+c'est-à-dire si aucun écoulement n'est possible.
 \end{definition}
+
+\begin{proposition}
+Le résultat d'une suite d'écroulement est indépendant de l'ordre
+dans lequel sont effectués les écroulements.
+De plus, il existe toujours une suite
+d'écroulements permettant d'obtenir une configuration stable.
+Une telle configuration est unique.
+\end{proposition}
+
+\begin{proof}
+Admis
+\end{proof}
 
 \begin{definition}
-On montre que le résultat d'une suite d'écroulement est indépendant de l'ordre
-dans lequel sont effectués les écroulements et qu'il existe toujours une suite
-d'écroulements permettant d'obtenir une configuration stable.
-
-Appelons avalanche $c^\circ$ le résultat d'une telle suite.
+Notons $c^\circ$ le résultat d'une telle suite appelé la stabilisation de $c$.
 \end{definition}
 
-\begin{definition}[Monoïdes des tas de sable]
-Soit $G = (S, A, p)$ un graphe de tas de sable.
-Un tas de sable sur ce graphe est un configuration stable.
-Les tas de sable munis de la loi $+$ forment un monoïde.
+\begin{definition}[Monoïdes des tas de sable stables]
+Notons $\circledast$ l'opération définie sur les configurations
+par $c \circledast c' = (c + c')^\circ$.
+Les tas de sable stables munis de la loi $\circledast$ forment un monoïde abélien de neutre $0$.
 
-Notons $???$ ce monoïde.
+Notons $\left(\mathcal{M}(G), \circledast\right)$ ce monoïde.
 \end{definition}
 
-\end{document}
+\begin{definition}[Groupe des tas de sable récurrents]
+$(\mathcal{M}(G), \circledast)$ est un semi-groupe commutatif fini.
+D'après le théorème 1, en notant $\mathcal{G}(G)$ son noyau,
+$(\mathcal{G}(G), \circledast)$ est un groupe abélien fini.
+Ses éléments sont appelés \textit{les tas de sable récurrents}.
+\end{definition}
+
+S'il n'y a aucune ambiguïté, on notera simplement $\mathcal{M}$ et $\mathcal{G}$.
+
+\begin{proposition}[Neutre du groupe récurrent]
+Notons $c_0$ l'élément neutre de $\mathcal{G}$.
+$$
+c_0 = \left( 2 c_{max} - \left(2 c_{max}\right)^\circ \right)^\circ
+$$
+\end{proposition}
+
+\begin{proposition}
+Soit $c \in \mathcal{M}$.
+On a l'équivalence entre :
+\begin{enumerate}[label=\roman*)]
+    \item $c \in S(G)$
+    \item $\forall x \in \mathcal{M}, \exists y \in \mathcal{G} : c = x \circledast y$
+    \item $\forall x \in \mathcal{M}, \exists y \in \mathcal{M} : c = x \circledast y$
+    \item $\exists y \in \widetilde{S}^{\mathbb{N}} : c = c_{max} \circledast y$
+%    \item  $c$ est la valeur d'adhérence d'une suite arithmétique dans
+%    $(Stab(G), \circledast)$ pour la topologie discrète.
+%    Je pense que cette caractérisation est fausse
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+Il s'agit d'une réécriture de la proposition 3 avec $x_0 = c_{max}$.
+\end{proof}
+
+\begin{proposition}
+$$
+c_0 = \left(2 c_{max} - \left(2 c_{max}\right)^\circ \right)^\circ
+$$
+\end{proposition}
+
+\begin{proof}
+Admis
+\end{proof}
+
+%\begin{proof} ~\par
+%$i \implies ii$ \ Soit $c \in S(G)$ et $a \in \widetilde{S}^{\mathbb{Z}}$.
+%$S(G)$ est un idéal de $(Stab(G), \circledast)$
+%donc de $(\widetilde{S}^{\mathbb{Z}}, \circledast)$.
+%D'où $b' = a \circledast c_0 \in S(G)$.
+%Posons $b = c_0 \circledast b'^{-1} \circledast c$ de sorte que $c = a \circledast b$.
+
+%$i \implies ii$ \ car $c_{max} \in \widetilde{S}^{\mathbb{Z}}$
+
+%$ii \implies iii$ car $\widetilde{S}^{\mathbb{N}} \subset \widetilde{S}^{\mathbb{Z}}$
+
+%$iv \implies i$ \ On a $c = c_0 \circledast c$ i.e. $c = c_0 \circledast
+%c_{max} \circledast b$.
+%Soit $I$ un idéal de $\widetilde{S}^{\mathbb{N}}$.
+%$c_0 \in S(G)\subset I$.
+%Par définition d'un idéal, $I \circledast \widetilde{S}^{\mathbb{N}} \subset I$.
+%Or $c_{max} \circledast b \in \widetilde{S}^{\mathbb{N}}$ donc $c \in I$.
+%$c$ appartient à tous les idéaux donc à l'idéal minimal, $c \in S(G)$.
+%\end{proof}
+
+\begin{proposition}
+Considérons l'expérience aléatoire où à partir de $0$, on dépose à chaque étape,
+un grain de sable aléatoirement uniformément sur un sommet de $\widetilde{S}$
+puis on stabilise. La probabilité que c apparaisse une infinité de fois est 1.
+Ceci est la définition historique des tas de sable récurrents (d'où l'adjectif
+de "récurrent").
+\end{proposition}
+
+\begin{proof}
+Admis
+\end{proof}

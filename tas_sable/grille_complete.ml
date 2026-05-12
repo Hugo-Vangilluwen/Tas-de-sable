@@ -89,10 +89,8 @@ module Grille_complete: GRILLE with type param = unit = struct
         | n -> let u = 255 - 255 * n / max_valeur g (x, 0) in
             Graphics.rgb u u u
 
-    let ouvrir_fenetre (g: t): unit =
-        " " ^(g.nombre * !taille_cases |> string_of_int)
-        ^ "x" ^ (!taille_cases |> string_of_int)
-        |> Graphics.open_graph
+    let taille_fenetre (g: t): int * int =
+        g.nombre * !taille_cases, !taille_cases
 
     let afficher_grille (g: t) (g_opt: t option): unit =
         let egal_grilles : coord -> bool = match g_opt with

@@ -28,7 +28,9 @@ let main: unit =
     let tas3 = Tsc.animer tas2 500 source attendre2 in ()
     *)
 
+    (50, 40) |> (Tsh.identite ()) |> Tsh.afficher
 
+    (*
     for n = 1 to 5 do
         let c = (n, n) in
         let card_rec, rapport_rec_stab =
@@ -44,6 +46,7 @@ let main: unit =
     done;
 
      let _ = Tsh.un_grain_temps () (Tsh.creer () (10, 10)) (4, 4) 500 0.05 in ()
+     *)
 (*     in Graphics.close_graph () *)
 (*     let id = Tsm.identite 0.5 (10, 10) in *)
 (*     Tsm.afficher id *)

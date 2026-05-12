@@ -148,10 +148,8 @@ module Grille_montagne : GRILLE with type param = float = struct
         | n -> let u = 255 - 255 * n / max_valeur g (x, y) in
             Graphics.rgb u u u
 
-    let ouvrir_fenetre (g: t): unit =
-        " " ^ (g.largeur * !taille_cases |> string_of_int)
-        ^ "x" ^ (g.hauteur * !taille_cases |> string_of_int)
-        |> Graphics.open_graph
+    let taille_fenetre (g: t): int * int =
+        g.largeur * !taille_cases, g.hauteur * !taille_cases
 
     (*
     let afficher_grille (g: t) (g_opt: t option): unit =

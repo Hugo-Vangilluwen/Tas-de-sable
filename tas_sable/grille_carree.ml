@@ -128,6 +128,9 @@ module Grille_carree: GRILLE with type param = unit = struct
         | n -> let u = 255 - 255 * n / max_valeur g (x, y) in
             Graphics.rgb u u u
 
+    let taille_fenetre (g: t): int * int =
+        g.largeur * !taille_cases, g.hauteur * !taille_cases
+
     let ouvrir_fenetre (g: t): unit =
         " " ^ (g.largeur * !taille_cases |> string_of_int)
         ^ "x" ^ (g.hauteur * !taille_cases |> string_of_int)

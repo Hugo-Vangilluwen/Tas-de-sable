@@ -156,10 +156,9 @@ module Grille_hexagonale: GRILLE with type param = unit = struct
             ^ ") depasse " ^
             ((x, y) |> (max_valeur g) |> string_of_int) )
 
-    let ouvrir_fenetre (g: t): unit =
-        " " ^ ((2 * g.largeur + g.hauteur - 1) * !largeur |> string_of_int)
-        ^ "x" ^ (g.hauteur * (!taille_cases + !demi_longeur) + (!taille_cases - !demi_longeur) |> string_of_int)
-        |> Graphics.open_graph
+    let taille_fenetre (g: t): int * int =
+        (2 * g.largeur + g.hauteur - 1) * !largeur,
+        g.hauteur * (!taille_cases + !demi_longeur) + (!taille_cases - !demi_longeur)
 
     (*let afficher_grille (g: t) (_: t option): unit =
         iterer

@@ -64,7 +64,10 @@ module type GRILLE = sig
     val couleur_case: t -> coord -> Graphics.color
 
     (* Ouvre une fenetre Graphics de la bonne taille *)
-    val ouvrir_fenetre : t -> unit
+    (* val ouvrir_fenetre : t -> unit *)
+
+    (* Donne la taille de la fenêtre contenant la grille *)
+    val taille_fenetre: t -> int * int
 
     (* Affiche la grille dans une fenetre graphique
      * Les valeurs de la grille doivent etre entre 0 et max_voisin - 1
@@ -87,7 +90,7 @@ module Tas_sable (G: GRILLE) = struct
         if correcte_coord tas c then ()
         else failwith ("La coordonnee ("
             ^ (coord_en_string c)
-            ^") n'est pas correcte")
+            ^ ") n'est pas correcte")
 
     (* Calcule un glissement de tas
      * Vaut vrai si aucune glissement a lieu et faux sinon
@@ -155,8 +158,13 @@ module Tas_sable (G: GRILLE) = struct
             )
             g
 
-    (* Affiche le tas de sable dans une fenetre graphique *)
-    let afficher (tas: t): unit =
+    let ouvrir_fenetre (tas: t) =
+        let largeur, hauteur = taille_fenetre tas in
+        " " ^ (string_of_int largeur) ^ "x" ^ (string_of_int hauteur)
+        |> Graphics.open_graph
+
+    (* Pré-affiche le tas de sable dans une fenêtre graphique *)
+    let preafficher (tas: t): unit =
         let a_redimensionne = G.dimensions tas <= (5, 5) in
         let taille_initiale = G.obtenir_taille_cases () in
 
@@ -167,12 +175,27 @@ module Tas_sable (G: GRILLE) = struct
         ouvrir_fenetre tas;
         afficher_grille tas None;
 
-        let _ = Graphics.wait_next_event[Button_down] in ();
-        Graphics.close_graph ();
-
         if a_redimensionne then
             G.mettre_taille_cases taille_initiale
         else ()
+
+    (* Affiche le tas de sable dans une fenêtre graphique *)
+    let afficher (tas: t): unit =
+        preafficher tas;
+
+        let _ = Graphics.wait_next_event[Button_down] in ();
+        Graphics.close_graph ()
+
+    (* Crée une chaîne de caractères représentant l'image du tas
+     * sous forme d'une liste Python
+     *)
+    let liste_python (tas: t): string =
+        preafficher tas;
+
+        let largeur, hauteur = taille_fenetre tas in
+        let img = Graphics.get_image 0 0 largeur hauteur in
+        let dump_img = Graphics.dump_image img in
+        ""
 
     (* Affiche l'animation de n etape à partir de tas en ajoutant la source à
      * chaque etape en passant d'une etape à une autre avec attendre

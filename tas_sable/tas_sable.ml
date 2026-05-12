@@ -158,10 +158,13 @@ module Tas_sable (G: GRILLE) = struct
             )
             g
 
-    let ouvrir_fenetre (tas: t) =
+    let ouvrir_fenetre (tas: t): unit =
         let largeur, hauteur = taille_fenetre tas in
         " " ^ (string_of_int largeur) ^ "x" ^ (string_of_int hauteur)
-        |> Graphics.open_graph
+        |> Graphics.open_graph;
+        Graphics.set_color Graphics.blue;
+        Graphics.fill_rect 0 0 largeur hauteur;
+        Graphics.set_color Graphics.white
 
     (* Pré-affiche le tas de sable dans une fenêtre graphique *)
     let preafficher (tas: t): unit =

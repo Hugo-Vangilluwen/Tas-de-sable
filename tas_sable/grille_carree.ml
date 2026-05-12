@@ -131,11 +131,6 @@ module Grille_carree: GRILLE with type param = unit = struct
     let taille_fenetre (g: t): int * int =
         g.largeur * !taille_cases, g.hauteur * !taille_cases
 
-    let ouvrir_fenetre (g: t): unit =
-        " " ^ (g.largeur * !taille_cases |> string_of_int)
-        ^ "x" ^ (g.hauteur * !taille_cases |> string_of_int)
-        |> Graphics.open_graph
-
     let afficher_grille (g: t) (g_opt: t option): unit =
         let egal_grilles : coord -> bool = match g_opt with
         | None -> fun _ -> false

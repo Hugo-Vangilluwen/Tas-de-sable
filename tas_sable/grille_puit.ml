@@ -77,11 +77,7 @@ module Ajouter_puit (G: GRILLE): GRILLE with type param = coord list * G.param =
     let mettre_taille_cases = G.mettre_taille_cases
 
     let couleur_case (g: t) (c: coord): Graphics.color =
-        if List.mem c g.puits then begin
-            Graphics.blue
-            end
-        else
-            G.couleur_case g.grille_int c
+        G.couleur_case g.grille_int c
 
     let taille_fenetre (g: t) = G.taille_fenetre g.grille_int
 

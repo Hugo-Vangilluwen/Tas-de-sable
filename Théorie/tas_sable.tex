@@ -6,35 +6,35 @@
 \subsection{Multi-ensembles}
 
 \begin{definition}[Multi-ensemble]
-Un multi-ensemble est un couple $(E, m)$ où $E$ est un ensemble et
-$m: E \rightarrow \mathbb{N}$ un fonction de multiplicité.
-Intuitivement, il s'agit d'ensemble où les nombre de fois où apparaît chaque
-élément est spécifié.
+Soit $E$ un ensemble.
+Un multi-ensemble sur $E$ est une partie de $E \times \mathbb{N}$.
+Intuitivement, il s'agit d'ensemble où la multiplicité de chaque élément
+est spécifié.
 On les notera avec des doubles accolades, par exemple $\left\{\left\{ a, a,
 a, b, c, c \right\}\right\}$.
 
-On dit que $M' = (E', m')$ est un sous-multi-ensemble de $M = (E, m)$ si
-$E' \subseteq E$ et $\forall x \in E, m'(x) \leqslant m(x)$.
-On le note $M' \subseteq M$.
-Le cardinal de $M = (E, m)$ est $|M| = \sum_{x \in M} 1 = \sum_{x \in E} m(x)$.
+On dit que $M' \subseteq E' \times \mathbb{N}$ est un sous-multi-ensemble de
+$M \subseteq E \times \mathbb{N}$ si $E' \subseteq E$ et
+$\forall x \in E, m'(x) \leqslant m(x)$. On le note $M' \subseteq M$.
+Le cardinal de $M$ est $|M| = \sum_{\left(x, \lambda_x\right) \in M} \lambda_x$.
 
-On écrira pour simplifier pour $M = (E, m)$ un multi-ensemble, $(F, +, f)$ un
+On écrira pour simplifier pour $M$ un multi-ensemble sur $E$, $(F, +, f)$ un
 monoïde commutatif et $\phi: E \rightarrow F$ une application :
 $$
-\sum_{x \in M} \phi(x) = \sum_{x \in E} m(x) . \phi(x)
+\sum_{x \in M} \phi(x) = \sum_{(x, \lambda_x) \in M} \lambda_x . \phi(x)
 $$
 En particulier, si $M$ est vide (i.e. $m(E) \subseteq \{0\}$) alors cette somme
 vaut $f$.
 
-Soient $M = (E, m)$ un multi-ensemble, $E'$ un ensemble et
+Soient $M$ un multi-ensemble sur $E$, $E'$ un ensemble et
 $f: E \rightarrow E'$ une application.
 Pour tout $A \subseteq M$, on note le multi-ensemble image de $A$,
-$f(A) = \left( f(E), x \mapsto \sum_{y \in f^{-1}(x)} m(y) \right)$.
+$\displaystyle f(A) = \left\{ (y, \lambda_y) \;|\; \lambda_y =
+\sum_{(x, \lambda_x) \in A, f(x) = y} \lambda_x \right\}$.
 \end{definition}
 
-\begin{definition}[Ensemble des multi-parties]
-Une multi-partie de $E$ est un multi-ensemble $(E, m)$.
-On note $\mathcal{MP}(E)$ l'ensemble des multi-parties de $E$.
+\begin{definition}[Ensemble des multi-ensembles]
+On pose $\mathcal{ME}(E) = E \times \mathbb{N}$.
 Il est muni de l'ordre partiel $\subseteq$.
 \end{definition}
 
@@ -51,8 +51,9 @@ Un graphe des tas de sable $G$ est un triplet $(S, A, p)$ où $(S, A)$ est
 un multi-graphe orienté
 et $p \in S$ appelé puits qui est accessible depuis tous les sommets.
 La multiplicité de $(s, u)$ indique le nombre d'arcs de $s$ à $u$.
-On notera $\widetilde{S} = S \setminus \{p\}$, et pour $s \in S$, $V^+(s)
-\subseteq A$ le multi-graphe des successeurs et $d^+(s)$ le degré sortant :
+On notera $\widetilde{S} = S \setminus \{p\}$, et pour tout $s \in S$, $V^+(s)
+= \left\{ (u, \lambda) \;|\; (s, u, \lambda) \in A \right\}$ le multi-ensemble
+des successeurs et $d^+(s)$ le degré sortant :
 $$
 d^+(s) = \left| V^+(s) \right|
 $$
@@ -115,6 +116,8 @@ Admis
 \begin{definition}
 Notons $c^\circ$ le résultat d'une telle suite appelé la stabilisation de $c$.
 \end{definition}
+
+\subsection{Structures des les tas de sable}
 
 \begin{definition}[Monoïdes des tas de sable stables]
 Notons $\circledast$ l'opération définie sur les configurations

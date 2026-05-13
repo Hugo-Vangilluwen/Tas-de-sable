@@ -35,6 +35,30 @@ $\left|\mathcal{G}\left(\text{Ka}_{n, p}\right)\right| = p^n$.
 (Calculs à expliciter)
 \end{remarque}
 
+\begin{proposition}
+Pour tout $\alpha \in [0; 1] \cap \mathbb{Q}$, il existe un graphe de ratio $\alpha$.
+\end{proposition}
+
+\begin{proof}
+Notons $\alpha = \frac{a}{b}$ avec $0 \leqslant a \leqslant b$.
+Posons $G = \left(\left\{u, p\right\}, \left\{ (\{u, p\}, a), (\{u, u\}, b - a),
+p \right\} \right)$ c'est-à-dire le graphe ci-dessous :
+\begin{center}
+    \begin{tikzpicture}[node distance=20mm]
+        \node (p) [draw, circle] {p};
+        \node (u) [draw, circle, above right of=p] {u};
+
+        \draw (u) edge[->, bend left] node[label=right:{$a$}] {} (p);
+        \draw (u) edge[->, loop] node[above] {$b-a$} (u);
+    \end{tikzpicture}
+\end{center}
+$d^+(u) = b$ donc $\left|\mathcal{M}(G)\right| = b$.
+Les tas de sable récurrents sont ceux ayant entre $b-a$ et $b-1$ grains de sable
+en $u$ donc $\left|\mathcal{G}(G)\right| = a$.
+On a bien $\displaystyle \frac{\left|\mathcal{G}\right|}
+{\left|\mathcal{M}\right|} = \frac{a}{b} = \alpha$.
+\end{proof}
+
 \begin{remarque}
 Pour tous les types de graphes que nous avons modélisé, il semble que le
 quotient $\displaystyle \frac{\left|\mathcal{G}\right|}

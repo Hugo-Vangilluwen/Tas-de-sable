@@ -54,12 +54,12 @@ proposition ci-dessus.
 
 \begin{definition}[Pseudo-base]
 Soit $(M, \cdot, e)$ un monoïde.
-Soit $F \subseteq M$ et $E \in \mathcal{MP}(F)$.
-$(F, M)$ est une pseudo-base du monoïde  si :
+Soit $F \subseteq M$ et $E \in \mathcal{ME}(F)$.
+$(F, E)$ est une pseudo-base de $M$ si :
 \begin{enumerate}
-\item $\forall x \in M, \exists ! E'_x \subseteq E: x = \prod_{f \in E'_x} f$
-\item $\forall (x, y) \in M^2, |E'_{xy}| \leqslant |E'_x| + |E'_y|$
-\item $\forall f \in F, \exists k \in \mathbb{N}^*: |E'_{f^k}| < k$
+    \item $\forall x \in M, \exists ! E'_x \subseteq E: x = \prod_{f \in E'_x} f$
+    \item $\forall (x, y) \in M^2, |E'_{xy}| \leqslant |E'_x| + |E'_y|$
+    \item $\forall f \in F, \exists k \in \mathbb{N}^*: |E'_{f^k}| < k$
 \end{enumerate}
 avec la convention $\prod_{y \in \emptyset} y = e$.
 $F$ est alors une partie génératrice.

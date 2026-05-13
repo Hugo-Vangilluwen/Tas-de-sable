@@ -63,9 +63,6 @@ module type GRILLE = sig
     (* Donne la couleur de la case pour l'affichage *)
     val couleur_case: t -> coord -> Graphics.color
 
-    (* Ouvre une fenetre Graphics de la bonne taille *)
-    (* val ouvrir_fenetre : t -> unit *)
-
     (* Donne la taille de la fenêtre contenant la grille *)
     val taille_fenetre: t -> int * int
 
@@ -158,16 +155,22 @@ module Tas_sable (G: GRILLE) = struct
             )
             g
 
-    let ouvrir_fenetre (tas: t): unit =
+    (* Ouvre une fenetre Graphics de la bonne taille
+     * Renvoie les dimensions de la fenêtre
+     *)
+    let ouvrir_fenetre (tas: t): int * int =
         let largeur, hauteur = taille_fenetre tas in
         " " ^ (string_of_int largeur) ^ "x" ^ (string_of_int hauteur)
         |> Graphics.open_graph;
         Graphics.set_color Graphics.blue;
         Graphics.fill_rect 0 0 largeur hauteur;
-        Graphics.set_color Graphics.white
+        Graphics.set_color Graphics.white;
+        largeur, hauteur
 
-    (* Pré-affiche le tas de sable dans une fenêtre graphique *)
-    let preafficher (tas: t): unit =
+    (* Pré-affiche le tas de sable dans une fenêtre graphique
+     * Renvoie les dimensions de la fenêtre
+     *)
+    let preafficher (tas: t): int * int =
         let a_redimensionne = G.dimensions tas <= (5, 5) in
         let taille_initiale = G.obtenir_taille_cases () in
 
@@ -175,16 +178,18 @@ module Tas_sable (G: GRILLE) = struct
             G.mettre_taille_cases 100
         else ();
 
-        ouvrir_fenetre tas;
+        let l, h = ouvrir_fenetre tas in
         afficher_grille tas None;
 
         if a_redimensionne then
             G.mettre_taille_cases taille_initiale
-        else ()
+        else ();
+
+        l, h
 
     (* Affiche le tas de sable dans une fenêtre graphique *)
     let afficher (tas: t): unit =
-        preafficher tas;
+        ignore (preafficher tas);
 
         let _ = Graphics.wait_next_event[Button_down] in ();
         Graphics.close_graph ()
@@ -192,20 +197,40 @@ module Tas_sable (G: GRILLE) = struct
     (* Crée une chaîne de caractères représentant l'image du tas
      * sous forme d'une liste Python
      *)
-    let liste_python (tas: t): string =
-        preafficher tas;
-
-        let largeur, hauteur = taille_fenetre tas in
+    let imprimer_liste_python ?(fname: string = "tmp_list_img") (tas: t):
+        unit =
+        let file = open_out fname in
+        let print_in_file (message: string): unit =
+            Printf.fprintf file "%s" message
+        in
+        let largeur, hauteur = preafficher tas in
         let img = Graphics.get_image 0 0 largeur hauteur in
-        let dump_img = Graphics.dump_image img in
-        ""
+
+        print_in_file "[";
+        (Array.iter
+            (fun line ->
+                print_in_file "[";
+                Array.iter
+                (fun couleur ->
+                    let bb = couleur mod 256 in
+                    let rg = couleur / 256 in
+                    let gg = rg mod 256 in
+                    let rr = rg / 256 in
+                    print_in_file ("(" ^ (string_of_int rr) ^ ","
+                        ^ (string_of_int gg) ^ "," ^ (string_of_int bb) ^ "),")
+                )
+                line;
+                print_in_file "],"
+            )
+            (Graphics.dump_image img) );
+        print_in_file "]"
 
     (* Affiche l'animation de n etape à partir de tas en ajoutant la source à
      * chaque etape en passant d'une etape à une autre avec attendre
      * Renvoie le tas final
      *)
     let animer (tas: t) (n :int) (source: t) (attendre: unit -> unit): t =
-        ouvrir_fenetre tas;
+        ignore (ouvrir_fenetre tas);
         afficher_grille tas None;
 
         let tas_anime = ref tas in

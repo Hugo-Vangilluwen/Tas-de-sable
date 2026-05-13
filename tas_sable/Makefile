@@ -37,14 +37,14 @@ doc: $(CIBLE)
 	ocamlfind ocamldoc -html -d doc $(OCAML_OPT) $(SOURCES) main.ml
 
 
-.PHONY: clean run test debug
+.PHONY: clean run test debug save_image
 
 test: $(SOURCES) test.ml
 	ocamlfind ocamlopt -o test -linkpkg $(OCAML_PKG) $(OCAML_OPT) $(SOURCES) test.ml
 	./test
 
 clean:
-	rm -f *.cm[iox] *.o $(CIBLE) test
+	rm -f *.cm[iox] *.o $(CIBLE) test tmp_list_img
 	rm -rf doc
 
 run: $(CIBLE)
@@ -53,3 +53,8 @@ run: $(CIBLE)
 debug:
 	make -B OCAML_OPT=-g
 	ocamldebug ./$(CIBLE)
+
+save_image: $(CIBLE)
+	$(if $(IMG_FILE),,$(error IMG_FILE is not defined))
+	./$(CIBLE) > tmp_list_img
+	./save_image.py $(IMG_FILE)

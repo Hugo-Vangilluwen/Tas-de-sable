@@ -28,7 +28,18 @@ let main: unit =
     let tas3 = Tsc.animer tas2 500 source attendre2 in ()
     *)
 
-    (50, 40) |> (Tsh.identite ()) |> Tsh.afficher
+    let tas = (100, 100) |> (Tsh.identite ()) in
+    Tsh.mettre_taille_cases 4;
+    tas |> Tsh.afficher;
+    Tsh.imprimer_liste_python tas
+
+    (*
+    let tas = Tsc.creer () (200, 200) in
+    Tsc.deposer tas 50_000 (100, 100);
+    Tsc.avalanche tas;
+    Tsc.mettre_taille_cases 5;
+    Tsc.afficher tas
+    *)
 
     (*
     for n = 1 to 5 do

@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <assert.h>
+#include <time.h>
 
 typedef struct taskadanoff_hauteur {
     int n;
@@ -73,14 +74,13 @@ tas_kp* copie (tas_kp* t){
     return copie;
 }
 
-void ajout_grain(tas_kp* t, int i){
-    assert(i>=0 && i<t->n);
-    t->tab[i]++;
+void ajout_grain(tas_kp* t){
+    t->tab[0]++;
 }
 
-void ajouter_m_grains(tas_kp* t, int m, int i){
+void ajouter_m_grains(tas_kp* t, int m){
     for (int k=0; k<m; k++){
-        ajout_grain (t, i);
+        ajout_grain (t);
     }
 }
 
@@ -122,6 +122,20 @@ tas_kp* add (tas_kp* t1, tas_kp* t2){
     return tf;
 }
 
+tas_kp* sous (tas_kp* t1, tas_kp* t2){
+    assert(t1->n == t2->n);
+    assert(t1->p == t2->p);
+    tas_kp* tf = malloc(sizeof(tas_kp));
+    tf->n = t1-> n;
+    tf->p = t2-> p;
+    int* tab = malloc(tf->n* sizeof(int));
+    for (int i=0;i<tf->n; i++){
+        tab[i] = t1->tab[i] - t2->tab[i];
+    }
+    tf->tab= tab;
+    return tf;
+}
+
 tas_kp* cmax (int n, int p){
     tas_kp* t = malloc(sizeof(tas_kp));
     t->n = n;
@@ -138,7 +152,7 @@ tas_kp* identite(int n, int p){
     tas_kp* deuxcmax = add(cmax(n,p),cmax(n,p));
     tas_kp* deuxcmax_s = copie(deuxcmax);
     stabilisation(deuxcmax_s);
-    tas_kp* identite = add(deuxcmax, deuxcmax_s);
+    tas_kp* identite = sous(deuxcmax, deuxcmax_s);
     stabilisation(identite);
 
     return identite;
@@ -170,10 +184,10 @@ void exporter_frame(char* base, int frame, tas_kp* t){
     ecrire_tas(nom, t);
 }
 
-void simulation(char* base, tas_kp* t, int nb_iterations, int position){
+void simulation(char* base, tas_kp* t, int nb_iterations){
     for(int i = 0; i < nb_iterations; i++){
 
-        ajout_grain(t, position);
+        ajout_grain(t);
         stabilisation(t);
 
         exporter_frame(base, i, t);
@@ -181,9 +195,36 @@ void simulation(char* base, tas_kp* t, int nb_iterations, int position){
 }
 
 int main(){
-    tas_kp* t = creer_tas(20, 2);
+    clock_t debut, fin;
+    double duree;
 
-    simulation("frame", t, 50, 0);
+    /*tas_kp* t = creer_tas(300, 4);
+
+    debut = clock();
+    ajouter_m_grains(t, 100000, 0);
+    stabilisation(t);
+    fin = clock();
+    duree = (double)(fin - debut) / CLOCKS_PER_SEC;
+    printf("Durée pour une stabilisation de k grains : %f secondes\n", duree);*/
+
+    /*tas_kp* t = identite(25, 3);
+    tas_kp* t2 = creer_tas(25,3);
+    ajouter_m_grains(t2, 10000);
+    stabilisation(t2);
+
+    tas_kp* t3 = add(t, t);
+    stabilisation(t3);
+
+    ecrire_tas("id25.txt", t);
+    ecrire_tas("tas_ajoutid.txt", t3);*/
+
+    /*tas_kp* t = creer_tas(25,3);
+    simulation("frame", t, 100);*/
+    
+    tas_kp* did = add(identite(4,3), identite(4,3));
+    stabilisation(did);
+    ecrire_tas("id.txt", identite(4,3));
+    ecrire_tas("deux_id.txt", did);
 
     return 0;
 }

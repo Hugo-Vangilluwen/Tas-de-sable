@@ -6,6 +6,10 @@ from matplotlib.patches import Rectangle
 import glob
 import re
 
+#import os
+#os.chdir("kadanoff+")
+#print(os.getcwd())
+
 def afficher_tas_depuis_fichier(nom_fichier):
     with open(nom_fichier, "r") as f:
         n = int(f.readline())
@@ -64,7 +68,7 @@ def afficher_tas(valeurs, hauteur_max):
             )
 
     ax.set_xlim(0, n)
-    ax.set_ylim(0, hauteur_max)  # 👈 FIX IMPORTANT
+    ax.set_ylim(0, hauteur_max)
 
     ax.set_aspect("equal")
     ax.set_xticks([])
@@ -101,9 +105,15 @@ def animation():
 
     for v in frames:
         afficher_tas(v, max_global)
-        plt.pause(0.2)
+        plt.pause(1)
 
     plt.show()
 
-if __name__ == "__main__":
-    animation()
+#animation()
+
+#afficher_tas_depuis_fichier("id25.txt")
+#afficher_tas_depuis_fichier("tas_ajoutid.txt")
+#afficher_tas_depuis_fichier("deuxcmax.txt")
+#afficher_tas_depuis_fichier("deuxcmax_s.txt")
+afficher_tas_depuis_fichier("id.txt")
+afficher_tas_depuis_fichier("deux_id.txt")

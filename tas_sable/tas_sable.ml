@@ -54,9 +54,6 @@ module type GRILLE = sig
     (* Imprime la grille dans la console *)
     val imprimer : t -> unit
 
-    (* Retourne la taille des cases dans l'affichage  *)
-    val obtenir_taille_cases : unit -> int
-
     (* Définit la dimension des cases dans l'affichage  *)
     val mettre_taille_cases : int -> unit
 
@@ -117,6 +114,64 @@ module Tas_sable (G: GRILLE) = struct
         if glissement tas then
             avalanche tas
         else ()
+
+    let rayon_source actives (source_x, source_y) =
+        if Hashtbl.length actives = 0 then 0
+        else
+            let rayon_x = ref 0 in
+            let rayon_y = ref 0 in
+
+            Hashtbl.iter
+                (fun (x,y) _ ->
+                    let dx = abs (x - source_x) in
+                    let dy = abs (y - source_y) in
+                    if dx > !rayon_x then rayon_x := dx;
+                    if dy > !rayon_y then rayon_y := dy;
+                )
+                actives;
+
+            max !rayon_x !rayon_y
+
+    let avalanche_n_grains (tas_init: t) (source: coord) (n: int): int*int=
+        let tas = copier tas_init in
+        deposer tas n source;
+
+        let glissement_trace (tas: t): bool * int =
+            let glisse = ref false in
+            let nb = ref 0 in
+            iterer
+                (fun c ->
+                    if max_valeur tas c < valeur tas c then begin
+                        glisse := true;
+                        incr nb;
+
+                        deposer tas (- max_valeur tas c - 1) c;
+                        List.iter (deposer tas 1) (voisins tas c)
+                    end
+                )
+                tas;
+            (!glisse, !nb)
+        in
+
+
+        let rec avalanche_aux total =
+            let (a_bouge, n_eboul) = glissement_trace tas in
+            if a_bouge then avalanche_aux (total + n_eboul)
+            else total
+        in
+
+        let total_eboulements = avalanche_aux 0 in
+
+
+        let actives = Hashtbl.create 100 in
+
+        iterer
+            (fun c -> if (valeur tas c) > 0 then Hashtbl.replace actives c true else ())
+            tas;
+
+        let rayon = rayon_source actives source in
+
+        (total_eboulements, rayon)
 
     (* Somme tas1 et tas2 *)
     let sommer (tas1: t) (tas2: t) =
@@ -329,22 +384,7 @@ module Tas_sable (G: GRILLE) = struct
         l
 
     (* Calcule le cardinal des tas de sable récurrents *)
-    let cardinal_recurrents (p: param) (dim: coord): Z.t =
-        laplacien_reduit p dim
-        |> RationnalMatrix.determinant
-        |> Q.to_bigint
-        |> Z.abs
-
-    (* Calcule le cardinal des tas de sable récurrents
-     * et le rapport entre ceux récurrents et ceux stables
-     *)
-    let rapport_recurrents_stables (p: param) (dim: coord): Z.t * Q.t =
-        let card_rec = cardinal_recurrents p dim in
-        let graphe = creer p dim in
-        let rapport_rec_stab = reduire graphe
-            (fun acc c -> Q.div acc (Q.of_int (max_valeur graphe c + 1)))
-            (Q.of_bigint card_rec)
-            in
-        card_rec, rapport_rec_stab
+    let cardinal_recurrents (p: param) (dim: coord): int =
+        laplacien_reduit p dim |> RationnalMatrix.determinant |> Q.to_int |> abs
 
 end

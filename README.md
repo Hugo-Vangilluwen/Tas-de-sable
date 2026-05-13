@@ -5,6 +5,8 @@ Ce dépôt contient mes fichiers pour le TIPE de 2026 autour des tas de sable.
 `tas_sable` contient le code OCaml qui permet de simuler les tas de sable.
 `documents` contient les différents documents lus dans le cadre de ce TIPE.
 `Théorie` contient les sources LaTeX du document de synthèse.
+`kadanoff` contient le code C et Python de Quentin pour simuler des tas de
+sable de Kadanoff.
 
 ## Simulation
 

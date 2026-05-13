@@ -10,11 +10,12 @@ open EltsQ
 
 module Tsp = Tas_sable(Ajouter_puit (Grille_carree))
 
-
 let main: unit =
-    (*
-    let source = Tsc.creer () (40, 40) in
-    Tsc.deposer source 1 (15, 15);
+
+    (*let tas = Tsc.creer () (90, 90) in
+    let (tot, r) = Tsc.avalanche_n_grains tas (25,25) 10050 in
+    print_int r; print_string "\n"
+    (*Tsc.deposer source 1 (15, 15);
     Tsc.deposer source 1 (34, 26);
     let attendre1 () =
          Unix.sleepf 0.001
@@ -23,10 +24,9 @@ let main: unit =
         let _ = Graphics.wait_next_event[Key_pressed] in ()
     in
     let tas1 = Tsc.creer () (40, 40) in
-    Tsc.mettre_dim_cases 20;
+    Tsc.mettre_tailles_cases 20;
     let tas2 = Tsc.animer tas1 1000 source attendre1 in
-    let tas3 = Tsc.animer tas2 500 source attendre2 in ()
-    *)
+    let tas3 = Tsc.animer tas2 500 source attendre2 in ()*)*)
 
     let tas = (100, 100) |> (Tsh.identite ()) in
     Tsh.mettre_taille_cases 4;
@@ -54,13 +54,10 @@ let main: unit =
         print_newline ();
 (*         RationnalMatrix.print (Tsc.laplacien_reduit () c); *)
         Tsc.identite () c |> Tsc.afficher
-    done;
+    done*)
 
-     let _ = Tsh.un_grain_temps () (Tsh.creer () (10, 10)) (4, 4) 500 0.05 in ()
-     *)
-(*     in Graphics.close_graph () *)
-(*     let id = Tsm.identite 0.5 (10, 10) in *)
-(*     Tsm.afficher id *)
+   (*      let _ = Tsc.un_grain_temps () (Tscomplet.creer () (10, 0)) (4, 0) 123 0.05 in ()
+        in Graphics.close_graph () *)
 
     (*
     let source = Tsm.creer (20, 20) in

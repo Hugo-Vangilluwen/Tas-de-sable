@@ -15,7 +15,9 @@ module Grille_complete: GRILLE with type param = unit = struct
         g.nombre - 1
 
     let creer () ((x, y): coord): t =
-        assert (y = 0);
+        if (y = 0)  then ()
+        else raise (Invalid_argument "La variable y doit être nulle");
+
         {
             sommets = Array.make x 0;
             nombre = x;
@@ -31,7 +33,9 @@ module Grille_complete: GRILLE with type param = unit = struct
         g.sommets.(x)
 
     let deposer (g: t) (n: int) ((x, y): coord): unit =
-        assert (y = 0);
+        if (y = 0)  then ()
+        else raise (Invalid_argument "La variable y doit être nulle");
+
         g.sommets.(x) <- g.sommets.(x) + n
 
     let correcte_coord (g: t) ((x, y): coord): bool =
@@ -100,7 +104,9 @@ module Grille_complete: GRILLE with type param = unit = struct
 
         iterer
             (fun (x, y) ->
-                assert (y = 0);
+                if (y = 0)  then ()
+                else raise (Invalid_argument "La variable y doit être nulle");
+
                 if egal_grilles (x, 0) then ()
                 else begin
                     couleur_case g (x, 0) |> Graphics.set_color;

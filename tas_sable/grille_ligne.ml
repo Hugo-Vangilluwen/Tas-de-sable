@@ -14,7 +14,9 @@ module Grille_ligne: GRILLE with type param = unit = struct
     let max_valeur (_: t) (_: coord): int = 1
 
     let creer () ((x, y): coord): t =
-        assert (y = 0);
+        if (y = 0)  then ()
+        else raise (Invalid_argument "La variable y doit être nulle");
+
         {
             ligne = Array.make x 0;
             longueur = x;
@@ -30,14 +32,18 @@ module Grille_ligne: GRILLE with type param = unit = struct
         g.ligne.(x)
 
     let deposer (g: t) (n: int) ((x, y): coord): unit =
-        assert (y = 0);
+        if (y = 0)  then ()
+        else raise (Invalid_argument "La variable y doit être nulle");
+
         g.ligne.(x) <- g.ligne.(x) + n
 
     let correcte_coord (g: t) ((x, y): coord): bool =
         0 <= x && x < g.longueur && y = 0
 
     let voisins (g: t) ((x, y): coord): coord list =
-        assert (y = 0);
+        if (y = 0)  then ()
+        else raise (Invalid_argument "La variable y doit être nulle");
+
         let v = ref [] in
 
         if 0 < x then

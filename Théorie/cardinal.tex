@@ -2,6 +2,19 @@
 
 \section{Cardinaux}
 
+\begin{definition}
+Soit $G = (S, A, p)$ un graphe de tas de sable.
+La densité récurrente est définie par :
+$$
+\rho_r = \frac{
+    \left| \mathcal{G}\left(G\right) \right|
+}{
+    \left| \mathcal{M}\left(G\right) \right|
+}
+\in [0;1]
+$$
+\end{definition}
+
 \begin{proposition}
 Soit $G = (S, A, p)$ un graphe de tas de sable.
 $$
@@ -36,7 +49,8 @@ $\left|\mathcal{G}\left(\text{Ka}_{n, p}\right)\right| = p^n$.
 \end{remarque}
 
 \begin{proposition}
-Pour tout $\alpha \in [0; 1] \cap \mathbb{Q}$, il existe un graphe de ratio $\alpha$.
+Pour tout $\alpha \in [0; 1] \cap \mathbb{Q}$, il existe un graphe de densité
+récurrente $\alpha$.
 \end{proposition}
 
 \begin{proof}

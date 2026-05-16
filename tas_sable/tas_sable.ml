@@ -117,7 +117,8 @@ module Tas_sable (G: GRILLE) = struct
         if glissement tas then
             avalanche tas
         else ()
-
+    
+    (* calcule le rayon atteint par les grains de sables depuis la source *)
     let rayon_source actives (source_x, source_y) =
         if Hashtbl.length actives = 0 then 0
         else
@@ -134,7 +135,8 @@ module Tas_sable (G: GRILLE) = struct
                 actives;
 
             max !rayon_x !rayon_y
-
+    
+    (* calcul pour une avalanche de n grains, le nombre d'éboulement et le rayon atteint par les grains *)
     let avalanche_n_grains (tas_init: t) (source: coord) (n: int): int*int=
         let tas = copier tas_init in
         deposer tas n source;

@@ -70,7 +70,7 @@ int main(){
     for (int i = 0; i < 10; i++){
         tableaux[i] = creer_tas();
 
-        for (int j = 0; j < 1000; j++){
+        for (int j = 0; j < 100; j++){
             add_random(tableaux[i]);
         }
     }

@@ -178,6 +178,26 @@ void ecrire_tas(const char* nom_fichier, tas_kp* tp){
     fclose(f);
 }
 
+void ecrire_tas_pente(const char* nom_fichier, tas_kp* t){
+    FILE* f = fopen(nom_fichier, "w");
+
+    if (f == NULL){
+        printf("Erreur ouverture fichier\n");
+        return;
+    }
+
+    fprintf(f, "%d\n", t->n);
+
+    for(int i = 0; i < t->n; i++){
+        fprintf(f, "%d ", t->tab[i]);
+    }
+
+    fprintf(f, "\n");
+
+    fclose(f);
+}
+
+
 void exporter_frame(char* base, int frame, tas_kp* t){
     char nom[100];
     sprintf(nom, "%s_%d.txt", base, frame);
@@ -194,15 +214,125 @@ void simulation(char* base, tas_kp* t, int nb_iterations){
     }
 }
 
+void stabilisation_frames(char* base, tas_kp* t){
+    exporter_frame(base, 0, t);
+    int frame = 1;
+    bool stab = false;
+
+    while (!stab){
+        stab = true;
+
+        for(int i = 0; i < t->n; i++){
+
+            if(t->tab[i] > t->p){
+
+                stab = false;
+
+                eboulement(t, i);
+
+                exporter_frame(base, frame, t);
+
+                frame++;
+            }
+        }
+    }
+}
+
+bool est_zone_vague(tas_kp* t, int i){
+    for(int k = 0; k < t->p - 1; k++){
+
+        int diff = t->tab[i + k] - t->tab[i + k + 1];
+
+        // tolérance légère (IMPORTANT)
+        if(diff != 1)
+            return false;
+    }
+    return true;
+}
+
+typedef struct {
+    int debut_vague1;
+    int nb_cycles1;
+
+    int position_zero;
+    int nb_cycles2;
+} analyse_vagues;
+
+analyse_vagues analyser_vagues(tas_kp* t){
+    analyse_vagues a;
+
+    a.debut_vague1 = -1;
+    a.nb_cycles1 = 0;
+    a.position_zero = -1;
+    a.nb_cycles2 = 0;
+
+    int i = 0;
+
+    while((i <= t->n - t->p) && (a.debut_vague1 == -1)){
+        if(est_zone_vague(t, i)){
+            a.debut_vague1 = i;
+            a.nb_cycles1++;
+            i += t->p;
+        }
+        else {
+            i += 1;
+        }
+    }
+
+    while (est_zone_vague(t, i)){
+        a.nb_cycles1++;
+        i+= t->p;
+    }
+
+    a.position_zero = i;
+    i++;
+
+    while (est_zone_vague(t, i)){
+        a.nb_cycles2++;
+        i+= t->p;
+    }
+
+    return a;
+}
+
+/* =========================
+   EXPERIENCE TIPE
+========================= */
+
+void experience(int p){
+    FILE* f = fopen("vagues_N.txt", "w");
+
+    for(int N = 20; N <= 2000; N += 20){
+
+        tas_kp* t = creer_tas(N, p);
+
+        ajouter_m_grains(t, N * 10);
+        stabilisation(t);
+
+        analyse_vagues a = analyser_vagues(t);
+
+        fprintf(f, "%d %d %d\n",
+                N,
+                a.debut_vague1,
+                a.nb_cycles1);
+
+        free(t->tab);
+        free(t);
+    }
+
+    fclose(f);
+}
+
 int main(){
-    clock_t debut, fin;
+    /*clock_t debut, fin;
     double duree;
 
-    /*tas_kp* t = creer_tas(300, 4);
+    tas_kp* t = creer_tas(8, 3);
 
     debut = clock();
-    ajouter_m_grains(t, 100000, 0);
-    stabilisation(t);
+    ajouter_m_grains(t, 25);
+    stabilisation_frames("stab",t);
+    ecrire_tas("intro_kadanoff.txt", t);
     fin = clock();
     duree = (double)(fin - debut) / CLOCKS_PER_SEC;
     printf("Durée pour une stabilisation de k grains : %f secondes\n", duree);*/
@@ -221,10 +351,27 @@ int main(){
     /*tas_kp* t = creer_tas(25,3);
     simulation("frame", t, 100);*/
     
-    tas_kp* did = add(identite(4,3), identite(4,3));
+    /*tas_kp* did = add(identite(4,3), identite(4,3));
     stabilisation(did);
     ecrire_tas("id.txt", identite(4,3));
-    ecrire_tas("deux_id.txt", did);
+    ecrire_tas("deux_id.txt", did);*/
+
+    int p = 3;
+
+    tas_kp* t = creer_tas(100, p);
+
+    ajouter_m_grains(t, 3150);
+    stabilisation(t);
+    ecrire_tas_pente("test_vagues_300.txt", t);
+
+    analyse_vagues a = analyser_vagues(t);
+
+    printf("Debut vague 1 : %d\n", a.debut_vague1);
+    printf("Cycles vague 1 : %d\n", a.nb_cycles1);
+    printf("Zero : %d\n", a.position_zero);
+    printf("Cycles vague 2 : %d\n", a.nb_cycles2);
+
+    experience(4);
 
     return 0;
 }

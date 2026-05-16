@@ -5,10 +5,8 @@ import matplotlib.pyplot as plt
 from matplotlib.patches import Rectangle
 import glob
 import re
-
-#import os
+import os
 #os.chdir("kadanoff+")
-#print(os.getcwd())
 
 def afficher_tas_depuis_fichier(nom_fichier):
     with open(nom_fichier, "r") as f:
@@ -17,7 +15,6 @@ def afficher_tas_depuis_fichier(nom_fichier):
 
     fig, ax = plt.subplots(figsize=(12,6))
 
-    # Dessin des carrés
     for x in range(n):
         for y in range(valeurs[x]):
             ax.add_patch(
@@ -31,16 +28,20 @@ def afficher_tas_depuis_fichier(nom_fichier):
                 )
             )
 
-    # Limites propres (grille discrète)
     ax.set_xlim(0, n)
     ax.set_ylim(0, max(valeurs))
 
-    # Suppression des axes “scientifiques”
     ax.set_xticks([])
     ax.set_yticks([])
     ax.set_frame_on(False)
 
     ax.set_aspect('equal')
+
+    nom_image = "images/" + nom_fichier.replace(".txt", ".png")
+
+    fig.savefig(nom_image,
+                dpi=300,
+                bbox_inches='tight')
 
     plt.show()
 
@@ -86,13 +87,16 @@ def lire_fichier(nom_fichier):
 
 
 def animation():
-    files = sorted(glob.glob("frame_*.txt"), key=numero)
+    files = sorted(glob.glob("stab_*.txt"), key=numero)
 
     if not files:
         print("Aucune frame trouvée.")
         return
 
-    # 🔥 calcul du max global AVANT animation
+    # dossier de sortie pour les images
+    os.makedirs("images", exist_ok=True)
+
+    # calcul du max global
     max_global = 0
     frames = []
 
@@ -103,17 +107,23 @@ def animation():
 
     plt.figure()
 
-    for v in frames:
+    for i, v in enumerate(frames):
+
         afficher_tas(v, max_global)
+
+        # sauvegarde de la frame
+        nom_image = f"images/frame_{i:03d}.png"
+        plt.savefig(nom_image, dpi=200, bbox_inches='tight')
+
         plt.pause(1)
 
     plt.show()
 
-#animation()
+animation()
 
-#afficher_tas_depuis_fichier("id25.txt")
+#afficher_tas_depuis_fichier("intro_kadanoff.txt")
 #afficher_tas_depuis_fichier("tas_ajoutid.txt")
 #afficher_tas_depuis_fichier("deuxcmax.txt")
 #afficher_tas_depuis_fichier("deuxcmax_s.txt")
-afficher_tas_depuis_fichier("id.txt")
-afficher_tas_depuis_fichier("deux_id.txt")
+#afficher_tas_depuis_fichier("id.txt")
+#afficher_tas_depuis_fichier("deux_id.txt")

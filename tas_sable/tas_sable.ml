@@ -266,24 +266,22 @@ module Tas_sable (G: GRILLE) = struct
         let largeur, hauteur = preafficher tas in
         let img = Graphics.get_image 0 0 largeur hauteur in
 
-        print_in_file "[";
         (Array.iter
             (fun line ->
-                print_in_file "[";
                 Array.iter
                 (fun couleur ->
                     let bb = couleur mod 256 in
                     let rg = couleur / 256 in
                     let gg = rg mod 256 in
                     let rr = rg / 256 in
-                    print_in_file ("(" ^ (string_of_int rr) ^ ","
-                        ^ (string_of_int gg) ^ "," ^ (string_of_int bb) ^ "),")
+                    print_in_file ((string_of_int rr) ^ ","
+                        ^ (string_of_int gg) ^ "," ^ (string_of_int bb));
+                    print_in_file ";"
                 )
                 line;
-                print_in_file "],"
+                print_in_file "|"
             )
-            (Graphics.dump_image img) );
-        print_in_file "]"
+            (Graphics.dump_image img))
 
     (* Affiche l'animation de n etape à partir de tas en ajoutant la source à
      * chaque etape en passant d'une etape à une autre avec attendre
@@ -398,7 +396,7 @@ module Tas_sable (G: GRILLE) = struct
     (* Calcule le cardinal des tas de sable récurrents
      * et le rapport entre ceux récurrents et ceux stables
      *)
-    let rapport_recurrents_stables (p: param) (dim: coord): Z.t * Q.t =
+    let densite_recurrente (p: param) (dim: coord): Z.t * Q.t =
         let card_rec = cardinal_recurrents p dim in
         let graphe = creer p dim in
         let rapport_rec_stab = reduire graphe

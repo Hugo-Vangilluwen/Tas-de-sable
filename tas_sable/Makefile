@@ -15,7 +15,7 @@ OCAML_OPT :=
 all: $(CIBLE)
 
 $(CIBLE): $(SOURCES) main.ml
-	ocamlfind ocamlc -o $(CIBLE) -linkpkg $(OCAML_PKG) $(OCAML_OPT) $(SOURCES) main.ml
+	ocamlfind ocamlopt -o $(CIBLE) -linkpkg $(OCAML_PKG) $(OCAML_OPT) $(SOURCES) main.ml
 
 # Décommenter pour complier les objets
 # $(CIBLE): $(OBJETS)
@@ -44,7 +44,7 @@ test: $(SOURCES) test.ml
 	./test
 
 clean:
-	rm -f *.cm[iox] *.o $(CIBLE) test tmp_list_img
+	rm -f *.cm[iox] *.o $(CIBLE) test tmp_list_img imprimer_python
 	rm -rf doc
 
 run: $(CIBLE)
@@ -54,7 +54,9 @@ debug:
 	make -B OCAML_OPT=-g
 	ocamldebug ./$(CIBLE)
 
-save_image: $(CIBLE)
+save_image: $(SOURCES) imprimer_python.ml
 	$(if $(IMG_FILE),,$(error IMG_FILE is not defined))
-	./$(CIBLE) > tmp_list_img
+	$(if $(wildcard ./images/$(IMG_FILE)),$(error "File exists yet"),)
+	ocamlfind ocamlopt -o imprimer_python -linkpkg $(OCAML_PKG) $(OCAML_OPT) $(SOURCES) imprimer_python.ml
+	./imprimer_python > tmp_list_img
 	./save_image.py $(IMG_FILE)

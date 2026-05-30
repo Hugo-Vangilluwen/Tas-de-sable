@@ -12,6 +12,10 @@ module Tsp = Tas_sable(Ajouter_puit (Grille_carree))
 
 
 let main: unit =
-    Tsl.afficher (Tsl.identite () (4, 0))
-(*     Z.print (Tsl.cardinal_recurrents () (3, 0)); *)
-(*     print_newline () *)
+    for i = 1 to 20 do
+        let _, rho = Tsh.densite_recurrente () (i,i) in
+        print_int i;
+        print_string ": ";
+        print_float (Q.to_float rho);
+        print_newline ()
+    done

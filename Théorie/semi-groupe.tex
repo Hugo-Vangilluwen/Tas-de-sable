@@ -1,6 +1,12 @@
 % !TeX root = théorie.tex
 
-\section{Semi-groupes}
+\section{Structures algébriques}
+
+Dans un premier temps, je vais m'intéresser de façon générale aux différentes
+structures algébriques afin de pouvoir ensuite, dans la deuxième partie, décrire
+les structures des tas de sable.
+
+\subsection{Définitions générales}
 
 \begin{definition}
 Un magma est un couple $(E, *)$ où $E$ est un ensemble et $*: E \times E
@@ -124,6 +130,12 @@ Soit $(E, *)$ un semi-groupe commutatif.
 Le noyau de $(E, *)$ est l'intersection de tous les idéaux non vides.
 Il est soit vide soit l'idéal minimal (au sens de l'inclusion).
 \end{definition}
+
+\begin{exemple}
+Pour tout $n \in \mathbb{N}$, $[\![n;+\infty[\![$ est un idéal de
+$\left(\mathbb{N}, +, 0\right)$.
+Donc le noyau de $\left(\mathbb{N}, +, 0\right)$ est vide.
+\end{exemple}
 
 \begin{theoreme}
 Si $(E, *)$ est un semi-groupe commutatif fini, alors

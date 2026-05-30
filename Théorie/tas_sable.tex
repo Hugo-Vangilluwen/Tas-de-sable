@@ -2,6 +2,9 @@
 
 \section{Tas de sable}
 
+Je vais maintenant présenter le modèle des tas de sable ou modèle BTW du nom de
+ses trois créateurs Bak Tang Wiesenfeld en 1987. Je vais faire émerger les
+différentes structures de ce modèle.
 
 \subsection{Multi-ensembles}
 
@@ -89,10 +92,12 @@ $$
 \subsection{Stabilisation}
 
 \begin{definition}[Écroulement]
-Pour une configuration $c$ et $s \in \widetilde{S}$ tels que $c(s) \geqslant d^+(s)$, l'écroulement de $c$ en $s$
-est :
+Pour une configuration $c$ et $s \in \widetilde{S}$ tels que $c(s) \geqslant
+d^+(s)$, l'écroulement de $c$ en $s$ est :
 $$c' = c - d^+(s) . \mathbf{1}_s + \sum_{u \in V^+(s), u \neq p} . \mathbf{1}_u$$
-Un écroulement correspond à transférer un grain de sable de $s$ à ses voisins sur chaque arc. Les grains allant dans le puits disparaissent.
+Un écroulement correspond à transférer un grain de sable de $s$ à ses voisins
+sur chaque arc. Il ne peut être réalisé que si $c(s) \geqslant d^+(s)$.
+Les grains allant dans le puits disparaissent.
 \end{definition}
 
 \begin{definition}[Stabilité]
@@ -106,16 +111,28 @@ Le résultat d'une suite d'écroulement est indépendant de l'ordre
 dans lequel sont effectués les écroulements.
 De plus, il existe toujours une suite
 d'écroulements permettant d'obtenir une configuration stable.
-Une telle configuration est unique.
+Une telle configuration est unique. \\
+Notons $c^\circ$ le résultat d'une telle suite appelé la stabilisation de $c$.
 \end{proposition}
 
 \begin{proof}
-Admis
+L'équation qui définit les écroulements montre qu'ils peuvent être réalisé dans
+n'importe quel ordre.
+Soit $c \in \mathbb{N}^{\widetilde{S}}$. Notons $\acute{E}(c)$ l'ensemble des
+configurations obtenues à partir d'écroulements depuis $c$.
+En notant $N = \sum_{s \in \widetilde{S}} c(s)$, on a $\acute{E}(c) \subseteq
+[\![0;N]\!]^{\widetilde{S}}$. En particulier, $\acute{E}(c)$ est fini. \\
+S'il est possible d'écrouler en un sommet $s$, après l'écroulement de n'importe
+quel autre sommet, il est toujours possible d'écrouler en $s$.
+Pour toutes configurations $(x, y) \in \acute{E}(c)^2$, on définissons leur
+maximum $\max(x, y) \in \acute{E}(c)$ comme la configuration obtenue à partir
+des écroulements de $x$ et ceux de $y$ depuis $c$ sans répéter ceux que $x$ et
+$y$ ont en commun. $\acute{E}(c)$ possède une structure de semi-treillis fini.
+On peut alors prendre le maximum de $\acute{E}(c)$ et poser :
+$$
+c^\circ = \max_{x \in \acute{E}(c)} x
+$$
 \end{proof}
-
-\begin{definition}
-Notons $c^\circ$ le résultat d'une telle suite appelé la stabilisation de $c$.
-\end{definition}
 
 \subsection{Structures des les tas de sable}
 
@@ -168,26 +185,6 @@ $$
 Admis
 \end{proof}
 
-%\begin{proof} ~\par
-%$i \implies ii$ \ Soit $c \in S(G)$ et $a \in \widetilde{S}^{\mathbb{Z}}$.
-%$S(G)$ est un idéal de $(Stab(G), \circledast)$
-%donc de $(\widetilde{S}^{\mathbb{Z}}, \circledast)$.
-%D'où $b' = a \circledast c_0 \in S(G)$.
-%Posons $b = c_0 \circledast b'^{-1} \circledast c$ de sorte que $c = a \circledast b$.
-
-%$i \implies ii$ \ car $c_{max} \in \widetilde{S}^{\mathbb{Z}}$
-
-%$ii \implies iii$ car $\widetilde{S}^{\mathbb{N}} \subset \widetilde{S}^{\mathbb{Z}}$
-
-%$iv \implies i$ \ On a $c = c_0 \circledast c$ i.e. $c = c_0 \circledast
-%c_{max} \circledast b$.
-%Soit $I$ un idéal de $\widetilde{S}^{\mathbb{N}}$.
-%$c_0 \in S(G)\subset I$.
-%Par définition d'un idéal, $I \circledast \widetilde{S}^{\mathbb{N}} \subset I$.
-%Or $c_{max} \circledast b \in \widetilde{S}^{\mathbb{N}}$ donc $c \in I$.
-%$c$ appartient à tous les idéaux donc à l'idéal minimal, $c \in S(G)$.
-%\end{proof}
-
 \begin{proposition}
 Considérons l'expérience aléatoire où à partir de $0$, on dépose à chaque étape,
 un grain de sable aléatoirement uniformément sur un sommet de $\widetilde{S}$
@@ -199,3 +196,23 @@ de "récurrent").
 \begin{proof}
 Admis
 \end{proof}
+
+J'ai calculé informatiquement le neutre sure différents multi-graphes.
+
+\begin{figure}
+    \includegraphics[width=.3\textwidth]{carrée_10x10.png} \hfill
+    \includegraphics[width=.3\textwidth]{carrée_100x100.png} \hfill
+    \includegraphics[width=.3\textwidth]{carrée_200x200.png} \hfill
+    \\[\bigskipamount]
+    \includegraphics[width=.3\textwidth]{carrée_300x300.png} \hfill
+    \includegraphics[width=.3\textwidth]{carrée_400x400.png} \hfill
+    \includegraphics[width=.3\textwidth]{carrée_500x500.png} \hfill
+    \caption{Grille carrée}
+\end{figure}
+
+\begin{figure}
+    \includegraphics[width=.3\textwidth]{hexagonale_100x100.png} \hfill
+    \includegraphics[width=.3\textwidth]{hexagonale_200x200.png} \hfill
+    \includegraphics[width=.3\textwidth]{hexagonale_300x300.png} \hfill
+    \caption{Grille hexagonale}
+\end{figure}
